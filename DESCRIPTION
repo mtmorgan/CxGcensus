@@ -16,6 +16,8 @@ License: Artistic-2.0
 Depends: dplyr 
 Imports: tools, cachem, memoise, cellxgene.census
 Collate: cache.R census_info.R zzz.R
+Additional_repositories: https://tiledb-inc.r-universe.dev
+Remotes: cellxgene.census=chanzuckerberg/cellxgene-census/api/r/cellxgene.census
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
