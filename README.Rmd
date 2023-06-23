@@ -1,0 +1,74 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# CxGcensus
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+CxGcensus is an alternative *R* client to the [CELLxGENE census][]. It
+emaphsizes use cases related to data discovery, and uses in-memory and
+on-disk caches to reduce latency associated with repeated queries.
+
+[CELLxGENE census]: https://chanzuckerberg.github.io/cellxgene-census/
+
+## Installation
+
+Install CxGcensus from [GitHub](https://github.com/) with:
+
+``` r
+## install.packages("devtools")
+devtools::install_github("mtmorgan/CxGcensus")
+```
+
+## Example
+
+Load the package
+
+```{r example, messages = FALSE}
+library(CxGcensus)
+```
+
+Discover datasets available in the census
+
+```{r datasets}
+datasets()
+```
+
+Summarize information about cells in the census
+
+```{r summary_cell_counts}
+summary_cell_counts() |>
+    filter(category == "sex") |>
+    select(
+        organism, label,
+        unique_cell_count, total_cell_count
+    )
+```
+
+Learn about features (genes) in, e.g., `homo_sapiens` datasets in the census
+
+```{r cars}
+feature_data("homo_sapiens")
+```
+
+## Session information
+
+This README was compiled with CxGcensus version
+`r packageVersion("CxGcensus")`. Full session info is:
+
+```{r}
+sessionInfo()
+```

@@ -1,52 +1,9 @@
-
 #' @rdname census_info
 #'
-#' @title Discover metadata about CELLxGENE census
+#' @title Discover census datasets, cells, features, and observations
 #'
-#' @param census_version see `?cellxgene.census::open_soma`
-#'
-#' @param uri see `?cellxgene.census::open_soma`
-#'
-#' @param tiledbsoma_ctx see `?cellxgene.census::open_soma`
-#'
-#' @details
-#'
-#' `census()` is 'memoised', requiring high-latency internet access
-#' only on its first use.
-#'
-#' @return
-#'
-#' `census()` returns a `tiledbsoma::SOMACollection` object. Details
-#' of the `census_version` are available with
-#' `census()$get_metadata()`
-#'
-#' @importFrom cellxgene.census open_soma
-#'
-#' @importFrom dplyr mutate across where
-#'
-#' @examples
-#' census()
-#' census()$get_metadata()
-#'
-#' @export
-census <-
-    function(census_version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
-{
-    open_soma(
-        census_version = census_version,
-        uri = uri,
-        tiledbsoma_ctx = tiledbsoma_ctx
-    )
-}
-
-census_id <-
-    function()
-{
-    sha <- census()$get_metadata()$git_commit_sha
-    as.vector(sha) # remove attr(sha, 'key')
-}
-
-#' @rdname census_info
+#' @description `datasets()` queries CELLxGENE for datasets used in
+#'     constructing the census.
 #'
 #' @param census a `tiledbsoma::SOMACollection` object as returned by
 #'     `census()`. If `NULL`, then the default returned by `census()`.
@@ -59,10 +16,8 @@ census_id <-
 #' re-using the function is fast even across sessions. See
 #' `?cache_info()` for details on cache management.
 #'
-#' @return
-#'
-#' `datasets()` returns a tibble with information about the
-#' collections and datasets represented in the census.
+#' @return `datasets()` returns a tibble with information about the
+#'     collections and datasets represented in the census.
 #'
 #' @examples
 #' datasets() |>
@@ -89,11 +44,14 @@ datasets <-
 
 #' @rdname census_info
 #'
-#' @return
+#' @description `summary_cell_counts()` reports the facets (e.g., sex)
+#'     and levels (e.g., male, female) in the census, and the number
+#'     of cells associated with each facet and level.
 #'
-#' `summary_cell_counts()` returns a tibble summarizing the organism,
-#' factors (`category`) and levels represented in the data, and unique
-#' and total cell counts in each category.
+#' @return `summary_cell_counts()` returns a tibble summarizing the
+#'     organism, facets (`category`, e.g., 'sex') and levels (`label`,
+#'     e.g., 'female') represented in the data, and unique and total
+#'     cell counts in each facet and level.
 #'
 #' @examples
 #' summary_cell_counts() |>
@@ -120,13 +78,14 @@ summary_cell_counts <-
 
 #' @rdname census_info
 #'
+#' @description `feature_data()` reports information about features
+#'     (genes) present in the census.
+#'
 #' @param organism one of 'homo_sapiens' or 'mus_musculus'. Default:
 #'     'homo_sapiens'.
 #'
-#' @return
-#'
-#' `feature_data()` returns a tibble with columns describing each
-#' feature (gene) in `organism`.
+#' @return `feature_data()` returns a tibble with columns describing
+#'     each feature (gene) in `organism`.
 #'
 #' @examples
 #' feature_data()  # default: homo_sapiens
@@ -141,4 +100,19 @@ feature_data <-
         census <- census()
     census$get("census_data")$get(organism)$ms$get("RNA")$var$read()$concat() |>
         as.data.frame()
+}
+
+cell_data_obs <-
+    function(organism = c("homo_sapiens", "mus_musculus"), census = NULL)
+{
+    organism <- match.arg(organism)
+    if (is.null(census))
+        census <- census()
+    census$get("census_data")$get(organism)$get("obs")
+}
+
+cell_data <-
+    function(organism = c("homo_sapiens", "mus_musculus"), census = NULL)
+{
+    obs <- cell_data_obs(organism, census)
 }
