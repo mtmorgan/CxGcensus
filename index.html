@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,14 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/mtmorgan/CxGcensus">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -89,6 +96,7 @@
 <span><span class="co">#&gt; # ℹ 552 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: dataset_title &lt;chr&gt;, dataset_h5ad_path &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   dataset_total_cell_count &lt;int&gt;</span></span></code></pre></div>
+<p><code>dataset_id</code> and <code>collection_id</code> can be used in the <a href="https://bioconductor.org/packages/cellxgenedp" class="external-link">cellxgenedp</a> package for programmatic retrieval and visualization of individual datasets.</p>
 <p>Summarize information about cells in the census</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/census_info.html">summary_cell_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -123,12 +131,89 @@
 <span><span class="co">#&gt;  9           8 ENSG00000286448 AP006222.3               736</span></span>
 <span><span class="co">#&gt; 10           9 ENSG00000236601 RP4-669L17.2            1095</span></span>
 <span><span class="co">#&gt; # ℹ 60,654 more rows</span></span></code></pre></div>
+<p>Cell data annotations are available with <code><a href="reference/census_info.html">cell_data()</a></code>. The strategy adopted is to download all the data to a local <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a> database. Download can be time-consuming, but the results are ‘memoised’ so subsequent calls are more-or-less instantaneous.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/census_info.html">cell_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
+<span><span class="va">mus</span></span>
+<span><span class="co">#&gt; # Source:   table&lt;obs&gt; [?? x 21]</span></span>
+<span><span class="co">#&gt; # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file16df62088e681.duckdb]</span></span>
+<span><span class="co">#&gt;    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type</span></span>
+<span><span class="co">#&gt;          &lt;int&gt; &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;                  &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt;  1           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt;  2           1 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt;  3           2 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesothel…</span></span>
+<span><span class="co">#&gt;  4           3 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt;  5           4 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt;  6           5 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            intersti…</span></span>
+<span><span class="co">#&gt;  7           6 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt;  8           7 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt;  9           8 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            Sertoli …</span></span>
+<span><span class="co">#&gt; 10           9 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; # ℹ more rows</span></span>
+<span><span class="co">#&gt; # ℹ 16 more variables: cell_type_ontology_term_id &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   development_stage &lt;chr&gt;, development_stage_ontology_term_id &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   disease &lt;chr&gt;, disease_ontology_term_id &lt;chr&gt;, donor_id &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   is_primary_data &lt;lgl&gt;, self_reported_ethnicity &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   self_reported_ethnicity_ontology_term_id &lt;chr&gt;, sex &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   sex_ontology_term_id &lt;chr&gt;, suspension_type &lt;chr&gt;, tissue &lt;chr&gt;, …</span></span></code></pre></div>
+<p>The columns available for cross-dataset analysis are</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "soma_joinid"                             </span></span>
+<span><span class="co">#&gt;  [2] "dataset_id"                              </span></span>
+<span><span class="co">#&gt;  [3] "assay"                                   </span></span>
+<span><span class="co">#&gt;  [4] "assay_ontology_term_id"                  </span></span>
+<span><span class="co">#&gt;  [5] "cell_type"                               </span></span>
+<span><span class="co">#&gt;  [6] "cell_type_ontology_term_id"              </span></span>
+<span><span class="co">#&gt;  [7] "development_stage"                       </span></span>
+<span><span class="co">#&gt;  [8] "development_stage_ontology_term_id"      </span></span>
+<span><span class="co">#&gt;  [9] "disease"                                 </span></span>
+<span><span class="co">#&gt; [10] "disease_ontology_term_id"                </span></span>
+<span><span class="co">#&gt; [11] "donor_id"                                </span></span>
+<span><span class="co">#&gt; [12] "is_primary_data"                         </span></span>
+<span><span class="co">#&gt; [13] "self_reported_ethnicity"                 </span></span>
+<span><span class="co">#&gt; [14] "self_reported_ethnicity_ontology_term_id"</span></span>
+<span><span class="co">#&gt; [15] "sex"                                     </span></span>
+<span><span class="co">#&gt; [16] "sex_ontology_term_id"                    </span></span>
+<span><span class="co">#&gt; [17] "suspension_type"                         </span></span>
+<span><span class="co">#&gt; [18] "tissue"                                  </span></span>
+<span><span class="co">#&gt; [19] "tissue_ontology_term_id"                 </span></span>
+<span><span class="co">#&gt; [20] "tissue_general"                          </span></span>
+<span><span class="co">#&gt; [21] "tissue_general_ontology_term_id"</span></span></code></pre></div>
+<p>It is straight-forward to summarize or query the data, e.g., for the number of different types of assays represented, or for studies of diabetes.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Source:     SQL [9 x 2]</span></span>
+<span><span class="co">#&gt; # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file16df62088e681.duckdb]</span></span>
+<span><span class="co">#&gt; # Ordered by: desc(n)</span></span>
+<span><span class="co">#&gt;   assay                                n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 10x 3' v3                      1925688</span></span>
+<span><span class="co">#&gt; 2 10x 3' v2                      1622998</span></span>
+<span><span class="co">#&gt; 3 Smart-seq2                      221648</span></span>
+<span><span class="co">#&gt; 4 10x 5' v1                       161525</span></span>
+<span><span class="co">#&gt; 5 Drop-seq                         80990</span></span>
+<span><span class="co">#&gt; 6 Smart-seq                        48972</span></span>
+<span><span class="co">#&gt; 7 10x 3' v1                        21421</span></span>
+<span><span class="co">#&gt; 8 DroNc-seq                         2768</span></span>
+<span><span class="co">#&gt; 9 10x 3' transcription profiling      22</span></span>
+<span><span class="va">mus</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Source:   SQL [2 x 4]</span></span>
+<span><span class="co">#&gt; # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file16df62088e681.duckdb]</span></span>
+<span><span class="co">#&gt;   disease                  sex    tissue                  n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                    &lt;chr&gt;  &lt;chr&gt;               &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 type 1 diabetes mellitus female islet of Langerhans 39932</span></span>
+<span><span class="co">#&gt; 2 type 2 diabetes mellitus male   islet of Langerhans 99747</span></span></code></pre></div>
+<p>The <code>soma_joinid</code> in the tibbles returned by <code><a href="reference/census_info.html">feature_data()</a></code> and <code><a href="reference/census_info.html">cell_data()</a></code> are important in retrieving counts.</p>
 </div>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<p>This README was compiled with CxGcensus version 0.0.0.9001. Full session info is:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>This README was compiled with CxGcensus version 0.0.0.9003. Full session info is:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.0 Patched (2023-05-01 r84362)</span></span>
 <span><span class="co">#&gt; Platform: aarch64-apple-darwin21.6.0 (64-bit)</span></span>
@@ -148,39 +233,49 @@
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] CxGcensus_0.0.0.9001 RcppSpdlog_0.0.13    dplyr_1.1.2         </span></span>
+<span><span class="co">#&gt; [1] CxGcensus_0.0.0.9003 RcppSpdlog_0.0.13    dplyr_1.1.2         </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] utf8_1.2.3                  generics_0.1.3             </span></span>
 <span><span class="co">#&gt;  [3] spdl_0.0.5                  xml2_1.3.4                 </span></span>
 <span><span class="co">#&gt;  [5] tiledbsoma_0.0.0.9028       lattice_0.21-8             </span></span>
-<span><span class="co">#&gt;  [7] digest_0.6.31               magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt;  [9] tiledb_0.19.1.8             evaluate_0.21              </span></span>
+<span><span class="co">#&gt;  [7] tiledb_0.19.1.8             digest_0.6.31              </span></span>
+<span><span class="co">#&gt;  [9] magrittr_2.0.3              evaluate_0.21              </span></span>
 <span><span class="co">#&gt; [11] grid_4.3.0                  aws.s3_0.3.21              </span></span>
-<span><span class="co">#&gt; [13] aws.signature_0.6.0         fastmap_1.1.1              </span></span>
-<span><span class="co">#&gt; [15] jsonlite_1.8.5              Matrix_1.5-4.1             </span></span>
-<span><span class="co">#&gt; [17] urltools_1.7.3              httr_1.4.6                 </span></span>
-<span><span class="co">#&gt; [19] purrr_1.0.1                 fansi_1.0.4                </span></span>
-<span><span class="co">#&gt; [21] cellxgene.census_0.0.0.9000 cli_3.6.1                  </span></span>
-<span><span class="co">#&gt; [23] rlang_1.1.1                 triebeard_0.4.1            </span></span>
-<span><span class="co">#&gt; [25] bit64_4.0.5                 withr_2.5.0                </span></span>
-<span><span class="co">#&gt; [27] base64enc_0.1-3             cachem_1.0.8               </span></span>
-<span><span class="co">#&gt; [29] yaml_2.3.7                  tools_4.3.0                </span></span>
-<span><span class="co">#&gt; [31] nanotime_0.3.7              memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [33] curl_5.0.1                  assertthat_0.2.1           </span></span>
-<span><span class="co">#&gt; [35] vctrs_0.6.3                 R6_2.5.1                   </span></span>
-<span><span class="co">#&gt; [37] zoo_1.8-12                  lifecycle_1.0.3            </span></span>
-<span><span class="co">#&gt; [39] fs_1.6.2                    bit_4.0.5                  </span></span>
-<span><span class="co">#&gt; [41] arrow_12.0.1                pkgconfig_2.0.3            </span></span>
-<span><span class="co">#&gt; [43] pillar_1.9.0                glue_1.6.2                 </span></span>
-<span><span class="co">#&gt; [45] data.table_1.14.8           Rcpp_1.0.10                </span></span>
-<span><span class="co">#&gt; [47] xfun_0.39                   tibble_3.2.1               </span></span>
-<span><span class="co">#&gt; [49] tidyselect_1.2.0            knitr_1.43                 </span></span>
-<span><span class="co">#&gt; [51] htmltools_0.5.5             rmarkdown_2.22             </span></span>
-<span><span class="co">#&gt; [53] compiler_4.3.0              RcppCCTZ_0.2.12</span></span></code></pre></div>
+<span><span class="co">#&gt; [13] blob_1.2.4                  aws.signature_0.6.0        </span></span>
+<span><span class="co">#&gt; [15] fastmap_1.1.1               jsonlite_1.8.5             </span></span>
+<span><span class="co">#&gt; [17] Matrix_1.5-4.1              DBI_1.1.3                  </span></span>
+<span><span class="co">#&gt; [19] urltools_1.7.3              httr_1.4.6                 </span></span>
+<span><span class="co">#&gt; [21] purrr_1.0.1                 fansi_1.0.4                </span></span>
+<span><span class="co">#&gt; [23] cellxgene.census_0.0.0.9000 duckdb_0.8.1               </span></span>
+<span><span class="co">#&gt; [25] cli_3.6.1                   rlang_1.1.1                </span></span>
+<span><span class="co">#&gt; [27] dbplyr_2.3.2                triebeard_0.4.1            </span></span>
+<span><span class="co">#&gt; [29] bit64_4.0.5                 withr_2.5.0                </span></span>
+<span><span class="co">#&gt; [31] base64enc_0.1-3             cachem_1.0.8               </span></span>
+<span><span class="co">#&gt; [33] yaml_2.3.7                  tools_4.3.0                </span></span>
+<span><span class="co">#&gt; [35] nanotime_0.3.7              memoise_2.0.1              </span></span>
+<span><span class="co">#&gt; [37] curl_5.0.1                  assertthat_0.2.1           </span></span>
+<span><span class="co">#&gt; [39] vctrs_0.6.3                 R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [41] zoo_1.8-12                  lifecycle_1.0.3            </span></span>
+<span><span class="co">#&gt; [43] fs_1.6.2                    bit_4.0.5                  </span></span>
+<span><span class="co">#&gt; [45] arrow_12.0.1                pkgconfig_2.0.3            </span></span>
+<span><span class="co">#&gt; [47] pillar_1.9.0                glue_1.6.2                 </span></span>
+<span><span class="co">#&gt; [49] data.table_1.14.8           Rcpp_1.0.10                </span></span>
+<span><span class="co">#&gt; [51] xfun_0.39                   tibble_3.2.1               </span></span>
+<span><span class="co">#&gt; [53] tidyselect_1.2.0            knitr_1.43                 </span></span>
+<span><span class="co">#&gt; [55] htmltools_0.5.5             rmarkdown_2.22             </span></span>
+<span><span class="co">#&gt; [57] compiler_4.3.0              RcppCCTZ_0.2.12</span></span></code></pre></div>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/mtmorgan/CxGcensus/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mtmorgan/CxGcensus/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/Artistic-2.0" class="external-link">Artistic-2.0</a></li>
