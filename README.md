@@ -26,16 +26,6 @@ Load the package
 
 ``` r
 library(CxGcensus)
-#> Loading required package: dplyr
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> The stable Census release is currently 2023-05-15. Specify census_version = "2023-05-15" in future calls to open_soma() to ensure data consistency.
 ```
 
 Discover datasets available in the census

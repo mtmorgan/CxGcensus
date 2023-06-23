@@ -37,7 +37,7 @@ devtools::install_github("mtmorgan/CxGcensus")
 
 Load the package
 
-```{r example, messages = FALSE}
+```{r example, message = FALSE}
 library(CxGcensus)
 ```
 
