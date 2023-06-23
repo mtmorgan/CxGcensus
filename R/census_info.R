@@ -5,12 +5,13 @@
 #' @description `datasets()` queries CELLxGENE for datasets used in
 #'     constructing the census.
 #'
-#' @param census a `tiledbsoma::SOMACollection` object as returned by
-#'     `census()`. If `NULL`, then the default returned by `census()`.
+#' @param ... arguments passed to [census()], specifying the census
+#'     release to be used. When missing, the default (current stable)
+#'     census is used.
 #'
 #' @details
 #'
-#' `datasets()`, `summary_cell_counts()`, and `feature_data()` are
+#' `datasets()`, `summary_cell_counts()`, an `feature_data()` are
 #' 'memoised' so that they are only expensive on their first use. The
 #' 'tibble' returned by these functions is memoised to disk, so that
 #' re-using the function is fast even across sessions. See
@@ -25,10 +26,11 @@
 #'
 #' @export
 datasets <-
-    function(census = NULL)
+    function(...)
 {
-    if (is.null(census))
-        census <- census()
+    if (interactive())
+        message("retrieving datasets...")
+    census <- census(...)
     datasets <- census$get("census_info")$get("datasets")
     tbl <- datasets$read()$concat() |>
         as.data.frame()
@@ -68,10 +70,11 @@ datasets <-
 #'
 #' @export
 summary_cell_counts <-
-    function(census = NULL)
+    function(...)
 {
-    if (is.null(census))
-        census <- census()
+    if (interactive())
+        message("retrieving summary_cell_counts...")
+    census <- census(...)
     census$get("census_info")$get("summary_cell_counts")$read()$concat() |>
         as.data.frame()
 }
@@ -93,26 +96,106 @@ summary_cell_counts <-
 #'
 #' @export
 feature_data <-
-    function(organism = c("homo_sapiens", "mus_musculus"), census = NULL)
+    function(organism = c("homo_sapiens", "mus_musculus"), ...)
 {
+    if (interactive())
+        message("retrieving feature_data...")
     organism <- match.arg(organism)
-    if (is.null(census))
-        census <- census()
+    census <- census(...)
     census$get("census_data")$get(organism)$ms$get("RNA")$var$read()$concat() |>
         as.data.frame()
 }
 
-cell_data_obs <-
-    function(organism = c("homo_sapiens", "mus_musculus"), census = NULL)
+#' @importFrom duckdb duckdb
+#'
+#' @importMethodsFrom duckdb dbConnect dbDisconnect dbWriteTable
+cell_data_download <-
+    function(organism, ...)
 {
-    organism <- match.arg(organism)
-    if (is.null(census))
-        census <- census()
-    census$get("census_data")$get(organism)$get("obs")
+    census <- census(...)
+    census_id <- census_id(...)
+
+    if (interactive()) {
+        message(wrap(
+            "retrieving ", organism, " cell data as a duckdb database; ",
+            "there are 10's of millions of records and this will take ",
+            "several minutes..."
+        ))
+    }
+
+    ## set up duckdb
+    duckdb_dir <- dirname(cache_directory(census_id))
+    duckdb_file <- tempfile(tmpdir = duckdb_dir, fileext = ".duckdb")
+    con <- dbConnect(duckdb::duckdb(), duckdb_file)
+    on.exit(dbDisconnect(con))
+
+    ## establish reader
+    obs <- census$get("census_data")$get(organism)$get("obs")
+    iter <- obs$read(iterated = TRUE)
+
+    ## read in chunks
+    i <- n <- 0
+    while (!iter$read_complete()) {
+        tbl <- iter$read_next() |> as.data.frame()
+        dbWriteTable(con, "obs", tbl, append = TRUE)
+        i <- i + 1L
+        n <- n + nrow(tbl)
+        ## report progress
+        if (interactive()) {
+            if (i %% 10 == 1L) {
+                message(sprintf("[%3d] %9d ", i,  n), appendLF = FALSE)
+            } else {
+                message(".", appendLF = i %% 10 == 0L)
+            }
+        }
+    }
+    if (interactive())
+        message("", appendLF = i%% 10 != 0L)
+
+    duckdb_file
 }
 
+#' @rdname census_info
+#'
+#' @description `cell_data()` reports information about all cells in
+#'     the census.
+#'
+#' @details
+#'
+#' `cell_data()` is memoised to disk. The data is large (e.g., more
+#' than 50 million rows for *Homo sapiens*) so the initial download
+#' can be time-consuming (10's of minutes). During download in an
+#' interactive session, the number of 'chunks' and records are
+#' displayed; for the 2023-05-15 census of `homo_sapiens`, there were
+#' more than 52 million records (cells) downloaded in 124 chunks.
+#'
+#' The data are stored in a 'duckdb' database. The return value can be
+#' used via `dbplyr` for very fast and memory efficient filtering,
+#' selection, and summary.
+#'
+#' @return `cell_data()` returns a dbplyr-based tibble of cell
+#'     annotations. An aesthetic problem is that the 'connection' to
+#'     the database is not available to the user, and duckdb warns
+#'     that `Database is garbage-collected...`; this message can be
+#'     ignored.
+#'
+#' @examples \dontrun{
+#' mus <- cell_data("mus_musculus")
+#' mus |>
+#'     count(assay, sort = TRUE)
+#' mus |>
+#'     filter(grepl("diabetes", disease)) |>
+#'     count(disease, sex, tissue)
+#' }
+#'
+#' @importFrom dplyr tbl
+#' 
+#' @export
 cell_data <-
-    function(organism = c("homo_sapiens", "mus_musculus"), census = NULL)
+    function(organism = c("homo_sapiens", "mus_musculus"), ...)
 {
-    obs <- cell_data_obs(organism, census)
+    organism <- match.arg(organism)
+    duckdb_file <- cell_data_download(organism, ...)
+    con <- dbConnect(duckdb::duckdb(), duckdb_file)
+    tbl(con, "obs")
 }

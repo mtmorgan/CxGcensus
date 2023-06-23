@@ -17,6 +17,9 @@ census_id(...)
 \item{tiledbsoma_ctx}{see \code{?cellxgene.census::open_soma}}
 
 \item{...}{arguments passed to \code{census()}.}
+
+\item{census}{an object returned by \code{census()}; if present, this
+overrides specifications in \code{...}.}
 }
 \value{
 \code{census()} returns a \code{tiledbsoma::SOMACollection} object. Details
@@ -27,7 +30,10 @@ of the \code{census_version} are available with
 uniquely identifies the current release of the census.
 }
 \description{
-Obtain a reference to a CELLxGENE 'SOMA' collection
+\code{census()} queries CELLxGENE for a particulalr census.
+
+\code{census_id()} reports a unique identifier for a
+particular census version.
 }
 \details{
 \code{census()} is 'memoised', requiring high-latency internet access

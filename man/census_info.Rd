@@ -4,17 +4,21 @@
 \alias{datasets}
 \alias{summary_cell_counts}
 \alias{feature_data}
+\alias{cell_data}
 \title{Discover census datasets, cells, features, and observations}
 \usage{
-datasets(census = NULL)
+datasets(...)
 
-summary_cell_counts(census = NULL)
+summary_cell_counts(...)
 
-feature_data(organism = c("homo_sapiens", "mus_musculus"), census = NULL)
+feature_data(organism = c("homo_sapiens", "mus_musculus"), ...)
+
+cell_data(organism = c("homo_sapiens", "mus_musculus"), ...)
 }
 \arguments{
-\item{census}{a \code{tiledbsoma::SOMACollection} object as returned by
-\code{census()}. If \code{NULL}, then the default returned by \code{census()}.}
+\item{...}{arguments passed to \code{\link[=census]{census()}}, specifying the census
+release to be used. When missing, the default (current stable)
+census is used.}
 
 \item{organism}{one of 'homo_sapiens' or 'mus_musculus'. Default:
 'homo_sapiens'.}
@@ -30,6 +34,12 @@ cell counts in each facet and level.
 
 \code{feature_data()} returns a tibble with columns describing
 each feature (gene) in \code{organism}.
+
+\code{cell_data()} returns a dbplyr-based tibble of cell
+annotations. An aesthetic problem is that the 'connection' to
+the database is not available to the user, and duckdb warns
+that \verb{Database is garbage-collected...}; this message can be
+ignored.
 }
 \description{
 \code{datasets()} queries CELLxGENE for datasets used in
@@ -41,13 +51,27 @@ of cells associated with each facet and level.
 
 \code{feature_data()} reports information about features
 (genes) present in the census.
+
+\code{cell_data()} reports information about all cells in
+the census.
 }
 \details{
-\code{datasets()}, \code{summary_cell_counts()}, and \code{feature_data()} are
+\code{datasets()}, \code{summary_cell_counts()}, an \code{feature_data()} are
 'memoised' so that they are only expensive on their first use. The
 'tibble' returned by these functions is memoised to disk, so that
 re-using the function is fast even across sessions. See
 \code{?cache_info()} for details on cache management.
+
+\code{cell_data()} is memoised to disk. The data is large (e.g., more
+than 50 million rows for \emph{Homo sapiens}) so the initial download
+can be time-consuming (10's of minutes). During download in an
+interactive session, the number of 'chunks' and records are
+displayed; for the 2023-05-15 census of \code{homo_sapiens}, there were
+more than 52 million records (cells) downloaded in 124 chunks.
+
+The data are stored in a 'duckdb' database. The return value can be
+used via \code{dbplyr} for very fast and memory efficient filtering,
+selection, and summary.
 }
 \examples{
 datasets() |>
@@ -67,5 +91,14 @@ summary_cell_counts() |>
 
 feature_data()  # default: homo_sapiens
 feature_data("mus_musculus")
+
+\dontrun{
+mus <- cell_data("mus_musculus")
+mus |>
+    count(assay, sort = TRUE)
+mus |>
+    filter(grepl("diabetes", disease)) |>
+    count(disease, sex, tissue)
+}
 
 }

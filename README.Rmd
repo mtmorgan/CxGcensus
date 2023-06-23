@@ -47,6 +47,10 @@ Discover datasets available in the census
 datasets()
 ```
 
+`dataset_id` and `collection_id` can be used in the [cellxgenedp][]
+package for programmatic retrieval and visualization of individual
+datasets.
+
 Summarize information about cells in the census
 
 ```{r summary_cell_counts}
@@ -63,6 +67,40 @@ Learn about features (genes) in, e.g., `homo_sapiens` datasets in the census
 ```{r cars}
 feature_data("homo_sapiens")
 ```
+
+Cell data annotations are available with `cell_data()`. The strategy
+adopted is to download all the data to a local [duckdb][]
+database. Download can be time-consuming, but the results are
+'memoised' so subsequent calls are more-or-less instantaneous.
+
+```{r cell_data}
+mus <- cell_data("mus_musculus")
+mus
+```
+
+The columns available for cross-dataset analysis are
+
+```{r}
+mus |> colnames()
+```
+
+It is straight-forward to summarize or query the data, e.g., for the
+number of different types of assays represented, or for studies of
+diabetes.
+
+```{r}
+mus |>
+    count(assay, sort = TRUE)
+mus |>
+    filter(grepl("diabetes", disease)) |>
+    count(disease, sex, tissue)
+```
+
+The `soma_joinid` in the tibbles returned by `feature_data()` and
+`cell_data()` are important in retrieving counts.
+
+[cellxgenedp]: https://bioconductor.org/packages/cellxgenedp
+[duckdb]: https://cran.r-project.org/package=duckdb
 
 ## Session information
 

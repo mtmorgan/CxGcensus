@@ -47,6 +47,9 @@ census <-
 #'
 #' @param ... arguments passed to `census()`.
 #'
+#' @param census an object returned by `census()`; if present, this
+#'     overrides specifications in `...`.
+#'
 #' @return `census_id()` returns the 7-character git commit sha that
 #'     uniquely identifies the current release of the census.
 #'
@@ -57,6 +60,7 @@ census <-
 census_id <-
     function(...)
 {
-    sha <- census()$get_metadata()$git_commit_sha
+    census <- census(...)
+    sha <- census$get_metadata()$git_commit_sha
     as.vector(sha) # remove attr(sha, 'key')
 }

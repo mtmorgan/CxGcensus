@@ -1,4 +1,7 @@
 url: https://mtmorgan.github.io/CxGcensus/
+navbar:
+  right:
+   - icon: fa-github
+     href: https://github.com/mtmorgan/CxGcensus
 template:
   bootstrap: 5
-

@@ -23,10 +23,7 @@ location of the cache associated with the census with \code{id}.
 \code{cache_info()} returns a tibble with file name, size, and
 'mtime' (last-modified time). The mtime is used by
 \code{cache_disk()} to manage the size and age of objects in the
-cache. File names are a hash of the function arguments and body
-of which they are a cache; it is not possible to know
-transparently which file corresponds to which memoized
-function.
+cache.
 
 \code{cache()} returns an object created by
 \code{cachem::chach_disk()} that can be used to query and delete
@@ -36,8 +33,8 @@ items in the cache.
 \code{cache_directory()} reports the path to the on-disk
 cache for a particular census.
 
-\code{cache_info()} summarizes information about files in
-the cache.
+\code{cache_info()} summarizes file size and last
+modification time of files in the cache.
 
 \code{cache()} returns an object used to manage the cache.
 }
@@ -45,10 +42,17 @@ the cache.
 The on-disk cache is created and managed by the
 \code{cache_disk()} function in the cachem package. Consult that
 package for details about working with this object.
+
+File names in the cache are a hash of the function
+arguments and body of which they are a cache; it is not
+possible to know transparently which file corresponds to which
+memoized function.
 }
 \examples{
 cache_directory()
 
 cache_info()
+
+cache()
 
 }
