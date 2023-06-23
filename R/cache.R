@@ -46,7 +46,7 @@ cache_directory <-
 #' @examples
 #' cache_info()
 #'
-#' @importFrom dplyr as_tibble select
+#' @importFrom dplyr as_tibble select .data
 #'
 #' @export
 cache_info <-
@@ -57,7 +57,7 @@ cache_info <-
     info |>
         as_tibble(rownames = "file") |>
         mutate(file =  basename(file)) |>
-        select(file, size, mtime)
+        select(.data$file, .data$size, .data$mtime)
 }
 
 #' @rdname cache
