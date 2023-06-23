@@ -103,7 +103,7 @@ feature_data("homo_sapiens")
 
 ## Session information
 
-This README was compiled with CxGcensus version 0.0.0.9000. Full session
+This README was compiled with CxGcensus version 0.0.0.9001. Full session
 info is:
 
 ``` r
@@ -126,7 +126,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] CxGcensus_0.0.0.9000 RcppSpdlog_0.0.13    dplyr_1.1.2         
+#> [1] CxGcensus_0.0.0.9001 RcppSpdlog_0.0.13    dplyr_1.1.2         
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] utf8_1.2.3                  generics_0.1.3             
