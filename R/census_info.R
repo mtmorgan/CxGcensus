@@ -118,7 +118,7 @@ cell_data_download <-
     if (interactive()) {
         message(wrap(
             "retrieving ", organism, " cell data as a duckdb database; ",
-            "there are 10's of millions of records and this will take ",
+            "there are 10's of millions of records and this can take ",
             "several minutes..."
         ))
     }
@@ -132,25 +132,15 @@ cell_data_download <-
     ## establish reader
     obs <- census$get("census_data")$get(organism)$get("obs")
     iter <- obs$read(iterated = TRUE)
+    iter_progress <- progress_iterator()
 
-    ## read in chunks
-    i <- n <- 0
+    ## read in chunks and provide feedback
     while (!iter$read_complete()) {
         tbl <- iter$read_next() |> as.data.frame()
         dbWriteTable(con, "obs", tbl, append = TRUE)
-        i <- i + 1L
-        n <- n + nrow(tbl)
-        ## report progress
-        if (interactive()) {
-            if (i %% 10 == 1L) {
-                message(sprintf("[%3d] %9d ", i,  n), appendLF = FALSE)
-            } else {
-                message(".", appendLF = i %% 10 == 0L)
-            }
-        }
+        iter_progress$increment(nrow(tbl))
     }
-    if (interactive())
-        message("", appendLF = i%% 10 != 0L)
+    iter_progress$done()
 
     duckdb_file
 }
@@ -196,6 +186,6 @@ cell_data <-
 {
     organism <- match.arg(organism)
     duckdb_file <- cell_data_download(organism, ...)
-    con <- dbConnect(duckdb::duckdb(), duckdb_file)
+    con <- dbConnect(duckdb::duckdb(), duckdb_file, read_only = TRUE)
     tbl(con, "obs")
 }
