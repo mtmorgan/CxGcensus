@@ -109,7 +109,7 @@ feature_data <-
 #' @importFrom duckdb duckdb
 #'
 #' @importMethodsFrom duckdb dbConnect dbDisconnect dbWriteTable
-cell_data_download <-
+observation_data_download <-
     function(organism, ...)
 {
     census <- census(...)
@@ -147,15 +147,15 @@ cell_data_download <-
 
 #' @rdname census_info
 #'
-#' @description `cell_data()` reports information about all cells in
-#'     the census.
+#' @description `observation_data()` reports information about all
+#'     cells in the census.
 #'
 #' @details
 #'
-#' `cell_data()` is memoised to disk. The data is large (e.g., more
-#' than 50 million rows for *Homo sapiens*) so the initial download
-#' can be time-consuming (10's of minutes). During download in an
-#' interactive session, the number of 'chunks' and records are
+#' `observation_data()` is memoised to disk. The data is large (e.g.,
+#' more than 50 million rows for *Homo sapiens*) so the initial
+#' download can be time-consuming (10's of minutes). During download
+#' in an interactive session, the number of 'chunks' and records are
 #' displayed; for the 2023-05-15 census of `homo_sapiens`, there were
 #' more than 52 million records (cells) downloaded in 124 chunks.
 #'
@@ -163,14 +163,14 @@ cell_data_download <-
 #' used via `dbplyr` for very fast and memory efficient filtering,
 #' selection, and summary.
 #'
-#' @return `cell_data()` returns a dbplyr-based tibble of cell
+#' @return `observation_data()` returns a dbplyr-based tibble of cell
 #'     annotations. An aesthetic problem is that the 'connection' to
 #'     the database is not available to the user, and duckdb warns
 #'     that `Database is garbage-collected...`; this message can be
 #'     ignored.
 #'
 #' @examples \dontrun{
-#' mus <- cell_data("mus_musculus")
+#' mus <- observation_data("mus_musculus")
 #' mus |>
 #'     count(assay, sort = TRUE)
 #' mus |>
@@ -181,11 +181,11 @@ cell_data_download <-
 #' @importFrom dplyr tbl
 #' 
 #' @export
-cell_data <-
+observation_data <-
     function(organism = c("homo_sapiens", "mus_musculus"), ...)
 {
     organism <- match.arg(organism)
-    duckdb_file <- cell_data_download(organism, ...)
+    duckdb_file <- observation_data_download(organism, ...)
     con <- dbConnect(duckdb::duckdb(), duckdb_file, read_only = TRUE)
     tbl(con, "obs")
 }

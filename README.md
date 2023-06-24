@@ -95,17 +95,17 @@ feature_data("homo_sapiens")
 #> # ℹ 60,654 more rows
 ```
 
-Cell data annotations are available with `cell_data()`. The strategy
-adopted is to download all the data to a local
-[duckdb](https://cran.r-project.org/package=duckdb) database. Download
-can be time-consuming, but the results are ‘memoised’ so subsequent
-calls are more-or-less instantaneous.
+Observation (cell) data annotations are available with
+`observation_data()`. The strategy adopted is to download all the data
+to a local [duckdb](https://cran.r-project.org/package=duckdb) database.
+Download can be time-consuming, but the results are ‘memoised’ so
+subsequent calls are more-or-less instantaneous.
 
 ``` r
-mus <- cell_data("mus_musculus")
+mus <- observation_data("mus_musculus")
 mus
 #> # Source:   table<obs> [?? x 21]
-#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file16df62088e681.duckdb]
+#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file182554f9dadaa.duckdb]
 #>    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type
 #>          <int> <chr>                      <chr> <chr>                  <chr>    
 #>  1           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…
@@ -162,7 +162,7 @@ diabetes.
 mus |>
     count(assay, sort = TRUE)
 #> # Source:     SQL [9 x 2]
-#> # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file16df62088e681.duckdb]
+#> # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file182554f9dadaa.duckdb]
 #> # Ordered by: desc(n)
 #>   assay                                n
 #>   <chr>                            <dbl>
@@ -179,7 +179,7 @@ mus |>
     filter(grepl("diabetes", disease)) |>
     count(disease, sex, tissue)
 #> # Source:   SQL [2 x 4]
-#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file16df62088e681.duckdb]
+#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file182554f9dadaa.duckdb]
 #>   disease                  sex    tissue                  n
 #>   <chr>                    <chr>  <chr>               <dbl>
 #> 1 type 1 diabetes mellitus female islet of Langerhans 39932
@@ -187,11 +187,11 @@ mus |>
 ```
 
 The `soma_joinid` in the tibbles returned by `feature_data()` and
-`cell_data()` are important in retrieving counts.
+`observation_data()` are important in retrieving counts.
 
 ## Session information
 
-This README was compiled with CxGcensus version 0.0.0.9003. Full session
+This README was compiled with CxGcensus version 0.0.0.9006. Full session
 info is:
 
 ``` r
@@ -214,7 +214,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] CxGcensus_0.0.0.9003 RcppSpdlog_0.0.13    dplyr_1.1.2         
+#> [1] CxGcensus_0.0.0.9006 RcppSpdlog_0.0.13    dplyr_1.1.2         
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] utf8_1.2.3                  generics_0.1.3             

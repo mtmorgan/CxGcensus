@@ -68,13 +68,14 @@ Learn about features (genes) in, e.g., `homo_sapiens` datasets in the census
 feature_data("homo_sapiens")
 ```
 
-Cell data annotations are available with `cell_data()`. The strategy
-adopted is to download all the data to a local [duckdb][]
-database. Download can be time-consuming, but the results are
-'memoised' so subsequent calls are more-or-less instantaneous.
+Observation (cell) data annotations are available with
+`observation_data()`. The strategy adopted is to download all the data
+to a local [duckdb][] database. Download can be time-consuming, but
+the results are 'memoised' so subsequent calls are more-or-less
+instantaneous.
 
-```{r cell_data}
-mus <- cell_data("mus_musculus")
+```{r observation_data}
+mus <- observation_data("mus_musculus")
 mus
 ```
 
@@ -97,7 +98,7 @@ mus |>
 ```
 
 The `soma_joinid` in the tibbles returned by `feature_data()` and
-`cell_data()` are important in retrieving counts.
+`observation_data()` are important in retrieving counts.
 
 [cellxgenedp]: https://bioconductor.org/packages/cellxgenedp
 [duckdb]: https://cran.r-project.org/package=duckdb
