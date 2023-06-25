@@ -105,11 +105,39 @@ mus |>
     count(disease, sex, tissue)
 ```
 
+Use [ggplot2][] to visualize tissue type and assay.
+
+```{r mus-tissue-assay, message = FALSE}
+library(ggplot2)
+
+## 10 most-common tissues; total cell count
+common_tissues <-
+    mus |>
+    count(tissue, sort = TRUE) |>
+    head(10) |>
+    collect() |>
+    pull(tissue)
+## assays on each tissue
+tissue_and_assay <-
+    mus |>
+    filter(tissue %in% common_tissues) |>
+    count(tissue, assay, sort = TRUE) |>
+    collect()
+## visualize
+ggplot(tissue_and_assay) +
+    aes(x = factor(tissue, levels = common_tissues), y = n, fill = assay) +
+    geom_bar(position="stack", stat="identity") +
+    labs(x = "Tissue", y = "Total cell count") +
+    coord_flip() +
+    theme(legend.position = c(.8, .7))
+```
+
 The `soma_joinid` in the tibbles returned by `feature_data()` and
 `observation_data()` are important in retrieving counts.
 
 [cellxgenedp]: https://bioconductor.org/packages/cellxgenedp
 [duckdb]: https://cran.r-project.org/package=duckdb
+[ggplot2]: https://cran.r-project.org/package=ggplot2
 
 ## Session information
 

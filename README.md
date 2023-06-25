@@ -113,7 +113,7 @@ subsequent calls are more-or-less instantaneous.
 mus <- observation_data("mus_musculus")
 mus
 #> # Source:   table<obs> [?? x 21]
-#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
+#> # Database: DuckDB 0.8.1 [ma38727@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #>    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type
 #>          <int> <chr>                      <chr> <chr>                  <chr>    
 #>  1           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…
@@ -171,7 +171,7 @@ diabetes.
 mus |>
     count(assay, sort = TRUE)
 #> # Source:     SQL [9 x 2]
-#> # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
+#> # Database:   DuckDB 0.8.1 [ma38727@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #> # Ordered by: desc(n)
 #>   assay                                n
 #>   <chr>                            <dbl>
@@ -188,19 +188,49 @@ mus |>
     filter(grepl("diabetes", disease)) |>
     count(disease, sex, tissue)
 #> # Source:   SQL [2 x 4]
-#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
+#> # Database: DuckDB 0.8.1 [ma38727@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #>   disease                  sex    tissue                  n
 #>   <chr>                    <chr>  <chr>               <dbl>
-#> 1 type 2 diabetes mellitus male   islet of Langerhans 99747
-#> 2 type 1 diabetes mellitus female islet of Langerhans 39932
+#> 1 type 1 diabetes mellitus female islet of Langerhans 39932
+#> 2 type 2 diabetes mellitus male   islet of Langerhans 99747
 ```
+
+Use [ggplot2](https://cran.r-project.org/package=ggplot2) to visualize
+tissue type and assay.
+
+``` r
+library(ggplot2)
+
+## 10 most-common tissues; total cell count
+common_tissues <-
+    mus |>
+    count(tissue, sort = TRUE) |>
+    head(10) |>
+    collect() |>
+    pull(tissue)
+## assays on each tissue
+tissue_and_assay <-
+    mus |>
+    filter(tissue %in% common_tissues) |>
+    count(tissue, assay, sort = TRUE) |>
+    collect()
+## visualize
+ggplot(tissue_and_assay) +
+    aes(x = factor(tissue, levels = common_tissues), y = n, fill = assay) +
+    geom_bar(position="stack", stat="identity") +
+    labs(x = "Tissue", y = "Total cell count") +
+    coord_flip() +
+    theme(legend.position = c(.8, .7))
+```
+
+<img src="man/figures/README-mus-tissue-assay-1.png" width="100%" />
 
 The `soma_joinid` in the tibbles returned by `feature_data()` and
 `observation_data()` are important in retrieving counts.
 
 ## Session information
 
-This README was compiled with CxGcensus version 0.0.0.9007. Full session
+This README was compiled with CxGcensus version 0.0.0.9008. Full session
 info is:
 
 ``` r
@@ -223,36 +253,41 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] CxGcensus_0.0.0.9007 RcppSpdlog_0.0.13    dplyr_1.1.2         
+#> [1] ggplot2_3.4.2        CxGcensus_0.0.0.9008 RcppSpdlog_0.0.13   
+#> [4] dplyr_1.1.2         
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] utf8_1.2.3                  generics_0.1.3             
-#>  [3] spdl_0.0.5                  xml2_1.3.4                 
-#>  [5] tiledbsoma_0.0.0.9028       lattice_0.21-8             
-#>  [7] tiledb_0.19.1.8             digest_0.6.31              
-#>  [9] magrittr_2.0.3              evaluate_0.21              
-#> [11] grid_4.3.0                  aws.s3_0.3.21              
-#> [13] blob_1.2.4                  aws.signature_0.6.0        
-#> [15] fastmap_1.1.1               jsonlite_1.8.5             
-#> [17] Matrix_1.5-4.1              DBI_1.1.3                  
-#> [19] urltools_1.7.3              httr_1.4.6                 
-#> [21] purrr_1.0.1                 fansi_1.0.4                
-#> [23] cellxgene.census_0.0.0.9000 duckdb_0.8.1               
-#> [25] cli_3.6.1                   rlang_1.1.1                
-#> [27] dbplyr_2.3.2                triebeard_0.4.1            
-#> [29] bit64_4.0.5                 withr_2.5.0                
-#> [31] base64enc_0.1-3             cachem_1.0.8               
-#> [33] yaml_2.3.7                  tools_4.3.0                
-#> [35] nanotime_0.3.7              memoise_2.0.1              
-#> [37] curl_5.0.1                  assertthat_0.2.1           
-#> [39] vctrs_0.6.3                 R6_2.5.1                   
-#> [41] zoo_1.8-12                  lifecycle_1.0.3            
-#> [43] fs_1.6.2                    bit_4.0.5                  
-#> [45] arrow_12.0.1                pkgconfig_2.0.3            
-#> [47] pillar_1.9.0                glue_1.6.2                 
-#> [49] data.table_1.14.8           Rcpp_1.0.10                
-#> [51] xfun_0.39                   tibble_3.2.1               
-#> [53] tidyselect_1.2.0            knitr_1.43                 
-#> [55] htmltools_0.5.5             rmarkdown_2.22             
-#> [57] compiler_4.3.0              RcppCCTZ_0.2.12
+#>  [1] gtable_0.3.3                xfun_0.39                  
+#>  [3] lattice_0.21-8              vctrs_0.6.3                
+#>  [5] tools_4.3.0                 generics_0.1.3             
+#>  [7] curl_5.0.1                  tibble_3.2.1               
+#>  [9] fansi_1.0.4                 highr_0.10                 
+#> [11] blob_1.2.4                  pkgconfig_2.0.3            
+#> [13] Matrix_1.5-4.1              data.table_1.14.8          
+#> [15] dbplyr_2.3.2                assertthat_0.2.1           
+#> [17] lifecycle_1.0.3             compiler_4.3.0             
+#> [19] farver_2.1.1                munsell_0.5.0              
+#> [21] tiledbsoma_0.0.0.9028       htmltools_0.5.5            
+#> [23] yaml_2.3.7                  pillar_1.9.0               
+#> [25] aws.s3_0.3.21               cachem_1.0.8               
+#> [27] RcppCCTZ_0.2.12             tiledb_0.19.1.8            
+#> [29] tidyselect_1.2.0            digest_0.6.31              
+#> [31] duckdb_0.8.1                purrr_1.0.1                
+#> [33] labeling_0.4.2              arrow_12.0.1               
+#> [35] fastmap_1.1.1               grid_4.3.0                 
+#> [37] colorspace_2.1-0            cli_3.6.1                  
+#> [39] magrittr_2.0.3              base64enc_0.1-3            
+#> [41] cellxgene.census_0.0.0.9000 triebeard_0.4.1            
+#> [43] spdl_0.0.5                  utf8_1.2.3                 
+#> [45] aws.signature_0.6.0         withr_2.5.0                
+#> [47] scales_1.2.1                bit64_4.0.5                
+#> [49] nanotime_0.3.7              rmarkdown_2.22             
+#> [51] httr_1.4.6                  bit_4.0.5                  
+#> [53] zoo_1.8-12                  memoise_2.0.1              
+#> [55] evaluate_0.21               knitr_1.43                 
+#> [57] rlang_1.1.1                 urltools_1.7.3             
+#> [59] Rcpp_1.0.10                 glue_1.6.2                 
+#> [61] DBI_1.1.3                   xml2_1.3.4                 
+#> [63] jsonlite_1.8.5              R6_2.5.1                   
+#> [65] fs_1.6.2
 ```
