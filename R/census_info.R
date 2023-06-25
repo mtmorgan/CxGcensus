@@ -125,7 +125,9 @@ observation_data_download <-
 
     ## set up duckdb
     duckdb_dir <- dirname(cache_directory(census_id))
-    duckdb_file <- tempfile(tmpdir = duckdb_dir, fileext = ".duckdb")
+    duckdb_file <- tempfile(
+        pattern = "", tmpdir = duckdb_dir, fileext = ".duckdb"
+    )
     con <- dbConnect(duckdb::duckdb(), duckdb_file)
     on.exit(dbDisconnect(con))
 

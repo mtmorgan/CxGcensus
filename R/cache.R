@@ -46,18 +46,73 @@ cache_directory <-
 #' @examples
 #' cache_info()
 #'
-#' @importFrom dplyr as_tibble select .data
+#' @importFrom dplyr as_tibble select arrange desc right_join bind_rows .data
 #'
 #' @export
 cache_info <-
     function(id = census_id())
 {
-    files <- dir(cache_directory(id), full.names = TRUE)
-    info <- file.info(files)
-    info |>
+    cache <- cache(id)
+    cache_directory <- cache_directory(id)
+
+    ## cachem-managed files
+    files <- dir(cache_directory, full.names = TRUE)
+    info <-
+        file.info(files) |>
         as_tibble(rownames = "file") |>
-        mutate(file =  basename(file)) |>
+        mutate(file = basename(file), key = sub("\\..*$", "", file))
+    key <- tibble(key = cache$keys())
+    cache_info <-
+        right_join(info, key, by = "key")
+
+    ## duckdb files
+    duckdb_files <- dir(
+        dirname(cache_directory), pattern = "\\.duckdb$", full.names = TRUE
+    )
+    duckdb_info <-
+        file.info(duckdb_files) |>
+        as_tibble(rownames = "file") |>
+        mutate(file = basename(file))
+
+    ## combine cachem- and duckdb files
+    bind_rows(cache_info, duckdb_info) |>
+        arrange(desc(.data$mtime)) |>
         select(.data$file, .data$size, .data$mtime)
+}
+
+## for internal use, at the moment
+cache_remove_duplicate_duckdb <-
+    function(id = census_id())
+{
+    ## find duckdb files
+    cache_directory <- cache_directory(id)
+    duckdb_files <- dir(
+        dirname(cache_directory), pattern = "\\.duckdb$", full.names = TRUE
+    )
+
+    ## duplicates have the same size; remove these
+    duplicates <-
+        file.info(duckdb_files) |>
+        as_tibble(rownames = "file") |>
+        arrange(desc(.data$mtime)) |>
+        filter(duplicated(.data$size)) |>
+        pull(file)
+    unlink(duplicates, force = TRUE)
+
+    ## find keys in cache
+    duckdb_keys <-
+        cache_info(id) |>
+        ## file paths -- plain character vectors
+        filter(.data$size < 500) |>
+        mutate(key = sub("\\..*", "", file)) |>
+        pull(key)
+    cache <- cache(id)
+
+    ## remove no-longer-valid keys
+    for (key in duckdb_keys) {
+        if (cache$exists(key) && !file.exists(cache$get(key)$value))
+            cache$remove(key)
+    }
 }
 
 #' @rdname cache
