@@ -26,7 +26,7 @@ cells in the census."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     
     <a class="navbar-brand me-2" href="../index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,9 +76,9 @@ cells in the census.</p>
 <span></span>
 <span><span class="fu">summary_cell_counts</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">feature_data</span><span class="op">(</span>organism <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span>, <span class="st">"mus_musculus"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">feature_data</span><span class="op">(</span><span class="va">organism</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">observation_data</span><span class="op">(</span>organism <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span>, <span class="st">"mus_musculus"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">observation_data</span><span class="op">(</span><span class="va">organism</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,8 +90,9 @@ census is used.</p></dd>
 
 
 <dt>organism</dt>
-<dd><p>one of 'homo_sapiens' or 'mus_musculus'. Default:
-'homo_sapiens'.</p></dd>
+<dd><p>one of the values returned by <code><a href="census.html">census_names()</a></code>,
+specifically 'homo_sapiens' or 'mus_musculus' at the time of
+writing this documentation.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -184,21 +185,6 @@ selection, and summary.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Mus musculus male              1<span style="text-decoration: underline;">655</span>113          2<span style="text-decoration: underline;">462</span>185</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Mus musculus unknown            <span style="text-decoration: underline;">192</span>620           <span style="text-decoration: underline;">192</span>620</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">feature_data</span><span class="op">(</span><span class="op">)</span>  <span class="co"># default: homo_sapiens</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 60,664 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    soma_joinid feature_id      feature_name  feature_length</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>           0 ENSG00000243485 MIR1302-2HG             <span style="text-decoration: underline;">1</span>021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>           1 ENSG00000237613 FAM138A                 <span style="text-decoration: underline;">1</span>219</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>           2 ENSG00000186092 OR4F5                   <span style="text-decoration: underline;">2</span>618</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>           3 ENSG00000238009 RP11-34P13.7            <span style="text-decoration: underline;">3</span>726</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>           4 ENSG00000239945 RP11-34P13.8            <span style="text-decoration: underline;">1</span>319</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>           5 ENSG00000239906 RP11-34P13.14            323</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>           6 ENSG00000241860 RP11-34P13.13           <span style="text-decoration: underline;">7</span>559</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>           7 ENSG00000241599 RP11-34P13.9             457</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>           8 ENSG00000286448 AP006222.3               736</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>           9 ENSG00000236601 RP4-669L17.2            <span style="text-decoration: underline;">1</span>095</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 60,654 more rows</span></span>
 <span class="r-in"><span><span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 52,392 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    soma_joinid feature_id         feature_name  feature_length</span>
