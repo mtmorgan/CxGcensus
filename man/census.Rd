@@ -3,11 +3,14 @@
 \name{census}
 \alias{census}
 \alias{census_id}
+\alias{census_names}
 \title{Obtain a reference to a CELLxGENE 'SOMA' collection}
 \usage{
 census(census_version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
 census_id(...)
+
+census_names(...)
 }
 \arguments{
 \item{census_version}{see \code{?cellxgene.census::open_soma}}
@@ -28,12 +31,20 @@ of the \code{census_version} are available with
 
 \code{census_id()} returns the 7-character git commit sha that
 uniquely identifies the current release of the census.
+
+\code{census_names()} returns a character vector of possible
+values. Use these values in calls to, e.g., \code{feature_data()} or
+\code{observation_data()}.
 }
 \description{
 \code{census()} queries CELLxGENE for a particulalr census.
 
 \code{census_id()} reports a unique identifier for a
 particular census version.
+
+\code{census_names()} queries the census for available
+'experiments'. In CELLxGENE, experiments correspond to
+organisms, e.g., \code{"homo_sapiens"} or \code{"mus_musculus"}.
 }
 \details{
 \code{census()} is 'memoised', requiring high-latency internet access
@@ -44,5 +55,7 @@ census()
 census()$get_metadata()
 
 census_id()
+
+census_names()
 
 }

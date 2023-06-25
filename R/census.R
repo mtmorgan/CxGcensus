@@ -64,3 +64,24 @@ census_id <-
     sha <- census$get_metadata()$git_commit_sha
     as.vector(sha) # remove attr(sha, 'key')
 }
+
+#' @rdname census
+#'
+#' @description `census_names()` queries the census for available
+#'     'experiments'. In CELLxGENE, experiments correspond to
+#'     organisms, e.g., `"homo_sapiens"` or `"mus_musculus"`.
+#'
+#' @return `census_names()` returns a character vector of possible
+#'     values. Use these values in calls to, e.g., `feature_data()` or
+#'     `observation_data()`.
+#'
+#' @examples
+#' census_names()
+#'
+#' @export
+census_names <-
+    function(...)
+{
+    census <- census(...)
+    census$get("census_data")$names()
+}

@@ -11,17 +11,18 @@ datasets(...)
 
 summary_cell_counts(...)
 
-feature_data(organism = c("homo_sapiens", "mus_musculus"), ...)
+feature_data(organism, ...)
 
-observation_data(organism = c("homo_sapiens", "mus_musculus"), ...)
+observation_data(organism, ...)
 }
 \arguments{
 \item{...}{arguments passed to \code{\link[=census]{census()}}, specifying the census
 release to be used. When missing, the default (current stable)
 census is used.}
 
-\item{organism}{one of 'homo_sapiens' or 'mus_musculus'. Default:
-'homo_sapiens'.}
+\item{organism}{one of the values returned by \code{census_names()},
+specifically 'homo_sapiens' or 'mus_musculus' at the time of
+writing this documentation.}
 }
 \value{
 \code{datasets()} returns a tibble with information about the
@@ -89,7 +90,6 @@ summary_cell_counts() |>
         unique_cell_count, total_cell_count
     )
 
-feature_data()  # default: homo_sapiens
 feature_data("mus_musculus")
 
 \dontrun{

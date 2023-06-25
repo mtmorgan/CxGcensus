@@ -41,7 +41,7 @@ Load the package
 library(CxGcensus)
 ```
 
-Discover datasets available in the census
+Discover datasets used to construct the census
 
 ```{r datasets}
 datasets()
@@ -50,6 +50,13 @@ datasets()
 `dataset_id` and `collection_id` can be used in the [cellxgenedp][]
 package for programmatic retrieval and visualization of individual
 datasets.
+
+The organisms present in the census (use these in calls to
+`feature_data()` or `observation_data()`) are available with
+
+```{r}
+census_names()
+```
 
 Summarize information about cells in the census
 
@@ -65,7 +72,7 @@ summary_cell_counts() |>
 Learn about features (genes) in, e.g., `homo_sapiens` datasets in the census
 
 ```{r cars}
-feature_data("homo_sapiens")
+feature_data("mus_musculus")
 ```
 
 Observation (cell) data annotations are available with
@@ -82,7 +89,8 @@ mus
 The columns available for cross-dataset analysis are
 
 ```{r}
-mus |> colnames()
+mus |>
+    colnames()
 ```
 
 It is straight-forward to summarize or query the data, e.g., for the

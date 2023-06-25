@@ -84,23 +84,23 @@ summary_cell_counts <-
 #' @description `feature_data()` reports information about features
 #'     (genes) present in the census.
 #'
-#' @param organism one of 'homo_sapiens' or 'mus_musculus'. Default:
-#'     'homo_sapiens'.
+#' @param organism one of the values returned by `census_names()`,
+#'     specifically 'homo_sapiens' or 'mus_musculus' at the time of
+#'     writing this documentation.
 #'
 #' @return `feature_data()` returns a tibble with columns describing
 #'     each feature (gene) in `organism`.
 #'
 #' @examples
-#' feature_data()  # default: homo_sapiens
 #' feature_data("mus_musculus")
 #'
 #' @export
 feature_data <-
-    function(organism = c("homo_sapiens", "mus_musculus"), ...)
+    function(organism, ...)
 {
+    stopifnot(organism %in% census_names(...))
     if (interactive())
         message("retrieving feature_data...")
-    organism <- match.arg(organism)
     census <- census(...)
     census$get("census_data")$get(organism)$ms$get("RNA")$var$read()$concat() |>
         as.data.frame()
@@ -184,9 +184,9 @@ observation_data_download <-
 #' 
 #' @export
 observation_data <-
-    function(organism = c("homo_sapiens", "mus_musculus"), ...)
+    function(organism, ...)
 {
-    organism <- match.arg(organism)
+    stopifnot(organism %in% census_names(...))
     duckdb_file <- observation_data_download(organism, ...)
     con <- dbConnect(duckdb::duckdb(), duckdb_file, read_only = TRUE)
     tbl(con, "obs")

@@ -4,6 +4,7 @@
 {
     ## per-session memoisation
     census <<- memoise(census)
+    census_names <<- memoise(census_names)
 
     ## disk-based memoisation
     suppressMessages({

@@ -28,7 +28,7 @@ Load the package
 library(CxGcensus)
 ```
 
-Discover datasets available in the census
+Discover datasets used to construct the census
 
 ``` r
 datasets()
@@ -54,6 +54,14 @@ datasets()
 [cellxgenedp](https://bioconductor.org/packages/cellxgenedp) package for
 programmatic retrieval and visualization of individual datasets.
 
+The organisms present in the census (use these in calls to
+`feature_data()` or `observation_data()`) are available with
+
+``` r
+census_names()
+#> [1] "homo_sapiens" "mus_musculus"
+```
+
 Summarize information about cells in the census
 
 ``` r
@@ -78,21 +86,21 @@ Learn about features (genes) in, e.g., `homo_sapiens` datasets in the
 census
 
 ``` r
-feature_data("homo_sapiens")
-#> # A tibble: 60,664 × 4
-#>    soma_joinid feature_id      feature_name  feature_length
-#>          <int> <chr>           <chr>                  <int>
-#>  1           0 ENSG00000243485 MIR1302-2HG             1021
-#>  2           1 ENSG00000237613 FAM138A                 1219
-#>  3           2 ENSG00000186092 OR4F5                   2618
-#>  4           3 ENSG00000238009 RP11-34P13.7            3726
-#>  5           4 ENSG00000239945 RP11-34P13.8            1319
-#>  6           5 ENSG00000239906 RP11-34P13.14            323
-#>  7           6 ENSG00000241860 RP11-34P13.13           7559
-#>  8           7 ENSG00000241599 RP11-34P13.9             457
-#>  9           8 ENSG00000286448 AP006222.3               736
-#> 10           9 ENSG00000236601 RP4-669L17.2            1095
-#> # ℹ 60,654 more rows
+feature_data("mus_musculus")
+#> # A tibble: 52,392 × 4
+#>    soma_joinid feature_id         feature_name  feature_length
+#>          <int> <chr>              <chr>                  <int>
+#>  1           0 ENSMUSG00000109644 0610005C13Rik           3583
+#>  2           1 ENSMUSG00000108652 0610006L08Rik           2128
+#>  3           2 ENSMUSG00000007777 0610009B22Rik            998
+#>  4           3 ENSMUSG00000086714 0610009E02Rik           1803
+#>  5           4 ENSMUSG00000043644 0610009L18Rik            619
+#>  6           5 ENSMUSG00000042208 0610010F05Rik           5226
+#>  7           6 ENSMUSG00000020831 0610010K14Rik           1896
+#>  8           7 ENSMUSG00000089755 0610012D04Rik            531
+#>  9           8 ENSMUSG00000107002 0610012G03Rik           1445
+#> 10           9 ENSMUSG00000046683 0610025J13Rik           1121
+#> # ℹ 52,382 more rows
 ```
 
 Observation (cell) data annotations are available with
@@ -105,7 +113,7 @@ subsequent calls are more-or-less instantaneous.
 mus <- observation_data("mus_musculus")
 mus
 #> # Source:   table<obs> [?? x 21]
-#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file182554f9dadaa.duckdb]
+#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #>    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type
 #>          <int> <chr>                      <chr> <chr>                  <chr>    
 #>  1           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…
@@ -130,7 +138,8 @@ mus
 The columns available for cross-dataset analysis are
 
 ``` r
-mus |> colnames()
+mus |>
+    colnames()
 #>  [1] "soma_joinid"                             
 #>  [2] "dataset_id"                              
 #>  [3] "assay"                                   
@@ -162,7 +171,7 @@ diabetes.
 mus |>
     count(assay, sort = TRUE)
 #> # Source:     SQL [9 x 2]
-#> # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file182554f9dadaa.duckdb]
+#> # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #> # Ordered by: desc(n)
 #>   assay                                n
 #>   <chr>                            <dbl>
@@ -179,11 +188,11 @@ mus |>
     filter(grepl("diabetes", disease)) |>
     count(disease, sex, tissue)
 #> # Source:   SQL [2 x 4]
-#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/file182554f9dadaa.duckdb]
+#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #>   disease                  sex    tissue                  n
 #>   <chr>                    <chr>  <chr>               <dbl>
-#> 1 type 1 diabetes mellitus female islet of Langerhans 39932
-#> 2 type 2 diabetes mellitus male   islet of Langerhans 99747
+#> 1 type 2 diabetes mellitus male   islet of Langerhans 99747
+#> 2 type 1 diabetes mellitus female islet of Langerhans 39932
 ```
 
 The `soma_joinid` in the tibbles returned by `feature_data()` and
@@ -191,7 +200,7 @@ The `soma_joinid` in the tibbles returned by `feature_data()` and
 
 ## Session information
 
-This README was compiled with CxGcensus version 0.0.0.9006. Full session
+This README was compiled with CxGcensus version 0.0.0.9007. Full session
 info is:
 
 ``` r
@@ -214,7 +223,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] CxGcensus_0.0.0.9006 RcppSpdlog_0.0.13    dplyr_1.1.2         
+#> [1] CxGcensus_0.0.0.9007 RcppSpdlog_0.0.13    dplyr_1.1.2         
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] utf8_1.2.3                  generics_0.1.3             
