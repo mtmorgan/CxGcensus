@@ -46,7 +46,8 @@ cache_directory <-
 #' @examples
 #' cache_info()
 #'
-#' @importFrom dplyr as_tibble select arrange desc right_join bind_rows .data
+#' @importFrom dplyr tibble as_tibble select arrange desc right_join
+#'     bind_rows .data
 #'
 #' @export
 cache_info <-
@@ -81,6 +82,7 @@ cache_info <-
 }
 
 ## for internal use, at the moment
+#' @importFrom dplyr pull filter
 cache_remove_duplicate_duckdb <-
     function(id = census_id())
 {
