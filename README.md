@@ -20,7 +20,7 @@ Install CxGcensus from [GitHub](https://github.com/) with:
 devtools::install_github("mtmorgan/CxGcensus")
 ```
 
-## Example
+## Data exploration
 
 Load the package
 
@@ -113,7 +113,7 @@ subsequent calls are more-or-less instantaneous.
 mus <- observation_data("mus_musculus")
 mus
 #> # Source:   table<obs> [?? x 21]
-#> # Database: DuckDB 0.8.1 [ma38727@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
+#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #>    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type
 #>          <int> <chr>                      <chr> <chr>                  <chr>    
 #>  1           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…
@@ -171,7 +171,7 @@ diabetes.
 mus |>
     count(assay, sort = TRUE)
 #> # Source:     SQL [9 x 2]
-#> # Database:   DuckDB 0.8.1 [ma38727@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
+#> # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #> # Ordered by: desc(n)
 #>   assay                                n
 #>   <chr>                            <dbl>
@@ -188,7 +188,7 @@ mus |>
     filter(grepl("diabetes", disease)) |>
     count(disease, sex, tissue)
 #> # Source:   SQL [2 x 4]
-#> # Database: DuckDB 0.8.1 [ma38727@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
+#> # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]
 #>   disease                  sex    tissue                  n
 #>   <chr>                    <chr>  <chr>               <dbl>
 #> 1 type 1 diabetes mellitus female islet of Langerhans 39932
@@ -228,9 +228,120 @@ ggplot(tissue_and_assay) +
 The `soma_joinid` in the tibbles returned by `feature_data()` and
 `observation_data()` are important in retrieving counts.
 
+## SingleCellExperiment
+
+To create a Bioconductor
+[SingleCellExperiment](https://bioconductor.org/packages/SingleCellExperiment),
+perhaps for use in one of the [Orchestrating Single Cell Analysis with
+Bioconductor](https://bioconductor.org/books/OSCA) (OSCA) workflows,
+first select desired features and observations. For illustration we
+choose 100 random genes
+
+``` r
+set.seed(12)
+features <- feature_data("mus_musculus")
+random_features <-
+    features |>
+    slice(sample(nrow(features), 100))
+```
+
+and choose all cells from brain tissue and development stage 20 month
+old or latter.
+
+``` r
+observations <- observation_data("mus_musculus")
+brain_20mo <-
+    observations |>
+    filter(
+        tissue == "brain",
+        development_stage == "20 month-old stage and over"
+    ) |>
+    collect()
+```
+
+Cells are from several datasets
+
+``` r
+brain_20mo |>
+    count()
+#> # A tibble: 1 × 1
+#>       n
+#>   <int>
+#> 1 52132
+brain_20mo |>
+    count(dataset_id)
+#> # A tibble: 5 × 2
+#>   dataset_id                               n
+#>   <chr>                                <int>
+#> 1 3bbb6cf9-72b9-41be-b568-656de6eb18b5 38695
+#> 2 58b01044-c5e5-4b0f-8a2d-6ebf951e01ff  3077
+#> 3 66ff82b4-9380-469c-bc4b-cfa08eacd325   756
+#> 4 98e5ea9f-16d6-47ec-a529-686e76515e39  5180
+#> 5 c08f8441-4a10-4748-872a-e70c0bcccdba  4424
+```
+
+Use these to create a `SingleCellExperiment`.
+
+``` r
+sce <- single_cell_experiment("mus_musculus", random_features, brain_20mo)
+sce
+#> class: SingleCellExperiment 
+#> dim: 100 52132 
+#> metadata(1): census_metadata
+#> assays(1): counts
+#> rownames: NULL
+#> rowData names(4): soma_joinid feature_id feature_name feature_length
+#> colnames: NULL
+#> colData names(21): soma_joinid dataset_id ... tissue_general
+#>   tissue_general_ontology_term_id
+#> reducedDimNames(0):
+#> mainExpName: NULL
+#> altExpNames(0):
+```
+
+The experiment has `counts()` as a sparse (`dgCMatrix`, from the Matrix
+package) matrix, with `features` and `observations` available (as
+*Bioconductor* `DataFrame` objects, rather than tibbles) via `rowData()`
+and `colData()`. The data is straight-forward to work with, e.g.,
+removing features for which no counts were observed…
+
+``` r
+library(SingleCellExperiment)
+keep_rows <- Matrix::rowSums(counts(sce, withDimnames = FALSE)) != 0
+table(keep_rows)
+#> keep_rows
+#> FALSE  TRUE 
+#>    56    44
+sce[keep_rows,]
+#> class: SingleCellExperiment 
+#> dim: 44 52132 
+#> metadata(1): census_metadata
+#> assays(1): counts
+#> rownames: NULL
+#> rowData names(4): soma_joinid feature_id feature_name feature_length
+#> colnames: NULL
+#> colData names(21): soma_joinid dataset_id ... tissue_general
+#>   tissue_general_ontology_term_id
+#> reducedDimNames(0):
+#> mainExpName: NULL
+#> altExpNames(0):
+```
+
+… or summarizing the total number of reads observed in each cell
+
+``` r
+hist(
+    log1p(colSums(counts(sce, withDimnames = FALSE))),
+    main = "Counts per cell",
+    xlab = "log(1 + x) counts",
+)
+```
+
+<img src="man/figures/README-sce-colSums-1.png" width="100%" />
+
 ## Session information
 
-This README was compiled with CxGcensus version 0.0.0.9008. Full session
+This README was compiled with CxGcensus version 0.0.0.9009. Full session
 info is:
 
 ``` r
@@ -250,44 +361,54 @@ sessionInfo()
 #> tzcode source: internal
 #> 
 #> attached base packages:
-#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+#> [8] base     
 #> 
 #> other attached packages:
-#> [1] ggplot2_3.4.2        CxGcensus_0.0.0.9008 RcppSpdlog_0.0.13   
-#> [4] dplyr_1.1.2         
+#>  [1] SingleCellExperiment_1.23.0 SummarizedExperiment_1.31.1
+#>  [3] Biobase_2.61.0              GenomicRanges_1.53.1       
+#>  [5] GenomeInfoDb_1.37.1         IRanges_2.35.1             
+#>  [7] S4Vectors_0.39.1            BiocGenerics_0.47.0        
+#>  [9] MatrixGenerics_1.13.0       matrixStats_1.0.0          
+#> [11] ggplot2_3.4.2               CxGcensus_0.0.0.9009       
+#> [13] RcppSpdlog_0.0.13           dplyr_1.1.2                
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.3                xfun_0.39                  
-#>  [3] lattice_0.21-8              vctrs_0.6.3                
-#>  [5] tools_4.3.0                 generics_0.1.3             
-#>  [7] curl_5.0.1                  tibble_3.2.1               
-#>  [9] fansi_1.0.4                 highr_0.10                 
-#> [11] blob_1.2.4                  pkgconfig_2.0.3            
-#> [13] Matrix_1.5-4.1              data.table_1.14.8          
-#> [15] dbplyr_2.3.2                assertthat_0.2.1           
-#> [17] lifecycle_1.0.3             compiler_4.3.0             
-#> [19] farver_2.1.1                munsell_0.5.0              
-#> [21] tiledbsoma_0.0.0.9028       htmltools_0.5.5            
-#> [23] yaml_2.3.7                  pillar_1.9.0               
-#> [25] aws.s3_0.3.21               cachem_1.0.8               
-#> [27] RcppCCTZ_0.2.12             tiledb_0.19.1.8            
-#> [29] tidyselect_1.2.0            digest_0.6.31              
-#> [31] duckdb_0.8.1                purrr_1.0.1                
-#> [33] labeling_0.4.2              arrow_12.0.1               
-#> [35] fastmap_1.1.1               grid_4.3.0                 
-#> [37] colorspace_2.1-0            cli_3.6.1                  
-#> [39] magrittr_2.0.3              base64enc_0.1-3            
-#> [41] cellxgene.census_0.0.0.9000 triebeard_0.4.1            
-#> [43] spdl_0.0.5                  utf8_1.2.3                 
-#> [45] aws.signature_0.6.0         withr_2.5.0                
-#> [47] scales_1.2.1                bit64_4.0.5                
-#> [49] nanotime_0.3.7              rmarkdown_2.22             
-#> [51] httr_1.4.6                  bit_4.0.5                  
-#> [53] zoo_1.8-12                  memoise_2.0.1              
-#> [55] evaluate_0.21               knitr_1.43                 
-#> [57] rlang_1.1.1                 urltools_1.7.3             
-#> [59] Rcpp_1.0.10                 glue_1.6.2                 
-#> [61] DBI_1.1.3                   xml2_1.3.4                 
-#> [63] jsonlite_1.8.5              R6_2.5.1                   
-#> [65] fs_1.6.2
+#>  [1] tidyselect_1.2.0            farver_2.1.1               
+#>  [3] blob_1.2.4                  urltools_1.7.3             
+#>  [5] arrow_12.0.1                bitops_1.0-7               
+#>  [7] fastmap_1.1.1               RCurl_1.98-1.12            
+#>  [9] duckdb_0.8.1                digest_0.6.31              
+#> [11] lifecycle_1.0.3             magrittr_2.0.3             
+#> [13] compiler_4.3.0              rlang_1.1.1                
+#> [15] tools_4.3.0                 utf8_1.2.3                 
+#> [17] yaml_2.3.7                  data.table_1.14.8          
+#> [19] knitr_1.43                  S4Arrays_1.1.4             
+#> [21] labeling_0.4.2              bit_4.0.5                  
+#> [23] spdl_0.0.5                  curl_5.0.1                 
+#> [25] DelayedArray_0.27.5         aws.signature_0.6.0        
+#> [27] xml2_1.3.4                  withr_2.5.0                
+#> [29] purrr_1.0.1                 triebeard_0.4.1            
+#> [31] grid_4.3.0                  fansi_1.0.4                
+#> [33] colorspace_2.1-0            scales_1.2.1               
+#> [35] cli_3.6.1                   crayon_1.5.2               
+#> [37] rmarkdown_2.22              generics_0.1.3             
+#> [39] tiledbsoma_0.0.0.9028       httr_1.4.6                 
+#> [41] DBI_1.1.3                   cachem_1.0.8               
+#> [43] zlibbioc_1.47.0             assertthat_0.2.1           
+#> [45] XVector_0.41.1              base64enc_0.1-3            
+#> [47] vctrs_0.6.3                 Matrix_1.5-4.1             
+#> [49] jsonlite_1.8.5              bit64_4.0.5                
+#> [51] glue_1.6.2                  gtable_0.3.3               
+#> [53] aws.s3_0.3.21               munsell_0.5.0              
+#> [55] nanotime_0.3.7              tibble_3.2.1               
+#> [57] pillar_1.9.0                htmltools_0.5.5            
+#> [59] GenomeInfoDbData_1.2.10     R6_2.5.1                   
+#> [61] dbplyr_2.3.2                evaluate_0.21              
+#> [63] lattice_0.21-8              RcppCCTZ_0.2.12            
+#> [65] highr_0.10                  cellxgene.census_0.0.0.9000
+#> [67] memoise_2.0.1               tiledb_0.19.1.8            
+#> [69] Rcpp_1.0.10                 SparseArray_1.1.10         
+#> [71] xfun_0.39                   fs_1.6.2                   
+#> [73] zoo_1.8-12                  pkgconfig_2.0.3
 ```

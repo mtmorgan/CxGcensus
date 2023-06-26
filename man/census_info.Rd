@@ -5,6 +5,8 @@
 \alias{summary_cell_counts}
 \alias{feature_data}
 \alias{observation_data}
+\alias{assay_data}
+\alias{single_cell_experiment}
 \title{Discover census datasets, cells, features, and observations}
 \usage{
 datasets(...)
@@ -14,6 +16,10 @@ summary_cell_counts(...)
 feature_data(organism, ...)
 
 observation_data(organism, ...)
+
+assay_data(organism, features, observations, ...)
+
+single_cell_experiment(organism, features, observations, ...)
 }
 \arguments{
 \item{...}{arguments passed to \code{\link[=census]{census()}}, specifying the census
@@ -23,6 +29,14 @@ census is used.}
 \item{organism}{one of the values returned by \code{census_names()},
 specifically 'homo_sapiens' or 'mus_musculus' at the time of
 writing this documentation.}
+
+\item{features}{a \code{tibble}, typically derived from
+\code{feature_data()} via \code{filter()}, \code{select()}, etc., and
+containing the \code{soma_joinid} column.}
+
+\item{observations}{a \code{tibble}, typically derived from
+\code{observation_data()} via \code{filter()}, \code{select()}, etc., and
+containing the \code{soma_joinid} column.}
 }
 \value{
 \code{datasets()} returns a tibble with information about the
@@ -41,6 +55,12 @@ annotations. An aesthetic problem is that the 'connection' to
 the database is not available to the user, and duckdb warns
 that \verb{Database is garbage-collected...}; this message can be
 ignored.
+
+\code{assay_data()} returns a sparse matrix (\code{dgCMatrix})
+summarizing counts found in the census for the \code{soma_joinid}
+columns of the \code{features} and \code{observations} tibble
+arguments. The counts are from the 'raw' layer' of 'X'
+collection of the 'RNA' measurement in the experiment.
 }
 \description{
 \code{datasets()} queries CELLxGENE for datasets used in
@@ -55,6 +75,15 @@ of cells associated with each facet and level.
 
 \code{observation_data()} reports information about all
 cells in the census.
+
+\code{assay_data()} queries the census for 'raw' counts for
+the RNA-seq data corresponding to selected features and columns
+in a census.
+
+\code{single_cell_experiment()} queries the census for
+assay data corresponding to features and observations, and
+assembles the result into a SingleCellExperiment. The count
+data are accessible using \code{SingleCellExperiment::counts()}.
 }
 \details{
 \code{datasets()}, \code{summary_cell_counts()}, an \code{feature_data()} are
@@ -73,6 +102,16 @@ more than 52 million records (cells) downloaded in 124 chunks.
 The data are stored in a 'duckdb' database. The return value can be
 used via \code{dbplyr} for very fast and memory efficient filtering,
 selection, and summary.
+
+Currently, for \code{assay_data()} and
+\code{single_cell_experiment()}, the user must ensure that the
+features, observations, and assay data are for the same census
+and organism. Duplicate rows in \code{features} and \code{observations}
+are allowed.
+
+\code{single_cell_experiment()} requires that the
+SingleCellExperiment Biocductor package is installed, e.g., via
+\code{BiocManager::install("SingleCellExperiment")}.
 }
 \examples{
 datasets() |>
@@ -92,13 +131,26 @@ summary_cell_counts() |>
 
 feature_data("mus_musculus")
 
-\dontrun{
 mus <- observation_data("mus_musculus")
 mus |>
     count(assay, sort = TRUE)
 mus |>
     filter(grepl("diabetes", disease)) |>
     count(disease, sex, tissue)
-}
+
+features <-
+   feature_data("mus_musculus") |>
+   ## rows 4, 3, 4 of the tibble
+   slice(c(4:3, 4))
+
+observations <-
+   observation_data("mus_musculus") |>
+   ## first two rows of the tibble
+   head(2) |>
+   collect()
+
+counts <- assay_data(features, observations, organism = "mus_musculus")
+
+single_cell_experiment("mus_musculus", features, observations)
 
 }

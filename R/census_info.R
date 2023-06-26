@@ -171,17 +171,16 @@ observation_data_download <-
 #'     that `Database is garbage-collected...`; this message can be
 #'     ignored.
 #'
-#' @examples \dontrun{
+#' @examples
 #' mus <- observation_data("mus_musculus")
 #' mus |>
 #'     count(assay, sort = TRUE)
 #' mus |>
 #'     filter(grepl("diabetes", disease)) |>
 #'     count(disease, sex, tissue)
-#' }
 #'
 #' @importFrom dplyr tbl
-#' 
+#'
 #' @export
 observation_data <-
     function(organism, ...)
@@ -190,4 +189,149 @@ observation_data <-
     duckdb_file <- observation_data_download(organism, ...)
     con <- dbConnect(duckdb::duckdb(), duckdb_file, read_only = TRUE)
     tbl(con, "obs")
+}
+
+#' @rdname census_info
+#'
+#' @description `assay_data()` queries the census for 'raw' counts for
+#'     the RNA-seq data corresponding to selected features and columns
+#'     in a census.
+#'
+#' @param features a `tibble`, typically derived from
+#'     `feature_data()` via `filter()`, `select()`, etc., and
+#'     containing the `soma_joinid` column.
+#'
+#' @param observations a `tibble`, typically derived from
+#'     `observation_data()` via `filter()`, `select()`, etc., and
+#'     containing the `soma_joinid` column.
+#'
+#' @details Currently, for `assay_data()` and
+#'     `single_cell_experiment()`, the user must ensure that the
+#'     features, observations, and assay data are for the same census
+#'     and organism. Duplicate rows in `features` and `observations`
+#'     are allowed.
+#'
+#' @return `assay_data()` returns a sparse matrix (`dgCMatrix`)
+#'     summarizing counts found in the census for the `soma_joinid`
+#'     columns of the `features` and `observations` tibble
+#'     arguments. The counts are from the 'raw' layer' of 'X'
+#'     collection of the 'RNA' measurement in the experiment.
+#'
+#' @examples
+#' features <-
+#'    feature_data("mus_musculus") |>
+#'    ## rows 4, 3, 4 of the tibble
+#'    slice(c(4:3, 4))
+#'
+#' observations <-
+#'    observation_data("mus_musculus") |>
+#'    ## first two rows of the tibble
+#'    head(2) |>
+#'    collect()
+#'
+#' counts <- assay_data(features, observations, organism = "mus_musculus")
+#'
+#' @importFrom dplyr collect
+#'
+#' @importMethodsFrom Matrix t
+#'
+#' @export
+assay_data <-
+    function(organism, features, observations, ...)
+{
+    stopifnot(
+        inherits(features, "tbl"),
+        "soma_joinid" %in% names(features),
+        !anyNA(features$soma_joinid),
+        inherits(observations, "tbl"),
+        "soma_joinid" %in% names(observations),
+        !anyNA(observations$soma_joinid),
+        organism %in% census_names(...)
+    )
+    measurement <- "RNA"
+    collection <- "X"
+    layer <- "raw"
+
+    census <- census(...)
+    experiment <- census$get("census_data")$get(organism)
+    ## experiment$get("ms")$get("RNA")$get("X")$get_metadata()
+
+    message("creating axis and experiment queries")
+    ## ids must be unique, else they are returned twice and collated
+    ## into a single row. ids are always returned in sorted order
+    feature_ids <- sort(unique(pull(features, "soma_joinid")))
+    feature_query <- tiledbsoma::SOMAAxisQuery$new(coords = feature_ids)
+
+    observation_ids <- sort(unique(pull(observations, "soma_joinid")))
+    observation_query <- tiledbsoma::SOMAAxisQuery$new(coords = observation_ids)
+
+    experiment_query <- tiledbsoma::SOMAExperimentAxisQuery$new(
+        experiment, measurement,
+        obs_query = observation_query,
+        var_query = feature_query
+    )
+
+    message(wrap(
+        "retrieving assay_data measurement '", measurement, "' ",
+        "collection '", collection, "' layer '", layer, "' ",
+        "as a sparse matrix with ",
+        length(feature_ids), " x ", length(observation_ids), " ",
+        "distinct features x observations"
+    ))
+    assay <- withCallingHandlers({
+        experiment_query$to_sparse_matrix(collection, layer)
+    }, warning = function(w) {
+        test <-
+            startsWith(conditionMessage(w), "Iteration results cannot be") &&
+            (nrow(features) * nrow(observations) < .Machine$integer.max)
+        if (test) # suppress unnecessary warning
+            invokeRestart("muffleWarning")
+    })
+
+    assay <-                          # feature x observation
+        as(assay, "CsparseMatrix") |> # to dgCMatrix
+        Matrix::t()
+
+    ## return in requested order, with appropriate replication
+    ridx <- match(features$soma_joinid, feature_ids)
+    cidx <- match(observations$soma_joinid, observation_ids)
+    assay[ridx, cidx]
+}
+
+#' @rdname census_info
+#'
+#' @description `single_cell_experiment()` queries the census for
+#'     assay data corresponding to features and observations, and
+#'     assembles the result into a SingleCellExperiment. The count
+#'     data are accessible using `SingleCellExperiment::counts()`.
+#'
+#' @details `single_cell_experiment()` requires that the
+#'     SingleCellExperiment Biocductor package is installed, e.g., via
+#'     `BiocManager::install("SingleCellExperiment")`.
+#'
+#' @examples
+#' single_cell_experiment("mus_musculus", features, observations)
+#'
+#' @export
+single_cell_experiment <-
+    function(organism, features, observations, ...)
+{
+    census <- census(...)
+    sce <- single_cell_experiment_constructor()
+    assay <- assay_data(organism, features, observations, ...)
+
+    dimnames(assay) <- list(NULL, NULL)
+    ## 'observations' may not yet have been realized...
+    observations <-
+        observations |>
+        collect()
+    census_metadata <- census$get_metadata()
+
+    ## assemble the single-cell experiment
+    sce(
+        metadata = list(census_metadata = census_metadata),
+        assays = list(counts = assay),
+        colData = observations,
+        rowData = features
+    )
 }

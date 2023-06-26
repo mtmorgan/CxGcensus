@@ -13,5 +13,6 @@
         summary_cell_counts <<- memoise_disk(summary_cell_counts)
         feature_data <<- memoise_disk(feature_data)
         observation_data_download <<- memoise_disk(observation_data_download)
+        assay_data <<- memoise_disk(assay_data)
     })
 }

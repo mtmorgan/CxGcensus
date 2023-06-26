@@ -33,7 +33,7 @@ Install CxGcensus from [GitHub](https://github.com/) with:
 devtools::install_github("mtmorgan/CxGcensus")
 ```
 
-## Example
+## Data exploration
 
 Load the package
 
@@ -138,6 +138,77 @@ The `soma_joinid` in the tibbles returned by `feature_data()` and
 [cellxgenedp]: https://bioconductor.org/packages/cellxgenedp
 [duckdb]: https://cran.r-project.org/package=duckdb
 [ggplot2]: https://cran.r-project.org/package=ggplot2
+
+## SingleCellExperiment
+
+To create a Bioconductor [SingleCellExperiment][], perhaps for use in
+one of the [Orchestrating Single Cell Analysis with
+Bioconductor][OSCA] (OSCA) workflows, first select desired features
+and observations. For illustration we choose 100 random genes
+
+```{r}
+set.seed(12)
+features <- feature_data("mus_musculus")
+random_features <-
+    features |>
+    slice(sample(nrow(features), 100))
+```
+
+and choose all cells from brain tissue and development stage 20 month
+old or latter.
+
+```{r}
+observations <- observation_data("mus_musculus")
+brain_20mo <-
+    observations |>
+    filter(
+        tissue == "brain",
+        development_stage == "20 month-old stage and over"
+    ) |>
+    collect()
+```
+
+Cells are from several datasets
+
+```{r}
+brain_20mo |>
+    count()
+brain_20mo |>
+    count(dataset_id)
+```
+
+Use these to create a `SingleCellExperiment`.
+
+```{r}
+sce <- single_cell_experiment("mus_musculus", random_features, brain_20mo)
+sce
+```
+
+The experiment has `counts()` as a sparse (`dgCMatrix`, from the
+Matrix package) matrix, with `features` and `observations` available
+(as *Bioconductor* `DataFrame` objects, rather than tibbles) via
+`rowData()` and `colData()`. The data is straight-forward to work
+with, e.g., removing features for which no counts were observed...
+
+```{r, message = FALSE}
+library(SingleCellExperiment)
+keep_rows <- Matrix::rowSums(counts(sce, withDimnames = FALSE)) != 0
+table(keep_rows)
+sce[keep_rows,]
+```
+
+... or summarizing the total number of reads observed in each cell
+
+```{r sce-colSums}
+hist(
+    log1p(colSums(counts(sce, withDimnames = FALSE))),
+    main = "Counts per cell",
+    xlab = "log(1 + x) counts",
+)
+```
+
+[SingleCellExperiment]: https://bioconductor.org/packages/SingleCellExperiment
+[OSCA]: https://bioconductor.org/books/OSCA
 
 ## Session information
 

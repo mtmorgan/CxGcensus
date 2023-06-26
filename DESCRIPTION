@@ -1,6 +1,6 @@
 Package: CxGcensus
 Title: Discover and Retrieve 'CELLxGENE' Census Data Sets 
-Version: 0.0.0.9008
+Version: 0.0.0.9009
 Authors@R: 
     c(person(
         "Martin", "Morgan",
@@ -14,8 +14,8 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: Artistic-2.0
 Depends: dplyr 
-Imports: tools, cachem, memoise, cellxgene.census, duckdb
-Suggests: ggplot2
+Imports: tools, cachem, memoise, cellxgene.census, duckdb, dbplyr, Matrix
+Suggests: ggplot2, SingleCellExperiment
 Additional_repositories: https://tiledb-inc.r-universe.dev
 Remotes: cellxgene.census=chanzuckerberg/cellxgene-census/api/r/cellxgene.census
 Encoding: UTF-8
