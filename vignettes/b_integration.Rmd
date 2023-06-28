@@ -1,0 +1,216 @@
+---
+title: "B. Dataset Integration"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{B. Dataset Integration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+This work flow emulates 'Integrating multi-dataset slices of data'
+cellxgene-census [tutorial][cxg-integrate], although the integtation
+path uses *Bioconductor* packages. Start by loading the [CxGcensus][]
+and [SingleCellExperiment][] packages.
+
+```{r setup, message = FALSE}
+library(CxGcensus)
+library(SingleCellExperiment)
+```
+
+[cxg-integrate]: https://chanzuckerberg.github.io/cellxgene-census/notebooks/analysis_demo/comp_bio_data_integration_scvi.html
+[CxGcensus]: https://mtmorgan.github.io/CxGcensus
+[SingleCellExperiment]: https://bioconductor.org/packages/SingleCellExperiment
+
+# Datasets and observations
+
+Select the 'Tabula Muris Sensis' collection with datasets containing
+'liver' in their title.
+
+```{r}
+liver <-
+    datasets() |>
+    dplyr::filter(
+        collection_name == "Tabula Muris Senis",
+        grepl("liver", dataset_title, ignore.case = TRUE)
+    )
+liver
+```
+
+Retrieve the observations (cells) from these datasets.
+
+```{r}
+dataset_ids <- pull(liver, dataset_id)
+observations <- 
+    observation_data("mus_musculus") |>
+    dplyr::filter(dataset_id %in% dataset_ids) |>
+    dplyr::collect()
+```
+
+Summarize observations by assay. There are two datasets, one is 10x
+Genomics the other Smart-seq2. Each dataset consists of several male
+and female donors of various developmental stage.
+
+```{r}
+observations |>
+    dplyr::count(dataset_id, assay)
+observations |>
+    dplyr::count(dataset_id, donor_id, sex, development_stage)
+```
+
+Retrieve all observations to a SingleCellExperiment. Add `feature_id`
+(i.e., Ensembl gene identifiers) as row names for downstream analysis.
+
+```{r}
+sce <- single_cell_experiment(
+    "mus_musculus", feature_data("mus_musculus"), observations
+)
+rownames(sce) <- rowData(sce)$feature_id
+sce
+```
+
+# Single dataset processing
+
+We deviate from the cellxgene-census tutorial by performing
+preliminary steps on each data set. 
+
+We will do prelminary QC, normalization, variance modeling and
+dimensionality reduction on each dataset separately, Following
+[Chapter 1][OSCA-multisample-ch1] of the 'Multisample' section of
+Orchestrating Single Cell Analysis with Bioconductor. We'll use the
+following packages
+
+```{r, message = FALSE}
+library(scater)
+library(scran)
+library(BiocSingular)
+```
+
+Start by creating separate Smart-seq2 and 10x SingleCellExperiments.
+
+```{r}
+smartseq <- sce[, sce$assay == "Smart-seq2"]
+tenx <- sce[, sce$assay != "Smart-seq2"]
+```
+
+Smart-seq2 mRNA represents the entire expressed protien, so longer
+genes inherently have more mRNA. Try to correct for this by dividing
+read counts by gene length. We set the `metadata()` of the Smart-seq2
+dataset to an empty list, so that the metadata is not duplicated when
+the two datasets are combined at a later stage.
+
+```{r}
+x <- counts(smartseq, withDimnames = FALSE)
+x <- t( t(x) / rowData(smartseq)$feature_length )
+counts(smartseq, withDimnames = FALSE) <- x
+metadata(smartseq) <- list()
+```
+
+The following code chunk, from [Chapter 1][OSCA-multisample-ch1],
+performs each step on the Smart-seq2 and 10x datasets.
+
+```{r osca-multisample-ch1}
+## A list of SingleCellExperiments
+all.sce <- list(smartseq = smartseq, tenx = tenx)
+
+## QC -- skip currently; no MT gene expression
+
+## Normalization -- scater
+all.sce <- lapply(all.sce, logNormCounts)
+
+## Variance modelling -- scran
+all.dec <- lapply(all.sce, modelGeneVar)
+all.hvgs <- lapply(all.dec, getTopHVGs, prop=0.1)
+
+## Dimensionality reduction -- BiocSingular
+set.seed(10000)
+all.sce <- Map(
+    runPCA, x = all.sce, subset_row = all.hvgs, 
+    MoreArgs = list(ncomponents = 25L, BSPARAM = RandomParam())
+)
+
+set.seed(100000)
+all.sce <- lapply(all.sce, runTSNE, dimred = "PCA")
+
+set.seed(1000000)
+all.sce <- lapply(all.sce, runUMAP, dimred = "PCA")
+
+## Clustering
+for (n in names(all.sce)) {
+    g <- buildSNNGraph(all.sce[[n]], k=10, use.dimred='PCA')
+    clust <- igraph::cluster_walktrap(g)$membership
+    colLabels(all.sce[[n]])  <- factor(clust)
+}
+```
+
+Bind the resulting objects together
+
+```{r}
+sce <- do.call("cbind", all.sce)
+```
+
+# Dataset integration
+
+We will use the [batchelor][] package for dataset integration.
+
+[batchelor]: https://bioconductor.org/packages/batchelor
+
+```{r batchelor, message = FALSE}
+library(batchelor)
+```
+
+Following [Chapter 1][osca-multisample-ch1], `quickCorrect()`
+implements a workflow for dataset integration that includes
+identifying shared features, scaling batches to account for
+differences in sequencing depth, computation of log-normalized
+expression values, and identification of highly variable genes. Data
+integration uses mutual nearest neighbor (MNN) correction.
+
+```{r}
+## batchelor
+quick.corrected <- quickCorrect(
+    all.sce[[1]], all.sce[[2]],
+    precomputed = all.dec,
+    PARAM = FastMnnParam(BSPARAM=BiocSingular::RandomParam())
+)
+
+quick.sce <- quick.corrected$corrected
+## include colData from original sce
+colData(quick.sce) <- cbind(colData(sce), colData(quick.sce))
+quick.sce$batch <- factor(quick.sce$batch)
+quick.sce
+```
+
+Visualize the final result in an interactive UMAP using `plotUMAP()`
+and the [plotly][] package; `to WebGL()` makes the plot interactive
+even for 100's of thousands of cells...
+
+[plotly]: https://cran.r-project.org/package=plotly
+
+```{r}
+## scater
+set.seed(00101010)
+quick.sce <- runTSNE(quick.sce, dimred = "corrected")
+quick.sce <- runUMAP(quick.sce, dimred = "corrected")
+
+plotUMAP(quick.sce, colour_by="cell_type") |>
+    plotly::ggplotly() |>
+    plotly::toWebGL()
+```
+
+# Session information
+
+This article was compiled with CxGcensus version 
+`r packageVersion("CxGcensus")` and the following packages
+
+```{r session-info}
+sessionInfo()
+```

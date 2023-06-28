@@ -1,6 +1,6 @@
 Package: CxGcensus
 Title: Discover and Retrieve 'CELLxGENE' Census Data Sets 
-Version: 0.0.0.9009
+Version: 0.0.0.9010
 Authors@R: 
     c(person(
         "Martin", "Morgan",
@@ -11,11 +11,27 @@ Authors@R:
         "Chan Zuckerberg Initiative DAF CZF2019-002443",
         role = "fnd"
     ))
-Description: What the package does (one paragraph).
+Description: CELLxGENE census
+    <https://chanzuckerberg.github.io/cellxgene-census> is an internet
+    resource providing access to hundreds of human and mouse
+    single-cell RNA-seq datasets. 'CxGcensus' is an interface to this
+    resource, allowing discovery and download of datasets, features
+    (genes), and observations (individual cells) from across
+    experiments. Datasets, features, and observations are accessible
+    as familiar 'tibbles'; measures of single-cell expression are
+    presented in the R / Bioconductor 'SingleCellExperiment' data
+    representation for easy integration with, for example,
+    'Orchestrating Single-Cell Analysis with Bioconductor'
+    <https://bioconductor.org/books/OSCA>.
 License: Artistic-2.0
 Depends: dplyr 
 Imports: tools, cachem, memoise, cellxgene.census, duckdb, dbplyr, Matrix
-Suggests: ggplot2, SingleCellExperiment
+Suggests: 
+    ggplot2, plotly,
+    knitr,
+    rmarkdown,
+    SingleCellExperiment,
+    scater, scran, BiocSingular, batchelor
 Additional_repositories: https://tiledb-inc.r-universe.dev
 Remotes: cellxgene.census=chanzuckerberg/cellxgene-census/api/r/cellxgene.census
 Encoding: UTF-8
@@ -23,3 +39,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 URL: https://mtmorgan.github.io/CxGcensus/
 BugReports: https://github.com/mtmorgan/CxGcensus/issues
+VignetteBuilder: knitr
