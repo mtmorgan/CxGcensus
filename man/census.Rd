@@ -4,6 +4,7 @@
 \alias{census}
 \alias{census_id}
 \alias{census_names}
+\alias{show_package_versions}
 \title{Obtain a reference to a CELLxGENE 'SOMA' collection}
 \usage{
 census(census_version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
@@ -58,4 +59,5 @@ census_id()
 
 census_names()
 
+tiledbsoma::show_package_versions()
 }

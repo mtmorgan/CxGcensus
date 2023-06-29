@@ -37,6 +37,16 @@ Load the package
 library(CxGcensus)
 ```
 
+This is the census and package versions we are using
+
+```{r census}
+census()$get_metadata() |>
+    lapply(as.vector) |>
+    str()
+packageVersion("CxGcensus")
+tiledbsoma::show_package_versions()
+```
+
 Discover datasets used to construct the census
 
 ```{r datasets}

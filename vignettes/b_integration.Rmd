@@ -88,6 +88,8 @@ dimensionality reduction on each dataset separately, Following
 Orchestrating Single Cell Analysis with Bioconductor. We'll use the
 following packages
 
+[OSCA-multisample-ch1]: https://bioconductor.org/books/3.17/OSCA.multisample/integrating-datasets.html
+
 ```{r, message = FALSE}
 library(scater)
 library(scran)
@@ -155,6 +157,7 @@ Bind the resulting objects together
 
 ```{r}
 sce <- do.call("cbind", all.sce)
+sce
 ```
 
 # Dataset integration
@@ -174,7 +177,7 @@ differences in sequencing depth, computation of log-normalized
 expression values, and identification of highly variable genes. Data
 integration uses mutual nearest neighbor (MNN) correction.
 
-```{r}
+```{r, message = FALSE}
 ## batchelor
 quick.corrected <- quickCorrect(
     all.sce[[1]], all.sce[[2]],
@@ -195,7 +198,7 @@ even for 100's of thousands of cells...
 
 [plotly]: https://cran.r-project.org/package=plotly
 
-```{r}
+```{r, warning = FALSE}
 ## scater
 set.seed(00101010)
 quick.sce <- runTSNE(quick.sce, dimred = "corrected")

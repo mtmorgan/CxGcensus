@@ -31,9 +31,10 @@ datasets <-
     if (interactive())
         message("retrieving datasets...")
     census <- census(...)
-    datasets <- census$get("census_info")$get("datasets")
-    tbl <- datasets$read()$concat() |>
-        as.data.frame()
+    tbl <- census$get("census_info")$get("datasets")$read()
+    if (inherits(tbl, "ReadIter"))
+        tbl <- tbl$concat()
+    tbl <- as.data.frame(tbl)
 
     ## clean up "" to NA
     replace_zchar <- function(x) {
@@ -75,8 +76,10 @@ summary_cell_counts <-
     if (interactive())
         message("retrieving summary_cell_counts...")
     census <- census(...)
-    census$get("census_info")$get("summary_cell_counts")$read()$concat() |>
-        as.data.frame()
+    tbl <- census$get("census_info")$get("summary_cell_counts")$read()
+    if (inherits(tbl, "ReadIter"))
+        tbl <- tbl$concat()
+    as.data.frame(tbl)
 }
 
 #' @rdname census_info
@@ -102,8 +105,10 @@ feature_data <-
     if (interactive())
         message("retrieving feature_data...")
     census <- census(...)
-    census$get("census_data")$get(organism)$ms$get("RNA")$var$read()$concat() |>
-        as.data.frame()
+    tbl <- census$get("census_data")$get(organism)$ms$get("RNA")$var$read()
+    if (inherits(tbl, "ReadIter"))
+        tbl <- tbl$concat()
+    as.data.frame(tbl)
 }
 
 #' @importFrom duckdb duckdb
@@ -132,17 +137,20 @@ observation_data_download <-
     on.exit(dbDisconnect(con))
 
     ## establish reader
-    obs <- census$get("census_data")$get(organism)$get("obs")
-    iter <- obs$read(iterated = TRUE)
-    iter_progress <- progress_iterator()
-
-    ## read in chunks and provide feedback
-    while (!iter$read_complete()) {
-        tbl <- iter$read_next() |> as.data.frame()
+    iter <- census$get("census_data")$get(organism)$get("obs")$read()
+    if (inherits(iter, "ReadIter")) {
+        iter_progress <- progress_iterator()
+        ## read in chunks and provide feedback
+        while (!iter$read_complete()) {
+            tbl <- iter$read_next() |> as.data.frame()
+            dbWriteTable(con, "obs", tbl, append = TRUE)
+            iter_progress$increment(nrow(tbl))
+        }
+        iter_progress$done()
+    } else {
+        tbl <- iter |> as.data.frame()
         dbWriteTable(con, "obs", tbl, append = TRUE)
-        iter_progress$increment(nrow(tbl))
     }
-    iter_progress$done()
 
     duckdb_file
 }
@@ -254,7 +262,6 @@ assay_data <-
 
     census <- census(...)
     experiment <- census$get("census_data")$get(organism)
-    ## experiment$get("ms")$get("RNA")$get("X")$get_metadata()
 
     message("creating axis and experiment queries")
     ## ids must be unique, else they are returned twice and collated

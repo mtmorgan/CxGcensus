@@ -85,3 +85,11 @@ census_names <-
     census <- census(...)
     census$get("census_data")$names()
 }
+
+#' @rdname census
+#'
+#' @name show_package_versions
+#'
+#' @examples
+#' tiledbsoma::show_package_versions()
+NULL
