@@ -247,7 +247,20 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Mus musculus unknown            <span style="text-decoration: underline;">192</span>620           <span style="text-decoration: underline;">192</span>620</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.data.frame.default(tbl):</span> cannot coerce class ‘"function"’ to a data.frame</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 52,392 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    soma_joinid feature_id         feature_name  feature_length</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>           0 ENSMUSG00000109644 0610005C13Rik           <span style="text-decoration: underline;">3</span>583</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>           1 ENSMUSG00000108652 0610006L08Rik           <span style="text-decoration: underline;">2</span>128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>           2 ENSMUSG00000007777 0610009B22Rik            998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>           3 ENSMUSG00000086714 0610009E02Rik           <span style="text-decoration: underline;">1</span>803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>           4 ENSMUSG00000043644 0610009L18Rik            619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>           5 ENSMUSG00000042208 0610010F05Rik           <span style="text-decoration: underline;">5</span>226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>           6 ENSMUSG00000020831 0610010K14Rik           <span style="text-decoration: underline;">1</span>896</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>           7 ENSMUSG00000089755 0610012D04Rik            531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>           8 ENSMUSG00000107002 0610012G03Rik           <span style="text-decoration: underline;">1</span>445</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>           9 ENSMUSG00000046683 0610025J13Rik           <span style="text-decoration: underline;">1</span>121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 52,382 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu">observation_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_complete():</span> attempt to apply non-function</span>
@@ -263,7 +276,6 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-in"><span>   <span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="co">## rows 4, 3, 4 of the tibble</span></span></span>
 <span class="r-in"><span>   <span class="fu">slice</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.data.frame.default(tbl):</span> cannot coerce class ‘"function"’ to a data.frame</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">observations</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>   <span class="fu">observation_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -273,10 +285,10 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_complete():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">assay_data</span><span class="op">(</span><span class="va">features</span>, <span class="va">observations</span>, organism <span class="op">=</span> <span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'features' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'observations' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">single_cell_experiment</span><span class="op">(</span><span class="st">"mus_musculus"</span>, <span class="va">features</span>, <span class="va">observations</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'features' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'observations' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
