@@ -263,7 +263,7 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 52,382 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu">observation_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_complete():</span> attempt to apply non-function</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_next():</span> attempt to apply non-function</span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'mus' not found</span>
@@ -282,7 +282,7 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-in"><span>   <span class="co">## first two rows of the tibble</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_complete():</span> attempt to apply non-function</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_next():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">assay_data</span><span class="op">(</span><span class="va">features</span>, <span class="va">observations</span>, organism <span class="op">=</span> <span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'observations' not found</span>
