@@ -206,7 +206,6 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-out co"><span class="r-pr">#&gt;</span>   uri: s3://cellxgene-data-public/cell-census/2023-05-15/soma/ </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   groups: census_data*, census_info* </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> not ReadIter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 562 rows x 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $soma_joinid &lt;int64 not null&gt;</span>
@@ -217,8 +216,16 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dataset_title &lt;large_string not null&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dataset_h5ad_path &lt;large_string not null&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dataset_total_cell_count &lt;int64 not null&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (...) {    if (interactive())         message("retrieving datasets...")    census &lt;- census(...)    stopifnot(inherits(census, "SOMACollection"))    print(census)    tbl &lt;- census$get("census_info")$get("datasets")$read(iterated = TRUE)    if (inherits(tbl, "ReadIter")) {        tbl &lt;- tbl$concat()    }    else {        message("not ReadIter")        print(tbl)    }    tbl &lt;- as.data.frame(tbl0)    replace_zchar &lt;- function(x) {        x[!nzchar(x)] &lt;- NA_character_        x    }    mutate(tbl, across(where(is.character), replace_zchar))})():</span> object 'tbl0' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ soma_joinid              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ collection_id            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "6b701826-37bb-4356-9792-ff41fc4c3161", "4195…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ collection_name          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Abdominal White Adipose Tissue", "A spatiall…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ collection_doi           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, NA, "10.1016/j.cell.2021.12.0…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_id               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "9d8e5dca-03a3-457d-b7fb-844c75735c83", "a638…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_title            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "22 integrated samples", "scRNA-seq data - my…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_h5ad_path        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "9d8e5dca-03a3-457d-b7fb-844c75735c83.h5ad", …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_total_cell_count <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 72335, 30789, 714331, 76567, 12510, 167598, 4…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">summary_cell_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">category</span><span class="op">)</span></span></span>
