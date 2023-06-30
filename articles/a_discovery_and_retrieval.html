@@ -99,10 +99,35 @@ with:</p>
 <p>This is the census we are using</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/census.html">census</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>     <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>     <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 4</span></span>
+<span><span class="co">#&gt;  $ created_on           : chr "2023-05-15T22:34:37+00:00"</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "key")= chr "created_on"</span></span>
+<span><span class="co">#&gt;  $ git_commit_sha       : chr "1598cfd"</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "key")= chr "git_commit_sha"</span></span>
+<span><span class="co">#&gt;  $ soma_encoding_version: chr "1"</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "key")= chr "soma_encoding_version"</span></span>
+<span><span class="co">#&gt;  $ soma_object_type     : chr "SOMACollection"</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "key")= chr "soma_object_type"</span></span></code></pre></div>
 <p>Discover datasets used to construct the census</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">datasets</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">datasets</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 562 × 8</span></span></span>
+<span><span class="co">#&gt;    soma_joinid collection_id           collection_name collection_doi dataset_id</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 6b701826-37bb-4356-979… Abdominal Whit… <span style="color: #BB0000;">NA</span>             9d8e5dca-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>           1 4195ab4c-20bd-4cd3-8b3… A spatially re… <span style="color: #BB0000;">NA</span>             a6388a6f-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>           2 4195ab4c-20bd-4cd3-8b3… A spatially re… <span style="color: #BB0000;">NA</span>             842c6f5d-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>           3 4195ab4c-20bd-4cd3-8b3… A spatially re… <span style="color: #BB0000;">NA</span>             74520626-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>           4 4195ab4c-20bd-4cd3-8b3… A spatially re… <span style="color: #BB0000;">NA</span>             396a9124-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>           5 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… e84f2780-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>           6 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… dfdf1ae2-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>           7 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… d1cbed97-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>           8 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… b03e4ef8-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>           9 6d203948-a779-4b69-9b3… Differential c… 10.1016/j.cel… f1f123cc-…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 552 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: dataset_title &lt;chr&gt;, dataset_h5ad_path &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   dataset_total_cell_count &lt;int&gt;</span></span></span></code></pre></div>
 <p><code>dataset_id</code> and <code>collection_id</code> can be used in
 the <a href="https://bioconductor.org/packages/cellxgenedp" class="external-link">cellxgenedp</a>
 package for programmatic retrieval and visualization of individual
@@ -111,7 +136,8 @@ datasets.</p>
 <code><a href="../reference/census_info.html">feature_data()</a></code> or <code><a href="../reference/census_info.html">observation_data()</a></code>) are
 available with</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/census.html">census_names</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/census.html">census_names</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "homo_sapiens" "mus_musculus"</span></span></code></pre></div>
 <p>Summarize information about cells in the census</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">summary_cell_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -119,11 +145,34 @@ available with</p>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
 <span>        <span class="va">organism</span>, <span class="va">label</span>,</span>
 <span>        <span class="va">unique_cell_count</span>, <span class="va">total_cell_count</span></span>
-<span>    <span class="op">)</span></span></code></pre></div>
+<span>    <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
+<span><span class="co">#&gt;   organism     label   unique_cell_count total_cell_count</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Homo sapiens female           14<span style="text-decoration: underline;">516</span>846         22<span style="text-decoration: underline;">513</span>226</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Homo sapiens male             17<span style="text-decoration: underline;">097</span>019         28<span style="text-decoration: underline;">197</span>731</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Homo sapiens unknown           2<span style="text-decoration: underline;">145</span>022          3<span style="text-decoration: underline;">083</span>771</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Mus musculus female            1<span style="text-decoration: underline;">066</span>585          1<span style="text-decoration: underline;">431</span>227</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Mus musculus male              1<span style="text-decoration: underline;">655</span>113          2<span style="text-decoration: underline;">462</span>185</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Mus musculus unknown            <span style="text-decoration: underline;">192</span>620           <span style="text-decoration: underline;">192</span>620</span></span></code></pre></div>
 <p>Learn about features (genes) in, e.g., <code>homo_sapiens</code>
 datasets in the census</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">feature_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">feature_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 52,392 × 4</span></span></span>
+<span><span class="co">#&gt;    soma_joinid feature_id         feature_name  feature_length</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 ENSMUSG00000109644 0610005C13Rik           <span style="text-decoration: underline;">3</span>583</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>           1 ENSMUSG00000108652 0610006L08Rik           <span style="text-decoration: underline;">2</span>128</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>           2 ENSMUSG00000007777 0610009B22Rik            998</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>           3 ENSMUSG00000086714 0610009E02Rik           <span style="text-decoration: underline;">1</span>803</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>           4 ENSMUSG00000043644 0610009L18Rik            619</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>           5 ENSMUSG00000042208 0610010F05Rik           <span style="text-decoration: underline;">5</span>226</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>           6 ENSMUSG00000020831 0610010K14Rik           <span style="text-decoration: underline;">1</span>896</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>           7 ENSMUSG00000089755 0610012D04Rik            531</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>           8 ENSMUSG00000107002 0610012G03Rik           <span style="text-decoration: underline;">1</span>445</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>           9 ENSMUSG00000046683 0610025J13Rik           <span style="text-decoration: underline;">1</span>121</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 52,382 more rows</span></span></span></code></pre></div>
 <p>Observation (cell) data annotations are available with
 <code><a href="../reference/census_info.html">observation_data()</a></code>. The strategy adopted is to download all
 the data to a local <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a> database.
@@ -131,20 +180,82 @@ Download can be time-consuming, but the results are ‘memoised’ so
 subsequent calls are more-or-less instantaneous.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_info.html">observation_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
-<span><span class="va">mus</span></span></code></pre></div>
+<span><span class="va">mus</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;obs&gt; [?? x 21]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17dcce1a09b.duckdb]</span></span></span>
+<span><span class="co">#&gt;    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>           1 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>           2 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesothel…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>           3 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>           4 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>           5 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            intersti…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>           6 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>           7 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>           8 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            Sertoli …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>           9 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 16 more variables: cell_type_ontology_term_id &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   development_stage &lt;chr&gt;, development_stage_ontology_term_id &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   disease &lt;chr&gt;, disease_ontology_term_id &lt;chr&gt;, donor_id &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   is_primary_data &lt;lgl&gt;, self_reported_ethnicity &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   self_reported_ethnicity_ontology_term_id &lt;chr&gt;, sex &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   sex_ontology_term_id &lt;chr&gt;, suspension_type &lt;chr&gt;, tissue &lt;chr&gt;, …</span></span></span></code></pre></div>
 <p>The columns available for cross-dataset analysis are</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "soma_joinid"                             </span></span>
+<span><span class="co">#&gt;  [2] "dataset_id"                              </span></span>
+<span><span class="co">#&gt;  [3] "assay"                                   </span></span>
+<span><span class="co">#&gt;  [4] "assay_ontology_term_id"                  </span></span>
+<span><span class="co">#&gt;  [5] "cell_type"                               </span></span>
+<span><span class="co">#&gt;  [6] "cell_type_ontology_term_id"              </span></span>
+<span><span class="co">#&gt;  [7] "development_stage"                       </span></span>
+<span><span class="co">#&gt;  [8] "development_stage_ontology_term_id"      </span></span>
+<span><span class="co">#&gt;  [9] "disease"                                 </span></span>
+<span><span class="co">#&gt; [10] "disease_ontology_term_id"                </span></span>
+<span><span class="co">#&gt; [11] "donor_id"                                </span></span>
+<span><span class="co">#&gt; [12] "is_primary_data"                         </span></span>
+<span><span class="co">#&gt; [13] "self_reported_ethnicity"                 </span></span>
+<span><span class="co">#&gt; [14] "self_reported_ethnicity_ontology_term_id"</span></span>
+<span><span class="co">#&gt; [15] "sex"                                     </span></span>
+<span><span class="co">#&gt; [16] "sex_ontology_term_id"                    </span></span>
+<span><span class="co">#&gt; [17] "suspension_type"                         </span></span>
+<span><span class="co">#&gt; [18] "tissue"                                  </span></span>
+<span><span class="co">#&gt; [19] "tissue_ontology_term_id"                 </span></span>
+<span><span class="co">#&gt; [20] "tissue_general"                          </span></span>
+<span><span class="co">#&gt; [21] "tissue_general_ontology_term_id"</span></span></code></pre></div>
 <p>It is straight-forward to summarize or query the data, e.g., for the
 number of different types of assays represented, or for studies of
 diabetes.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Source:     SQL [9 x 2]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17dcce1a09b.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Ordered by: desc(n)</span></span></span>
+<span><span class="co">#&gt;   assay                                n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 10x 3' v3                      1<span style="text-decoration: underline;">925</span>688</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 10x 3' v2                      1<span style="text-decoration: underline;">622</span>998</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Smart-seq2                      <span style="text-decoration: underline;">221</span>648</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 10x 5' v1                       <span style="text-decoration: underline;">161</span>525</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Drop-seq                         <span style="text-decoration: underline;">80</span>990</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Smart-seq                        <span style="text-decoration: underline;">48</span>972</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 10x 3' v1                        <span style="text-decoration: underline;">21</span>421</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> DroNc-seq                         <span style="text-decoration: underline;">2</span>768</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> 10x 3' transcription profiling      22</span></span>
 <span><span class="va">mus</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [2 x 4]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17dcce1a09b.duckdb]</span></span></span>
+<span><span class="co">#&gt;   disease                  sex    tissue                  n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> type 1 diabetes mellitus female islet of Langerhans <span style="text-decoration: underline;">39</span>932</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> type 2 diabetes mellitus male   islet of Langerhans <span style="text-decoration: underline;">99</span>747</span></span></code></pre></div>
 <p>Use <a href="https://cran.r-project.org/package=ggplot2" class="external-link">ggplot2</a>
 to visualize tissue type and assay.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -170,6 +281,7 @@ to visualize tissue type and assay.</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Tissue"</span>, y <span class="op">=</span> <span class="st">"Total cell count"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="a_discovery_and_retrieval_files/figure-html/mus-tissue-assay-1.png" width="700"></p>
 <p>The <code>soma_joinid</code> in the tibbles returned by
 <code><a href="../reference/census_info.html">feature_data()</a></code> and <code><a href="../reference/census_info.html">observation_data()</a></code> are
 important in retrieving counts.</p>
@@ -203,8 +315,20 @@ old or latter.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">brain_20mo</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
+<span><span class="co">#&gt;       n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">52</span>132</span></span>
 <span><span class="va">brain_20mo</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
+<span><span class="co">#&gt;   dataset_id                               n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 3bbb6cf9-72b9-41be-b568-656de6eb18b5 <span style="text-decoration: underline;">38</span>695</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 58b01044-c5e5-4b0f-8a2d-6ebf951e01ff  <span style="text-decoration: underline;">3</span>077</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 66ff82b4-9380-469c-bc4b-cfa08eacd325   756</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 98e5ea9f-16d6-47ec-a529-686e76515e39  <span style="text-decoration: underline;">5</span>180</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> c08f8441-4a10-4748-872a-e70c0bcccdba  <span style="text-decoration: underline;">4</span>424</span></span></code></pre></div>
 <p>Use these to create a <code>SingleCellExperiment</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_info.html">single_cell_experiment</a></span><span class="op">(</span><span class="st">"mus_musculus"</span>, <span class="va">random_features</span>, <span class="va">brain_20mo</span><span class="op">)</span></span>
@@ -235,7 +359,70 @@ counts were observed…</p>
 <p>This article was compiled with CxGcensus version 0.0.0.9012. Full
 session info is:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.3.1 (2023-06-16)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.2 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.4.2        CxGcensus_0.0.0.9012 RcppSpdlog_0.0.13   </span></span>
+<span><span class="co">#&gt; [4] dplyr_1.1.2         </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] gtable_0.3.3                xfun_0.39                  </span></span>
+<span><span class="co">#&gt;  [3] bslib_0.5.0                 lattice_0.21-8             </span></span>
+<span><span class="co">#&gt;  [5] vctrs_0.6.3                 tools_4.3.1                </span></span>
+<span><span class="co">#&gt;  [7] generics_0.1.3              curl_5.0.1                 </span></span>
+<span><span class="co">#&gt;  [9] tibble_3.2.1                fansi_1.0.4                </span></span>
+<span><span class="co">#&gt; [11] highr_0.10                  blob_1.2.4                 </span></span>
+<span><span class="co">#&gt; [13] pkgconfig_2.0.3             Matrix_1.5-4.1             </span></span>
+<span><span class="co">#&gt; [15] data.table_1.14.8           dbplyr_2.3.2               </span></span>
+<span><span class="co">#&gt; [17] desc_1.4.2                  assertthat_0.2.1           </span></span>
+<span><span class="co">#&gt; [19] lifecycle_1.0.3             farver_2.1.1               </span></span>
+<span><span class="co">#&gt; [21] compiler_4.3.1              stringr_1.5.0              </span></span>
+<span><span class="co">#&gt; [23] textshaping_0.3.6           munsell_0.5.0              </span></span>
+<span><span class="co">#&gt; [25] tiledbsoma_0.0.0.9024       htmltools_0.5.5            </span></span>
+<span><span class="co">#&gt; [27] sass_0.4.6                  yaml_2.3.7                 </span></span>
+<span><span class="co">#&gt; [29] pillar_1.9.0                pkgdown_2.0.7              </span></span>
+<span><span class="co">#&gt; [31] jquerylib_0.1.4             aws.s3_0.3.21              </span></span>
+<span><span class="co">#&gt; [33] cachem_1.0.8                RcppCCTZ_0.2.12            </span></span>
+<span><span class="co">#&gt; [35] tiledb_0.19.1               tidyselect_1.2.0           </span></span>
+<span><span class="co">#&gt; [37] digest_0.6.32               stringi_1.7.12             </span></span>
+<span><span class="co">#&gt; [39] duckdb_0.8.1                purrr_1.0.1                </span></span>
+<span><span class="co">#&gt; [41] labeling_0.4.2              arrow_12.0.1               </span></span>
+<span><span class="co">#&gt; [43] rprojroot_2.0.3             fastmap_1.1.1              </span></span>
+<span><span class="co">#&gt; [45] grid_4.3.1                  colorspace_2.1-0           </span></span>
+<span><span class="co">#&gt; [47] cli_3.6.1                   magrittr_2.0.3             </span></span>
+<span><span class="co">#&gt; [49] base64enc_0.1-3             cellxgene.census_0.0.0.9000</span></span>
+<span><span class="co">#&gt; [51] triebeard_0.4.1             spdl_0.0.5                 </span></span>
+<span><span class="co">#&gt; [53] utf8_1.2.3                  aws.signature_0.6.0        </span></span>
+<span><span class="co">#&gt; [55] withr_2.5.0                 scales_1.2.1               </span></span>
+<span><span class="co">#&gt; [57] bit64_4.0.5                 nanotime_0.3.7             </span></span>
+<span><span class="co">#&gt; [59] rmarkdown_2.22              httr_1.4.6                 </span></span>
+<span><span class="co">#&gt; [61] bit_4.0.5                   ragg_1.2.5                 </span></span>
+<span><span class="co">#&gt; [63] zoo_1.8-12                  memoise_2.0.1              </span></span>
+<span><span class="co">#&gt; [65] evaluate_0.21               knitr_1.43                 </span></span>
+<span><span class="co">#&gt; [67] rlang_1.1.1                 urltools_1.7.3             </span></span>
+<span><span class="co">#&gt; [69] Rcpp_1.0.10                 glue_1.6.2                 </span></span>
+<span><span class="co">#&gt; [71] DBI_1.1.3                   xml2_1.3.4                 </span></span>
+<span><span class="co">#&gt; [73] jsonlite_1.8.7              R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [75] systemfonts_1.0.4           fs_1.6.2</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
