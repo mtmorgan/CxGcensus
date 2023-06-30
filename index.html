@@ -5,14 +5,36 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="What the package does (one paragraph).">
+<meta name="description" content="CELLxGENE census
+    &lt;https://chanzuckerberg.github.io/cellxgene-census&gt; is an internet
+    resource providing access to hundreds of human and mouse
+    single-cell RNA-seq datasets. CxGcensus is an interface to this
+    resource, allowing discovery and download of datasets, features
+    (genes), and observations (individual cells) from across
+    experiments. Datasets, features, and observations are accessible
+    as familiar tibbles; measures of single-cell expression are
+    presented in the R / Bioconductor SingleCellExperiment data
+    representation for easy integration with, for example,
+    Orchestrating Single-Cell Analysis with Bioconductor
+    &lt;https://bioconductor.org/books/OSCA&gt;.">
 <title>Discover and Retrieve CELLxGENE Census Data Sets  • CxGcensus</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Discover and Retrieve CELLxGENE Census Data Sets ">
-<meta property="og:description" content="What the package does (one paragraph).">
+<meta property="og:description" content="CELLxGENE census
+    &lt;https://chanzuckerberg.github.io/cellxgene-census&gt; is an internet
+    resource providing access to hundreds of human and mouse
+    single-cell RNA-seq datasets. CxGcensus is an interface to this
+    resource, allowing discovery and download of datasets, features
+    (genes), and observations (individual cells) from across
+    experiments. Datasets, features, and observations are accessible
+    as familiar tibbles; measures of single-cell expression are
+    presented in the R / Bioconductor SingleCellExperiment data
+    representation for easy integration with, for example,
+    Orchestrating Single-Cell Analysis with Bioconductor
+    &lt;https://bioconductor.org/books/OSCA&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,7 +48,7 @@
     
     <a class="navbar-brand me-2" href="index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9011</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +59,13 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/a_discovery_and_retrieval.html">A. Data Discovery and Retrieval</a>
+    <a class="dropdown-item" href="articles/b_integration.html">B. Dataset Integration</a>
+  </div>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -63,338 +92,16 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p>CxGcensus is an alternative <em>R</em> client to the <a href="https://chanzuckerberg.github.io/cellxgene-census/" class="external-link">CELLxGENE census</a>. It emaphsizes use cases related to data discovery, and uses in-memory and on-disk caches to reduce latency associated with repeated queries.</p>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
+<p>CELLxGENE census is an internet resource providing access to hundreds of human and mouse single-cell RNA-seq datasets. ‘CxGcensus’ is an interface to this resource, allowing discovery and download of datasets, features (genes), and observations (individual cells) from across experiments. Datasets, features, and observations are accessible as familiar ‘tibbles’; measures of single-cell expression are presented in the R / Bioconductor ‘SingleCellExperiment’ data representation for easy integration with, for example, ‘Orchestrating Single-Cell Analysis with Bioconductor’ (<a href="https://bioconductor.org/books/OSCA" class="external-link">OSCA</a>).</p>
 <p>Install CxGcensus from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mtmorgan/CxGcensus"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="data-exploration">Data exploration<a class="anchor" aria-label="anchor" href="#data-exploration"></a>
-</h2>
-<p>Load the package</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mtmorgan.github.io/CxGcensus/">CxGcensus</a></span><span class="op">)</span></span></code></pre></div>
-<p>Discover datasets used to construct the census</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/census_info.html">datasets</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 562 × 8</span></span>
-<span><span class="co">#&gt;    soma_joinid collection_id           collection_name collection_doi dataset_id</span></span>
-<span><span class="co">#&gt;          &lt;int&gt; &lt;chr&gt;                   &lt;chr&gt;           &lt;chr&gt;          &lt;chr&gt;     </span></span>
-<span><span class="co">#&gt;  1           0 6b701826-37bb-4356-979… Abdominal Whit… &lt;NA&gt;           9d8e5dca-…</span></span>
-<span><span class="co">#&gt;  2           1 4195ab4c-20bd-4cd3-8b3… A spatially re… &lt;NA&gt;           a6388a6f-…</span></span>
-<span><span class="co">#&gt;  3           2 4195ab4c-20bd-4cd3-8b3… A spatially re… &lt;NA&gt;           842c6f5d-…</span></span>
-<span><span class="co">#&gt;  4           3 4195ab4c-20bd-4cd3-8b3… A spatially re… &lt;NA&gt;           74520626-…</span></span>
-<span><span class="co">#&gt;  5           4 4195ab4c-20bd-4cd3-8b3… A spatially re… &lt;NA&gt;           396a9124-…</span></span>
-<span><span class="co">#&gt;  6           5 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… e84f2780-…</span></span>
-<span><span class="co">#&gt;  7           6 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… dfdf1ae2-…</span></span>
-<span><span class="co">#&gt;  8           7 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… d1cbed97-…</span></span>
-<span><span class="co">#&gt;  9           8 74e10dc4-cbb2-4605-a18… Spatial proteo… 10.1016/j.cel… b03e4ef8-…</span></span>
-<span><span class="co">#&gt; 10           9 6d203948-a779-4b69-9b3… Differential c… 10.1016/j.cel… f1f123cc-…</span></span>
-<span><span class="co">#&gt; # ℹ 552 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 3 more variables: dataset_title &lt;chr&gt;, dataset_h5ad_path &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   dataset_total_cell_count &lt;int&gt;</span></span></code></pre></div>
-<p><code>dataset_id</code> and <code>collection_id</code> can be used in the <a href="https://bioconductor.org/packages/cellxgenedp" class="external-link">cellxgenedp</a> package for programmatic retrieval and visualization of individual datasets.</p>
-<p>The organisms present in the census (use these in calls to <code><a href="reference/census_info.html">feature_data()</a></code> or <code><a href="reference/census_info.html">observation_data()</a></code>) are available with</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/census.html">census_names</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "homo_sapiens" "mus_musculus"</span></span></code></pre></div>
-<p>Summarize information about cells in the census</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/census_info.html">summary_cell_counts</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">category</span> <span class="op">==</span> <span class="st">"sex"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>        <span class="va">organism</span>, <span class="va">label</span>,</span>
-<span>        <span class="va">unique_cell_count</span>, <span class="va">total_cell_count</span></span>
-<span>    <span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
-<span><span class="co">#&gt;   organism     label   unique_cell_count total_cell_count</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;               &lt;int&gt;            &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Homo sapiens female           14516846         22513226</span></span>
-<span><span class="co">#&gt; 2 Homo sapiens male             17097019         28197731</span></span>
-<span><span class="co">#&gt; 3 Homo sapiens unknown           2145022          3083771</span></span>
-<span><span class="co">#&gt; 4 Mus musculus female            1066585          1431227</span></span>
-<span><span class="co">#&gt; 5 Mus musculus male              1655113          2462185</span></span>
-<span><span class="co">#&gt; 6 Mus musculus unknown            192620           192620</span></span></code></pre></div>
-<p>Learn about features (genes) in, e.g., <code>homo_sapiens</code> datasets in the census</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/census_info.html">feature_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 52,392 × 4</span></span>
-<span><span class="co">#&gt;    soma_joinid feature_id         feature_name  feature_length</span></span>
-<span><span class="co">#&gt;          &lt;int&gt; &lt;chr&gt;              &lt;chr&gt;                  &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1           0 ENSMUSG00000109644 0610005C13Rik           3583</span></span>
-<span><span class="co">#&gt;  2           1 ENSMUSG00000108652 0610006L08Rik           2128</span></span>
-<span><span class="co">#&gt;  3           2 ENSMUSG00000007777 0610009B22Rik            998</span></span>
-<span><span class="co">#&gt;  4           3 ENSMUSG00000086714 0610009E02Rik           1803</span></span>
-<span><span class="co">#&gt;  5           4 ENSMUSG00000043644 0610009L18Rik            619</span></span>
-<span><span class="co">#&gt;  6           5 ENSMUSG00000042208 0610010F05Rik           5226</span></span>
-<span><span class="co">#&gt;  7           6 ENSMUSG00000020831 0610010K14Rik           1896</span></span>
-<span><span class="co">#&gt;  8           7 ENSMUSG00000089755 0610012D04Rik            531</span></span>
-<span><span class="co">#&gt;  9           8 ENSMUSG00000107002 0610012G03Rik           1445</span></span>
-<span><span class="co">#&gt; 10           9 ENSMUSG00000046683 0610025J13Rik           1121</span></span>
-<span><span class="co">#&gt; # ℹ 52,382 more rows</span></span></code></pre></div>
-<p>Observation (cell) data annotations are available with <code><a href="reference/census_info.html">observation_data()</a></code>. The strategy adopted is to download all the data to a local <a href="https://cran.r-project.org/package=duckdb" class="external-link">duckdb</a> database. Download can be time-consuming, but the results are ‘memoised’ so subsequent calls are more-or-less instantaneous.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/census_info.html">observation_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
-<span><span class="va">mus</span></span>
-<span><span class="co">#&gt; # Source:   table&lt;obs&gt; [?? x 21]</span></span>
-<span><span class="co">#&gt; # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]</span></span>
-<span><span class="co">#&gt;    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type</span></span>
-<span><span class="co">#&gt;          &lt;int&gt; &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt;                  &lt;chr&gt;    </span></span>
-<span><span class="co">#&gt;  1           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt;  2           1 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt;  3           2 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesothel…</span></span>
-<span><span class="co">#&gt;  4           3 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt;  5           4 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt;  6           5 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            intersti…</span></span>
-<span><span class="co">#&gt;  7           6 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt;  8           7 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt;  9           8 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            Sertoli …</span></span>
-<span><span class="co">#&gt; 10           9 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
-<span><span class="co">#&gt; # ℹ more rows</span></span>
-<span><span class="co">#&gt; # ℹ 16 more variables: cell_type_ontology_term_id &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   development_stage &lt;chr&gt;, development_stage_ontology_term_id &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   disease &lt;chr&gt;, disease_ontology_term_id &lt;chr&gt;, donor_id &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   is_primary_data &lt;lgl&gt;, self_reported_ethnicity &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   self_reported_ethnicity_ontology_term_id &lt;chr&gt;, sex &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   sex_ontology_term_id &lt;chr&gt;, suspension_type &lt;chr&gt;, tissue &lt;chr&gt;, …</span></span></code></pre></div>
-<p>The columns available for cross-dataset analysis are</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "soma_joinid"                             </span></span>
-<span><span class="co">#&gt;  [2] "dataset_id"                              </span></span>
-<span><span class="co">#&gt;  [3] "assay"                                   </span></span>
-<span><span class="co">#&gt;  [4] "assay_ontology_term_id"                  </span></span>
-<span><span class="co">#&gt;  [5] "cell_type"                               </span></span>
-<span><span class="co">#&gt;  [6] "cell_type_ontology_term_id"              </span></span>
-<span><span class="co">#&gt;  [7] "development_stage"                       </span></span>
-<span><span class="co">#&gt;  [8] "development_stage_ontology_term_id"      </span></span>
-<span><span class="co">#&gt;  [9] "disease"                                 </span></span>
-<span><span class="co">#&gt; [10] "disease_ontology_term_id"                </span></span>
-<span><span class="co">#&gt; [11] "donor_id"                                </span></span>
-<span><span class="co">#&gt; [12] "is_primary_data"                         </span></span>
-<span><span class="co">#&gt; [13] "self_reported_ethnicity"                 </span></span>
-<span><span class="co">#&gt; [14] "self_reported_ethnicity_ontology_term_id"</span></span>
-<span><span class="co">#&gt; [15] "sex"                                     </span></span>
-<span><span class="co">#&gt; [16] "sex_ontology_term_id"                    </span></span>
-<span><span class="co">#&gt; [17] "suspension_type"                         </span></span>
-<span><span class="co">#&gt; [18] "tissue"                                  </span></span>
-<span><span class="co">#&gt; [19] "tissue_ontology_term_id"                 </span></span>
-<span><span class="co">#&gt; [20] "tissue_general"                          </span></span>
-<span><span class="co">#&gt; [21] "tissue_general_ontology_term_id"</span></span></code></pre></div>
-<p>It is straight-forward to summarize or query the data, e.g., for the number of different types of assays represented, or for studies of diabetes.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # Source:     SQL [9 x 2]</span></span>
-<span><span class="co">#&gt; # Database:   DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]</span></span>
-<span><span class="co">#&gt; # Ordered by: desc(n)</span></span>
-<span><span class="co">#&gt;   assay                                n</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 10x 3' v3                      1925688</span></span>
-<span><span class="co">#&gt; 2 10x 3' v2                      1622998</span></span>
-<span><span class="co">#&gt; 3 Smart-seq2                      221648</span></span>
-<span><span class="co">#&gt; 4 10x 5' v1                       161525</span></span>
-<span><span class="co">#&gt; 5 Drop-seq                         80990</span></span>
-<span><span class="co">#&gt; 6 Smart-seq                        48972</span></span>
-<span><span class="co">#&gt; 7 10x 3' v1                        21421</span></span>
-<span><span class="co">#&gt; 8 DroNc-seq                         2768</span></span>
-<span><span class="co">#&gt; 9 10x 3' transcription profiling      22</span></span>
-<span><span class="va">mus</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # Source:   SQL [2 x 4]</span></span>
-<span><span class="co">#&gt; # Database: DuckDB 0.8.1 [root@Darwin 21.6.0:R 4.3.0//Users/ma38727/Library/Caches/org.R-project.R/R/CxGcensus/39d32a8aa140.duckdb]</span></span>
-<span><span class="co">#&gt;   disease                  sex    tissue                  n</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                    &lt;chr&gt;  &lt;chr&gt;               &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 type 1 diabetes mellitus female islet of Langerhans 39932</span></span>
-<span><span class="co">#&gt; 2 type 2 diabetes mellitus male   islet of Langerhans 99747</span></span></code></pre></div>
-<p>Use <a href="https://cran.r-project.org/package=ggplot2" class="external-link">ggplot2</a> to visualize tissue type and assay.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## 10 most-common tissues; total cell count</span></span>
-<span><span class="va">common_tissues</span> <span class="op">&lt;-</span></span>
-<span>    <span class="va">mus</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">tissue</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">tissue</span><span class="op">)</span></span>
-<span><span class="co">## assays on each tissue</span></span>
-<span><span class="va">tissue_and_assay</span> <span class="op">&lt;-</span></span>
-<span>    <span class="va">mus</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">tissue</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">common_tissues</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">tissue</span>, <span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## visualize</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tissue_and_assay</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">tissue</span>, levels <span class="op">=</span> <span class="va">common_tissues</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span>, fill <span class="op">=</span> <span class="va">assay</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>position<span class="op">=</span><span class="st">"stack"</span>, stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Tissue"</span>, y <span class="op">=</span> <span class="st">"Total cell count"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-mus-tissue-assay-1.png" width="100%"></p>
-<p>The <code>soma_joinid</code> in the tibbles returned by <code><a href="reference/census_info.html">feature_data()</a></code> and <code><a href="reference/census_info.html">observation_data()</a></code> are important in retrieving counts.</p>
-</div>
-<div class="section level2">
-<h2 id="singlecellexperiment">SingleCellExperiment<a class="anchor" aria-label="anchor" href="#singlecellexperiment"></a>
-</h2>
-<p>To create a Bioconductor <a href="https://bioconductor.org/packages/SingleCellExperiment" class="external-link">SingleCellExperiment</a>, perhaps for use in one of the <a href="https://bioconductor.org/books/OSCA" class="external-link">Orchestrating Single Cell Analysis with Bioconductor</a> (OSCA) workflows, first select desired features and observations. For illustration we choose 100 random genes</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span>
-<span><span class="va">features</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/census_info.html">feature_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
-<span><span class="va">random_features</span> <span class="op">&lt;-</span></span>
-<span>    <span class="va">features</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">features</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>and choose all cells from brain tissue and development stage 20 month old or latter.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">observations</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/census_info.html">observation_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
-<span><span class="va">brain_20mo</span> <span class="op">&lt;-</span></span>
-<span>    <span class="va">observations</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
-<span>        <span class="va">tissue</span> <span class="op">==</span> <span class="st">"brain"</span>,</span>
-<span>        <span class="va">development_stage</span> <span class="op">==</span> <span class="st">"20 month-old stage and over"</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Cells are from several datasets</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">brain_20mo</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 1</span></span>
-<span><span class="co">#&gt;       n</span></span>
-<span><span class="co">#&gt;   &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 52132</span></span>
-<span><span class="va">brain_20mo</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 5 × 2</span></span>
-<span><span class="co">#&gt;   dataset_id                               n</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                                &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 3bbb6cf9-72b9-41be-b568-656de6eb18b5 38695</span></span>
-<span><span class="co">#&gt; 2 58b01044-c5e5-4b0f-8a2d-6ebf951e01ff  3077</span></span>
-<span><span class="co">#&gt; 3 66ff82b4-9380-469c-bc4b-cfa08eacd325   756</span></span>
-<span><span class="co">#&gt; 4 98e5ea9f-16d6-47ec-a529-686e76515e39  5180</span></span>
-<span><span class="co">#&gt; 5 c08f8441-4a10-4748-872a-e70c0bcccdba  4424</span></span></code></pre></div>
-<p>Use these to create a <code>SingleCellExperiment</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/census_info.html">single_cell_experiment</a></span><span class="op">(</span><span class="st">"mus_musculus"</span>, <span class="va">random_features</span>, <span class="va">brain_20mo</span><span class="op">)</span></span>
-<span><span class="va">sce</span></span>
-<span><span class="co">#&gt; class: SingleCellExperiment </span></span>
-<span><span class="co">#&gt; dim: 100 52132 </span></span>
-<span><span class="co">#&gt; metadata(1): census_metadata</span></span>
-<span><span class="co">#&gt; assays(1): counts</span></span>
-<span><span class="co">#&gt; rownames: NULL</span></span>
-<span><span class="co">#&gt; rowData names(4): soma_joinid feature_id feature_name feature_length</span></span>
-<span><span class="co">#&gt; colnames: NULL</span></span>
-<span><span class="co">#&gt; colData names(21): soma_joinid dataset_id ... tissue_general</span></span>
-<span><span class="co">#&gt;   tissue_general_ontology_term_id</span></span>
-<span><span class="co">#&gt; reducedDimNames(0):</span></span>
-<span><span class="co">#&gt; mainExpName: NULL</span></span>
-<span><span class="co">#&gt; altExpNames(0):</span></span></code></pre></div>
-<p>The experiment has <code><a href="https://rdrr.io/pkg/BiocGenerics/man/dge.html" class="external-link">counts()</a></code> as a sparse (<code>dgCMatrix</code>, from the Matrix package) matrix, with <code>features</code> and <code>observations</code> available (as <em>Bioconductor</em> <code>DataFrame</code> objects, rather than tibbles) via <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> and <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code>. The data is straight-forward to work with, e.g., removing features for which no counts were observed…</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span>
-<span><span class="va">keep_rows</span> <span class="op">&lt;-</span> <span class="fu">Matrix</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/dge.html" class="external-link">counts</a></span><span class="op">(</span><span class="va">sce</span>, withDimnames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">keep_rows</span><span class="op">)</span></span>
-<span><span class="co">#&gt; keep_rows</span></span>
-<span><span class="co">#&gt; FALSE  TRUE </span></span>
-<span><span class="co">#&gt;    56    44</span></span>
-<span><span class="va">sce</span><span class="op">[</span><span class="va">keep_rows</span>,<span class="op">]</span></span>
-<span><span class="co">#&gt; class: SingleCellExperiment </span></span>
-<span><span class="co">#&gt; dim: 44 52132 </span></span>
-<span><span class="co">#&gt; metadata(1): census_metadata</span></span>
-<span><span class="co">#&gt; assays(1): counts</span></span>
-<span><span class="co">#&gt; rownames: NULL</span></span>
-<span><span class="co">#&gt; rowData names(4): soma_joinid feature_id feature_name feature_length</span></span>
-<span><span class="co">#&gt; colnames: NULL</span></span>
-<span><span class="co">#&gt; colData names(21): soma_joinid dataset_id ... tissue_general</span></span>
-<span><span class="co">#&gt;   tissue_general_ontology_term_id</span></span>
-<span><span class="co">#&gt; reducedDimNames(0):</span></span>
-<span><span class="co">#&gt; mainExpName: NULL</span></span>
-<span><span class="co">#&gt; altExpNames(0):</span></span></code></pre></div>
-<p>… or summarizing the total number of reads observed in each cell</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log1p</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/dge.html" class="external-link">counts</a></span><span class="op">(</span><span class="va">sce</span>, withDimnames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    main <span class="op">=</span> <span class="st">"Counts per cell"</span>,</span>
-<span>    xlab <span class="op">=</span> <span class="st">"log(1 + x) counts"</span>,</span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-sce-colSums-1.png" width="100%"></p>
-</div>
-<div class="section level2">
-<h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
-</h2>
-<p>This README was compiled with CxGcensus version 0.0.0.9009. Full session info is:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.3.0 Patched (2023-05-01 r84362)</span></span>
-<span><span class="co">#&gt; Platform: aarch64-apple-darwin21.6.0 (64-bit)</span></span>
-<span><span class="co">#&gt; Running under: macOS Monterey 12.6.6</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Users/ma38727/bin/R-4-3-branch/lib/libRblas.dylib </span></span>
-<span><span class="co">#&gt; LAPACK: /Users/ma38727/bin/R-4-3-branch/lib/libRlapack.dylib;  LAPACK version 3.11.0</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; locale:</span></span>
-<span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; time zone: America/New_York</span></span>
-<span><span class="co">#&gt; tzcode source: internal</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; attached base packages:</span></span>
-<span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
-<span><span class="co">#&gt; [8] base     </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] SingleCellExperiment_1.23.0 SummarizedExperiment_1.31.1</span></span>
-<span><span class="co">#&gt;  [3] Biobase_2.61.0              GenomicRanges_1.53.1       </span></span>
-<span><span class="co">#&gt;  [5] GenomeInfoDb_1.37.1         IRanges_2.35.1             </span></span>
-<span><span class="co">#&gt;  [7] S4Vectors_0.39.1            BiocGenerics_0.47.0        </span></span>
-<span><span class="co">#&gt;  [9] MatrixGenerics_1.13.0       matrixStats_1.0.0          </span></span>
-<span><span class="co">#&gt; [11] ggplot2_3.4.2               CxGcensus_0.0.0.9009       </span></span>
-<span><span class="co">#&gt; [13] RcppSpdlog_0.0.13           dplyr_1.1.2                </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] tidyselect_1.2.0            farver_2.1.1               </span></span>
-<span><span class="co">#&gt;  [3] blob_1.2.4                  urltools_1.7.3             </span></span>
-<span><span class="co">#&gt;  [5] arrow_12.0.1                bitops_1.0-7               </span></span>
-<span><span class="co">#&gt;  [7] fastmap_1.1.1               RCurl_1.98-1.12            </span></span>
-<span><span class="co">#&gt;  [9] duckdb_0.8.1                digest_0.6.31              </span></span>
-<span><span class="co">#&gt; [11] lifecycle_1.0.3             magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt; [13] compiler_4.3.0              rlang_1.1.1                </span></span>
-<span><span class="co">#&gt; [15] tools_4.3.0                 utf8_1.2.3                 </span></span>
-<span><span class="co">#&gt; [17] yaml_2.3.7                  data.table_1.14.8          </span></span>
-<span><span class="co">#&gt; [19] knitr_1.43                  S4Arrays_1.1.4             </span></span>
-<span><span class="co">#&gt; [21] labeling_0.4.2              bit_4.0.5                  </span></span>
-<span><span class="co">#&gt; [23] spdl_0.0.5                  curl_5.0.1                 </span></span>
-<span><span class="co">#&gt; [25] DelayedArray_0.27.5         aws.signature_0.6.0        </span></span>
-<span><span class="co">#&gt; [27] xml2_1.3.4                  withr_2.5.0                </span></span>
-<span><span class="co">#&gt; [29] purrr_1.0.1                 triebeard_0.4.1            </span></span>
-<span><span class="co">#&gt; [31] grid_4.3.0                  fansi_1.0.4                </span></span>
-<span><span class="co">#&gt; [33] colorspace_2.1-0            scales_1.2.1               </span></span>
-<span><span class="co">#&gt; [35] cli_3.6.1                   crayon_1.5.2               </span></span>
-<span><span class="co">#&gt; [37] rmarkdown_2.22              generics_0.1.3             </span></span>
-<span><span class="co">#&gt; [39] tiledbsoma_0.0.0.9028       httr_1.4.6                 </span></span>
-<span><span class="co">#&gt; [41] DBI_1.1.3                   cachem_1.0.8               </span></span>
-<span><span class="co">#&gt; [43] zlibbioc_1.47.0             assertthat_0.2.1           </span></span>
-<span><span class="co">#&gt; [45] XVector_0.41.1              base64enc_0.1-3            </span></span>
-<span><span class="co">#&gt; [47] vctrs_0.6.3                 Matrix_1.5-4.1             </span></span>
-<span><span class="co">#&gt; [49] jsonlite_1.8.5              bit64_4.0.5                </span></span>
-<span><span class="co">#&gt; [51] glue_1.6.2                  gtable_0.3.3               </span></span>
-<span><span class="co">#&gt; [53] aws.s3_0.3.21               munsell_0.5.0              </span></span>
-<span><span class="co">#&gt; [55] nanotime_0.3.7              tibble_3.2.1               </span></span>
-<span><span class="co">#&gt; [57] pillar_1.9.0                htmltools_0.5.5            </span></span>
-<span><span class="co">#&gt; [59] GenomeInfoDbData_1.2.10     R6_2.5.1                   </span></span>
-<span><span class="co">#&gt; [61] dbplyr_2.3.2                evaluate_0.21              </span></span>
-<span><span class="co">#&gt; [63] lattice_0.21-8              RcppCCTZ_0.2.12            </span></span>
-<span><span class="co">#&gt; [65] highr_0.10                  cellxgene.census_0.0.0.9000</span></span>
-<span><span class="co">#&gt; [67] memoise_2.0.1               tiledb_0.19.1.8            </span></span>
-<span><span class="co">#&gt; [69] Rcpp_1.0.10                 SparseArray_1.1.10         </span></span>
-<span><span class="co">#&gt; [71] xfun_0.39                   fs_1.6.2                   </span></span>
-<span><span class="co">#&gt; [73] zoo_1.8-12                  pkgconfig_2.0.3</span></span></code></pre></div>
-</div>
+<p>Articles available for further exploration include</p>
+<ul>
+<li><a href="articles/a_discovery_and_retrieval.html">A. Data Discovery and Retrieval</a></li>
+<li><a href="articles/b_integration.html">B. Dataset Integeration</a></li>
+</ul>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>

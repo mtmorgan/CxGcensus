@@ -40,7 +40,7 @@ data are accessible using SingleCellExperiment::counts()."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9011</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,13 @@ data are accessible using SingleCellExperiment::counts()."><!-- mathjax --><scri
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/a_discovery_and_retrieval.html">A. Data Discovery and Retrieval</a>
+    <a class="dropdown-item" href="../articles/b_integration.html">B. Dataset Integration</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -122,13 +129,13 @@ writing this documentation.</p></dd>
 
 <dt>features</dt>
 <dd><p>a <code>tibble</code>, typically derived from
-<code>feature_data()</code> via <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, etc., and
+<code>feature_data()</code> via <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>, <code>select()</code>, etc., and
 containing the <code>soma_joinid</code> column.</p></dd>
 
 
 <dt>observations</dt>
 <dd><p>a <code>tibble</code>, typically derived from
-<code>observation_data()</code> via <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, etc., and
+<code>observation_data()</code> via <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>, <code>select()</code>, etc., and
 containing the <code>soma_joinid</code> column.</p></dd>
 
 </dl></div>
@@ -194,123 +201,54 @@ SingleCellExperiment Biocductor package is installed, e.g., via
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">datasets</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Rows: 562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: 8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ soma_joinid              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ collection_id            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "6b701826-37bb-4356-9792-ff41fc4c3161", "4195…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ collection_name          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Abdominal White Adipose Tissue", "A spatiall…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ collection_doi           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> NA, NA, NA, NA, NA, "10.1016/j.cell.2021.12.0…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_id               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "9d8e5dca-03a3-457d-b7fb-844c75735c83", "a638…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_title            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "22 integrated samples", "scRNA-seq data - my…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_h5ad_path        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "9d8e5dca-03a3-457d-b7fb-844c75735c83.h5ad", …</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ dataset_total_cell_count <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 72335, 30789, 714331, 76567, 12510, 167598, 4…</span>
+<span class="r-in"><span>    <span class="fu">glimpse</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in datasets$read()$concat():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">summary_cell_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">category</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   category                    n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> all                         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> assay                      29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> cell_type                 830</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> disease                    73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> self_reported_ethnicity    27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sex                         6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> suspension_type             2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> tissue                    278</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> tissue_general             88</span>
+<span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">category</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in census$get("census_info")$get("summary_cell_counts")$read()$concat():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## number of cells from female, male, and 'unknown' samples in</span></span></span>
 <span class="r-in"><span><span class="co">## humans and mice</span></span></span>
 <span class="r-in"><span><span class="fu">summary_cell_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">category</span> <span class="op">==</span> <span class="st">"sex"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">category</span> <span class="op">==</span> <span class="st">"sex"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">select</span><span class="op">(</span></span></span>
 <span class="r-in"><span>        <span class="va">organism</span>, <span class="va">label</span>,</span></span>
 <span class="r-in"><span>        <span class="va">unique_cell_count</span>, <span class="va">total_cell_count</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   organism     label   unique_cell_count total_cell_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Homo sapiens female           14<span style="text-decoration: underline;">516</span>846         22<span style="text-decoration: underline;">513</span>226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Homo sapiens male             17<span style="text-decoration: underline;">097</span>019         28<span style="text-decoration: underline;">197</span>731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Homo sapiens unknown           2<span style="text-decoration: underline;">145</span>022          3<span style="text-decoration: underline;">083</span>771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Mus musculus female            1<span style="text-decoration: underline;">066</span>585          1<span style="text-decoration: underline;">431</span>227</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Mus musculus male              1<span style="text-decoration: underline;">655</span>113          2<span style="text-decoration: underline;">462</span>185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Mus musculus unknown            <span style="text-decoration: underline;">192</span>620           <span style="text-decoration: underline;">192</span>620</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in census$get("census_info")$get("summary_cell_counts")$read()$concat():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 52,392 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    soma_joinid feature_id         feature_name  feature_length</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>           0 ENSMUSG00000109644 0610005C13Rik           <span style="text-decoration: underline;">3</span>583</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>           1 ENSMUSG00000108652 0610006L08Rik           <span style="text-decoration: underline;">2</span>128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>           2 ENSMUSG00000007777 0610009B22Rik            998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>           3 ENSMUSG00000086714 0610009E02Rik           <span style="text-decoration: underline;">1</span>803</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>           4 ENSMUSG00000043644 0610009L18Rik            619</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>           5 ENSMUSG00000042208 0610010F05Rik           <span style="text-decoration: underline;">5</span>226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>           6 ENSMUSG00000020831 0610010K14Rik           <span style="text-decoration: underline;">1</span>896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>           7 ENSMUSG00000089755 0610012D04Rik            531</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>           8 ENSMUSG00000107002 0610012G03Rik           <span style="text-decoration: underline;">1</span>445</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>           9 ENSMUSG00000046683 0610025J13Rik           <span style="text-decoration: underline;">1</span>121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 52,382 more rows</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in census$get("census_data")$get(organism)$ms$get("RNA")$var$read()$concat():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu">observation_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_complete():</span> attempt to apply non-function</span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:     SQL [9 x 2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/16c0318b31cd.duckdb]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Ordered by: desc(n)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   assay                                n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 10x 3' v3                      1<span style="text-decoration: underline;">925</span>688</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 10x 3' v2                      1<span style="text-decoration: underline;">622</span>998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Smart-seq2                      <span style="text-decoration: underline;">221</span>648</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 10x 5' v1                       <span style="text-decoration: underline;">161</span>525</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Drop-seq                         <span style="text-decoration: underline;">80</span>990</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Smart-seq                        <span style="text-decoration: underline;">48</span>972</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 10x 3' v1                        <span style="text-decoration: underline;">21</span>421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> DroNc-seq                         <span style="text-decoration: underline;">2</span>768</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> 10x 3' transcription profiling      22</span>
+<span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'mus' not found</span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [2 x 4]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/16c0318b31cd.duckdb]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   disease                  sex    tissue                  n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> type 1 diabetes mellitus female islet of Langerhans <span style="text-decoration: underline;">39</span>932</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> type 2 diabetes mellitus male   islet of Langerhans <span style="text-decoration: underline;">99</span>747</span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'mus' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">features</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>   <span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="co">## rows 4, 3, 4 of the tibble</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="fu">slice</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in census$get("census_data")$get(organism)$ms$get("RNA")$var$read()$concat():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">observations</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>   <span class="fu">observation_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="co">## first two rows of the tibble</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_complete():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">assay_data</span><span class="op">(</span><span class="va">features</span>, <span class="va">observations</span>, organism <span class="op">=</span> <span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating axis and experiment queries</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> retrieving assay_data measurement 'RNA' collection 'X' layer 'raw' as a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> sparse matrix with 2 x 2 distinct features x observations</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'features' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">single_cell_experiment</span><span class="op">(</span><span class="st">"mus_musculus"</span>, <span class="va">features</span>, <span class="va">observations</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class: SingleCellExperiment </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dim: 3 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(1): census_metadata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): counts</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rownames: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(4): soma_joinid feature_id feature_name feature_length</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colnames: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colData names(21): soma_joinid dataset_id ... tissue_general</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   tissue_general_ontology_term_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> reducedDimNames(0):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mainExpName: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> altExpNames(0):</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'features' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
