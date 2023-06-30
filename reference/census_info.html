@@ -263,14 +263,31 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 52,382 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu">observation_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_next():</span> attempt to apply non-function</span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'mus' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:     SQL [9 x 2]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/179510d3e0d0.duckdb]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Ordered by: desc(n)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   assay                                n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 10x 3' v3                      1<span style="text-decoration: underline;">925</span>688</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 10x 3' v2                      1<span style="text-decoration: underline;">622</span>998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Smart-seq2                      <span style="text-decoration: underline;">221</span>648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 10x 5' v1                       <span style="text-decoration: underline;">161</span>525</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Drop-seq                         <span style="text-decoration: underline;">80</span>990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Smart-seq                        <span style="text-decoration: underline;">48</span>972</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 10x 3' v1                        <span style="text-decoration: underline;">21</span>421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> DroNc-seq                         <span style="text-decoration: underline;">2</span>768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> 10x 3' transcription profiling      22</span>
 <span class="r-in"><span><span class="va">mus</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'mus' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [2 x 4]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/179510d3e0d0.duckdb]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   disease                  sex    tissue                  n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> type 1 diabetes mellitus female islet of Langerhans <span style="text-decoration: underline;">39</span>932</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> type 2 diabetes mellitus male   islet of Langerhans <span style="text-decoration: underline;">99</span>747</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">features</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>   <span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -282,13 +299,18 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-in"><span>   <span class="co">## first two rows of the tibble</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in iter$read_next():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">assay_data</span><span class="op">(</span><span class="va">features</span>, <span class="va">observations</span>, organism <span class="op">=</span> <span class="st">"mus_musculus"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'observations' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating axis and experiment queries</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> retrieving assay_data measurement 'RNA' collection 'X' layer 'raw' as a</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> sparse matrix with 2 x 2 distinct features x observations</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in experiment_query$to_sparse_matrix(collection, layer):</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">single_cell_experiment</span><span class="op">(</span><span class="st">"mus_musculus"</span>, <span class="va">features</span>, <span class="va">observations</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'observations' not found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating axis and experiment queries</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> retrieving assay_data measurement 'RNA' collection 'X' layer 'raw' as a</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> sparse matrix with 2 x 2 distinct features x observations</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in experiment_query$to_sparse_matrix(collection, layer):</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
