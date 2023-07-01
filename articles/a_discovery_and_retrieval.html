@@ -99,16 +99,13 @@ with:</p>
 <p>This is the census we are using</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/census.html">census</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>     <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">as.vector</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 4</span></span>
 <span><span class="co">#&gt;  $ created_on           : chr "2023-05-15T22:34:37+00:00"</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "key")= chr "created_on"</span></span>
 <span><span class="co">#&gt;  $ git_commit_sha       : chr "1598cfd"</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "key")= chr "git_commit_sha"</span></span>
 <span><span class="co">#&gt;  $ soma_encoding_version: chr "1"</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "key")= chr "soma_encoding_version"</span></span>
-<span><span class="co">#&gt;  $ soma_object_type     : chr "SOMACollection"</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "key")= chr "soma_object_type"</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ soma_object_type     : chr "SOMACollection"</span></span></code></pre></div>
 <p>Discover datasets used to construct the census</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">datasets</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -182,7 +179,7 @@ subsequent calls are more-or-less instantaneous.</p>
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_info.html">observation_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
 <span><span class="va">mus</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;obs&gt; [?? x 21]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17dcce1a09b.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17f5192ad15.duckdb]</span></span></span>
 <span><span class="co">#&gt;    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type</span></span>
 <span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 be46dfdc-0f99-4731-8957-6… 10x … EFO:0011025            mesenchy…</span></span>
@@ -234,7 +231,7 @@ diabetes.</p>
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:     SQL [9 x 2]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17dcce1a09b.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17f5192ad15.duckdb]</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Ordered by: desc(n)</span></span></span>
 <span><span class="co">#&gt;   assay                                n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -251,7 +248,7 @@ diabetes.</p>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [2 x 4]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17dcce1a09b.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1040-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/17f5192ad15.duckdb]</span></span></span>
 <span><span class="co">#&gt;   disease                  sex    tissue                  n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> type 1 diabetes mellitus female islet of Langerhans <span style="text-decoration: underline;">39</span>932</span></span>
@@ -423,6 +420,185 @@ session info is:</p>
 <span><span class="co">#&gt; [71] DBI_1.1.3                   xml2_1.3.4                 </span></span>
 <span><span class="co">#&gt; [73] jsonlite_1.8.7              R6_2.5.1                   </span></span>
 <span><span class="co">#&gt; [75] systemfonts_1.0.4           fs_1.6.2</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; _R_CHECK_SYSTEM_CLOCK_</span></span>
+<span><span class="co">#&gt;                         FALSE</span></span>
+<span><span class="co">#&gt; ACCEPT_EULA             Y</span></span>
+<span><span class="co">#&gt; AGENT_TOOLSDIRECTORY    /opt/hostedtoolcache</span></span>
+<span><span class="co">#&gt; ANDROID_HOME            /usr/local/lib/android/sdk</span></span>
+<span><span class="co">#&gt; ANDROID_NDK             /usr/local/lib/android/sdk/ndk/25.2.9519653</span></span>
+<span><span class="co">#&gt; ANDROID_NDK_HOME        /usr/local/lib/android/sdk/ndk/25.2.9519653</span></span>
+<span><span class="co">#&gt; ANDROID_NDK_LATEST_HOME</span></span>
+<span><span class="co">#&gt;                         /usr/local/lib/android/sdk/ndk/25.2.9519653</span></span>
+<span><span class="co">#&gt; ANDROID_NDK_ROOT        /usr/local/lib/android/sdk/ndk/25.2.9519653</span></span>
+<span><span class="co">#&gt; ANDROID_SDK_ROOT        /usr/local/lib/android/sdk</span></span>
+<span><span class="co">#&gt; ANT_HOME                /usr/share/ant</span></span>
+<span><span class="co">#&gt; AZURE_EXTENSION_DIR     /opt/az/azcliextensions</span></span>
+<span><span class="co">#&gt; BIBINPUTS               ::/home/runner/work/CxGcensus/CxGcensus/vignettes:/opt/R/4.3.1/lib/R/share/texmf/tex/latex</span></span>
+<span><span class="co">#&gt; BOOTSTRAP_HASKELL_NONINTERACTIVE</span></span>
+<span><span class="co">#&gt;                         1</span></span>
+<span><span class="co">#&gt; BSTINPUTS               :/home/runner/work/CxGcensus/CxGcensus/vignettes:/opt/R/4.3.1/lib/R/share/texmf/bibtex/bst</span></span>
+<span><span class="co">#&gt; CALLR_IS_RUNNING        true</span></span>
+<span><span class="co">#&gt; CHROME_BIN              /usr/bin/google-chrome</span></span>
+<span><span class="co">#&gt; CHROMEWEBDRIVER         /usr/local/share/chrome_driver</span></span>
+<span><span class="co">#&gt; CI                      true</span></span>
+<span><span class="co">#&gt; CONDA                   /usr/share/miniconda</span></span>
+<span><span class="co">#&gt; CYGWIN                  nodosfilewarning</span></span>
+<span><span class="co">#&gt; DEBIAN_FRONTEND         noninteractive</span></span>
+<span><span class="co">#&gt; DEPLOYMENT_BASEPATH     /opt/runner</span></span>
+<span><span class="co">#&gt; DOTNET_MULTILEVEL_LOOKUP</span></span>
+<span><span class="co">#&gt;                         0</span></span>
+<span><span class="co">#&gt; DOTNET_NOLOGO           1</span></span>
+<span><span class="co">#&gt; DOTNET_SKIP_FIRST_TIME_EXPERIENCE</span></span>
+<span><span class="co">#&gt;                         1</span></span>
+<span><span class="co">#&gt; EDGEWEBDRIVER           /usr/local/share/edge_driver</span></span>
+<span><span class="co">#&gt; EDITOR                  vi</span></span>
+<span><span class="co">#&gt; GECKOWEBDRIVER          /usr/local/share/gecko_driver</span></span>
+<span><span class="co">#&gt; GHCUP_INSTALL_BASE_PREFIX</span></span>
+<span><span class="co">#&gt;                         /usr/local</span></span>
+<span><span class="co">#&gt; GITHUB_ACTION           __run</span></span>
+<span><span class="co">#&gt; GITHUB_ACTION_REF       </span></span>
+<span><span class="co">#&gt; GITHUB_ACTION_REPOSITORY</span></span>
+<span><span class="co">#&gt;                         </span></span>
+<span><span class="co">#&gt; GITHUB_ACTIONS          true</span></span>
+<span><span class="co">#&gt; GITHUB_ACTOR            mtmorgan</span></span>
+<span><span class="co">#&gt; GITHUB_ACTOR_ID         118552</span></span>
+<span><span class="co">#&gt; GITHUB_API_URL          https://api.github.com</span></span>
+<span><span class="co">#&gt; GITHUB_BASE_REF         </span></span>
+<span><span class="co">#&gt; GITHUB_ENV              /home/runner/work/_temp/_runner_file_commands/set_env_de41b356-b2f4-4867-b402-4ad0c681deb1</span></span>
+<span><span class="co">#&gt; GITHUB_EVENT_NAME       push</span></span>
+<span><span class="co">#&gt; GITHUB_EVENT_PATH       /home/runner/work/_temp/_github_workflow/event.json</span></span>
+<span><span class="co">#&gt; GITHUB_GRAPHQL_URL      https://api.github.com/graphql</span></span>
+<span><span class="co">#&gt; GITHUB_HEAD_REF         </span></span>
+<span><span class="co">#&gt; GITHUB_JOB              pkgdown</span></span>
+<span><span class="co">#&gt; GITHUB_OUTPUT           /home/runner/work/_temp/_runner_file_commands/set_output_de41b356-b2f4-4867-b402-4ad0c681deb1</span></span>
+<span><span class="co">#&gt; GITHUB_PAT              ghs_p9OTctYjKwgMLzM7uQU3gySWpZnbbU2GeF5K</span></span>
+<span><span class="co">#&gt; GITHUB_PATH             /home/runner/work/_temp/_runner_file_commands/add_path_de41b356-b2f4-4867-b402-4ad0c681deb1</span></span>
+<span><span class="co">#&gt; GITHUB_REF              refs/heads/main</span></span>
+<span><span class="co">#&gt; GITHUB_REF_NAME         main</span></span>
+<span><span class="co">#&gt; GITHUB_REF_PROTECTED    false</span></span>
+<span><span class="co">#&gt; GITHUB_REF_TYPE         branch</span></span>
+<span><span class="co">#&gt; GITHUB_REPOSITORY       mtmorgan/CxGcensus</span></span>
+<span><span class="co">#&gt; GITHUB_REPOSITORY_ID    657349494</span></span>
+<span><span class="co">#&gt; GITHUB_REPOSITORY_OWNER</span></span>
+<span><span class="co">#&gt;                         mtmorgan</span></span>
+<span><span class="co">#&gt; GITHUB_REPOSITORY_OWNER_ID</span></span>
+<span><span class="co">#&gt;                         118552</span></span>
+<span><span class="co">#&gt; GITHUB_RETENTION_DAYS   90</span></span>
+<span><span class="co">#&gt; GITHUB_RUN_ATTEMPT      1</span></span>
+<span><span class="co">#&gt; GITHUB_RUN_ID           5431687558</span></span>
+<span><span class="co">#&gt; GITHUB_RUN_NUMBER       36</span></span>
+<span><span class="co">#&gt; GITHUB_SERVER_URL       https://github.com</span></span>
+<span><span class="co">#&gt; GITHUB_SHA              35dc195de574a3b2d1e37d7a11db2d4a97f7de2d</span></span>
+<span><span class="co">#&gt; GITHUB_STATE            /home/runner/work/_temp/_runner_file_commands/save_state_de41b356-b2f4-4867-b402-4ad0c681deb1</span></span>
+<span><span class="co">#&gt; GITHUB_STEP_SUMMARY     /home/runner/work/_temp/_runner_file_commands/step_summary_de41b356-b2f4-4867-b402-4ad0c681deb1</span></span>
+<span><span class="co">#&gt; GITHUB_TRIGGERING_ACTOR</span></span>
+<span><span class="co">#&gt;                         mtmorgan</span></span>
+<span><span class="co">#&gt; GITHUB_WORKFLOW         pkgdown</span></span>
+<span><span class="co">#&gt; GITHUB_WORKFLOW_REF     mtmorgan/CxGcensus/.github/workflows/pkgdown.yaml@refs/heads/main</span></span>
+<span><span class="co">#&gt; GITHUB_WORKFLOW_SHA     35dc195de574a3b2d1e37d7a11db2d4a97f7de2d</span></span>
+<span><span class="co">#&gt; GITHUB_WORKSPACE        /home/runner/work/CxGcensus/CxGcensus</span></span>
+<span><span class="co">#&gt; GOROOT_1_18_X64         /opt/hostedtoolcache/go/1.18.10/x64</span></span>
+<span><span class="co">#&gt; GOROOT_1_19_X64         /opt/hostedtoolcache/go/1.19.10/x64</span></span>
+<span><span class="co">#&gt; GOROOT_1_20_X64         /opt/hostedtoolcache/go/1.20.5/x64</span></span>
+<span><span class="co">#&gt; GRADLE_HOME             /usr/share/gradle-8.1.1</span></span>
+<span><span class="co">#&gt; HOME                    /home/runner</span></span>
+<span><span class="co">#&gt; HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS</span></span>
+<span><span class="co">#&gt;                         3650</span></span>
+<span><span class="co">#&gt; HOMEBREW_NO_AUTO_UPDATE</span></span>
+<span><span class="co">#&gt;                         1</span></span>
+<span><span class="co">#&gt; ImageOS                 ubuntu22</span></span>
+<span><span class="co">#&gt; ImageVersion            20230625.1.0</span></span>
+<span><span class="co">#&gt; IN_PKGDOWN              true</span></span>
+<span><span class="co">#&gt; INVOCATION_ID           ae842de4adf646e18da2ca48546055b8</span></span>
+<span><span class="co">#&gt; JAVA_HOME               /usr/lib/jvm/temurin-11-jdk-amd64</span></span>
+<span><span class="co">#&gt; JAVA_HOME_11_X64        /usr/lib/jvm/temurin-11-jdk-amd64</span></span>
+<span><span class="co">#&gt; JAVA_HOME_17_X64        /usr/lib/jvm/temurin-17-jdk-amd64</span></span>
+<span><span class="co">#&gt; JAVA_HOME_8_X64         /usr/lib/jvm/temurin-8-jdk-amd64</span></span>
+<span><span class="co">#&gt; JOURNAL_STREAM          8:16380</span></span>
+<span><span class="co">#&gt; LANG                    C.UTF-8</span></span>
+<span><span class="co">#&gt; LANGUAGE                en</span></span>
+<span><span class="co">#&gt; LD_LIBRARY_PATH         /opt/R/4.3.1/lib/R/lib:/usr/local/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/temurin-11-jdk-amd64/lib/server:/opt/R/4.3.1/lib/R/lib:/usr/local/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/temurin-11-jdk-amd64/lib/server</span></span>
+<span><span class="co">#&gt; LEIN_HOME               /usr/local/lib/lein</span></span>
+<span><span class="co">#&gt; LEIN_JAR                /usr/local/lib/lein/self-installs/leiningen-2.10.0-standalone.jar</span></span>
+<span><span class="co">#&gt; LN_S                    ln -s</span></span>
+<span><span class="co">#&gt; MAKE                    make</span></span>
+<span><span class="co">#&gt; NOT_CRAN                true</span></span>
+<span><span class="co">#&gt; NVM_DIR                 /home/runner/.nvm</span></span>
+<span><span class="co">#&gt; PAGER                   /usr/bin/pager</span></span>
+<span><span class="co">#&gt; PATH                    /home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin</span></span>
+<span><span class="co">#&gt; PERFLOG_LOCATION_SETTING</span></span>
+<span><span class="co">#&gt;                         RUNNER_PERFLOG</span></span>
+<span><span class="co">#&gt; PIPX_BIN_DIR            /opt/pipx_bin</span></span>
+<span><span class="co">#&gt; PIPX_HOME               /opt/pipx</span></span>
+<span><span class="co">#&gt; PKGCACHE_HTTP_VERSION   2</span></span>
+<span><span class="co">#&gt; POWERSHELL_DISTRIBUTION_CHANNEL</span></span>
+<span><span class="co">#&gt;                         GitHub-Actions-ubuntu22</span></span>
+<span><span class="co">#&gt; PROCESSX_PS5LQ2WEJREO_1688224250</span></span>
+<span><span class="co">#&gt;                         YES</span></span>
+<span><span class="co">#&gt; PWD                     /home/runner/work/CxGcensus/CxGcensus</span></span>
+<span><span class="co">#&gt; R_ARCH                  </span></span>
+<span><span class="co">#&gt; R_BROWSER               false</span></span>
+<span><span class="co">#&gt; R_BZIPCMD               /usr/bin/bzip2</span></span>
+<span><span class="co">#&gt; R_CLI_NUM_COLORS        256</span></span>
+<span><span class="co">#&gt; R_DOC_DIR               /opt/R/4.3.1/lib/R/doc</span></span>
+<span><span class="co">#&gt; R_GZIPCMD               /usr/bin/gzip</span></span>
+<span><span class="co">#&gt; R_HOME                  /opt/R/4.3.1/lib/R</span></span>
+<span><span class="co">#&gt; R_INCLUDE_DIR           /opt/R/4.3.1/lib/R/include</span></span>
+<span><span class="co">#&gt; R_LIB_FOR_PAK           /opt/R/4.3.1/lib/R/site-library</span></span>
+<span><span class="co">#&gt; R_LIBS_SITE             /opt/R/4.3.1/lib/R/site-library</span></span>
+<span><span class="co">#&gt; R_LIBS_USER             /home/runner/work/_temp/Library</span></span>
+<span><span class="co">#&gt; R_PAPERSIZE             letter</span></span>
+<span><span class="co">#&gt; R_PAPERSIZE_USER        letter</span></span>
+<span><span class="co">#&gt; R_PDFVIEWER             false</span></span>
+<span><span class="co">#&gt; R_PLATFORM              x86_64-pc-linux-gnu</span></span>
+<span><span class="co">#&gt; R_PRINTCMD              /usr/bin/lpr</span></span>
+<span><span class="co">#&gt; R_RD4PDF                times,inconsolata,hyper</span></span>
+<span><span class="co">#&gt; R_SESSION_TMPDIR        /tmp/RtmpKvqHJi</span></span>
+<span><span class="co">#&gt; R_SHARE_DIR             /opt/R/4.3.1/lib/R/share</span></span>
+<span><span class="co">#&gt; R_STRIP_SHARED_LIB      strip --strip-unneeded</span></span>
+<span><span class="co">#&gt; R_STRIP_STATIC_LIB      strip --strip-debug</span></span>
+<span><span class="co">#&gt; R_SYSTEM_ABI            linux,gcc,gxx,gfortran,gfortran</span></span>
+<span><span class="co">#&gt; R_TESTS                 </span></span>
+<span><span class="co">#&gt; R_TEXI2DVICMD           /usr/bin/texi2dvi</span></span>
+<span><span class="co">#&gt; R_UNZIPCMD              /usr/bin/unzip</span></span>
+<span><span class="co">#&gt; R_ZIPCMD                /usr/bin/zip</span></span>
+<span><span class="co">#&gt; RENV_CONFIG_REPOS_OVERRIDE</span></span>
+<span><span class="co">#&gt;                         https://packagemanager.posit.co/cran/__linux__/jammy/latest</span></span>
+<span><span class="co">#&gt; RSPM                    https://packagemanager.posit.co/cran/__linux__/jammy/latest</span></span>
+<span><span class="co">#&gt; RUNNER_ARCH             X64</span></span>
+<span><span class="co">#&gt; RUNNER_ENVIRONMENT      github-hosted</span></span>
+<span><span class="co">#&gt; RUNNER_NAME             GitHub Actions 2</span></span>
+<span><span class="co">#&gt; RUNNER_OS               Linux</span></span>
+<span><span class="co">#&gt; RUNNER_PERFLOG          /home/runner/perflog</span></span>
+<span><span class="co">#&gt; RUNNER_TEMP             /home/runner/work/_temp</span></span>
+<span><span class="co">#&gt; RUNNER_TOOL_CACHE       /opt/hostedtoolcache</span></span>
+<span><span class="co">#&gt; RUNNER_TRACKING_ID      github_a4330025-b530-4a0b-b075-5d9017043950</span></span>
+<span><span class="co">#&gt; RUNNER_USER             runner</span></span>
+<span><span class="co">#&gt; RUNNER_WORKSPACE        /home/runner/work/CxGcensus</span></span>
+<span><span class="co">#&gt; SED                     /usr/bin/sed</span></span>
+<span><span class="co">#&gt; SELENIUM_JAR_PATH       /usr/share/java/selenium-server.jar</span></span>
+<span><span class="co">#&gt; SGX_AESM_ADDR           1</span></span>
+<span><span class="co">#&gt; SHLVL                   0</span></span>
+<span><span class="co">#&gt; STATS_EXT               true</span></span>
+<span><span class="co">#&gt; STATS_EXTP              https://provjobdsettingscdn.blob.core.windows.net/settings/provjobdsettings-0.5.146+9/provjobd.data</span></span>
+<span><span class="co">#&gt; STATS_NM                true</span></span>
+<span><span class="co">#&gt; STATS_RDCL              true</span></span>
+<span><span class="co">#&gt; STATS_TIS               mining</span></span>
+<span><span class="co">#&gt; STATS_TRP               true</span></span>
+<span><span class="co">#&gt; STATS_V3PS              true</span></span>
+<span><span class="co">#&gt; STATS_VMD               true</span></span>
+<span><span class="co">#&gt; SWIFT_PATH              /usr/share/swift/usr/bin</span></span>
+<span><span class="co">#&gt; SYSTEMD_EXEC_PID        668</span></span>
+<span><span class="co">#&gt; TAR                     /usr/bin/tar</span></span>
+<span><span class="co">#&gt; TEXINPUTS               :/home/runner/work/CxGcensus/CxGcensus/vignettes:/opt/R/4.3.1/lib/R/share/texmf/tex/latex</span></span>
+<span><span class="co">#&gt; TZ                      UTC</span></span>
+<span><span class="co">#&gt; USER                    runner</span></span>
+<span><span class="co">#&gt; VCPKG_INSTALLATION_ROOT</span></span>
+<span><span class="co">#&gt;                         /usr/local/share/vcpkg</span></span>
+<span><span class="co">#&gt; XDG_CONFIG_HOME         /home/runner/.config</span></span>
+<span><span class="co">#&gt; XDG_RUNTIME_DIR         /run/user/1001</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

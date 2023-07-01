@@ -102,7 +102,14 @@ packages.</p>
 <span>        <span class="va">collection_name</span> <span class="op">==</span> <span class="st">"Tabula Muris Senis"</span>,</span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"liver"</span>, <span class="va">dataset_title</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
-<span><span class="va">liver</span></span></code></pre></div>
+<span><span class="va">liver</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
+<span><span class="co">#&gt;   soma_joinid collection_id            collection_name collection_doi dataset_id</span></span>
+<span><span class="co">#&gt;         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         494 0b9d8a04-bb9d-44da-aa27… Tabula Muris S… 10.1038/s4158… 4546e757-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         516 0b9d8a04-bb9d-44da-aa27… Tabula Muris S… 10.1038/s4158… 6202a243-…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: dataset_title &lt;chr&gt;, dataset_h5ad_path &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   dataset_total_cell_count &lt;int&gt;</span></span></span></code></pre></div>
 <p>Retrieve the observations (cells) from these datasets.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dataset_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">liver</span>, <span class="va">dataset_id</span><span class="op">)</span></span>
@@ -116,8 +123,27 @@ female donors of various developmental stage.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">observations</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span>, <span class="va">assay</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="co">#&gt;   dataset_id                           assay          n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 4546e757-34d0-4d17-be06-538318925fcd Smart-seq2  <span style="text-decoration: underline;">2</span>859</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 6202a243-b713-4e12-9ced-c387f8483dea 10x 3' v2   <span style="text-decoration: underline;">7</span>294</span></span>
 <span><span class="va">observations</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span>, <span class="va">donor_id</span>, <span class="va">sex</span>, <span class="va">development_stage</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span>, <span class="va">donor_id</span>, <span class="va">sex</span>, <span class="va">development_stage</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 5</span></span></span>
+<span><span class="co">#&gt;    dataset_id                           donor_id sex    development_stage      n</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 4546e757-34d0-4d17-be06-538318925fcd 18_45_M  male   18 month-old stage   275</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 4546e757-34d0-4d17-be06-538318925fcd 18_46_F  female 18 month-old stage   533</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 4546e757-34d0-4d17-be06-538318925fcd 18_53_M  male   18 month-old stage   372</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 4546e757-34d0-4d17-be06-538318925fcd 24_58_M  male   20 month-old stag…   508</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4546e757-34d0-4d17-be06-538318925fcd 24_59_M  male   20 month-old stag…   440</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 4546e757-34d0-4d17-be06-538318925fcd 3_11_M   male   3 month-old stage    420</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 4546e757-34d0-4d17-be06-538318925fcd 3_56_F   female 3 month-old stage     82</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 4546e757-34d0-4d17-be06-538318925fcd 3_57_F   female 3 month-old stage     79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 4546e757-34d0-4d17-be06-538318925fcd 3_9_M    male   3 month-old stage    150</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 6202a243-b713-4e12-9ced-c387f8483dea 1-M-62   male   4 weeks              471</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more rows</span></span></span></code></pre></div>
 <p>Retrieve all observations to a SingleCellExperiment. Add
 <code>feature_id</code> (i.e., Ensembl gene identifiers) as row names
 for downstream analysis.</p>
