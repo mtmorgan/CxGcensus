@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   a_discovery_and_retrieval: a_discovery_and_retrieval.html
   b_integration: b_integration.html
-last_built: 2023-07-05T20:56Z
+last_built: 2023-07-06T14:17Z
 urls:
   reference: https://mtmorgan.github.io/CxGcensus/reference
   article: https://mtmorgan.github.io/CxGcensus/articles
