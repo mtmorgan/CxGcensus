@@ -48,7 +48,7 @@
     
     <a class="navbar-brand me-2" href="index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9014</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,14 +93,33 @@
 <!-- badges: end -->
 <p>CxGcensus is an alternative <em>R</em> client to the <a href="https://chanzuckerberg.github.io/cellxgene-census/" class="external-link">CELLxGENE census</a>. It emaphsizes use cases related to data discovery, and uses in-memory and on-disk caches to reduce latency associated with repeated queries.</p>
 <p>CELLxGENE census is an internet resource providing access to hundreds of human and mouse single-cell RNA-seq datasets. ‘CxGcensus’ is an interface to this resource, allowing discovery and download of datasets, features (genes), and observations (individual cells) from across experiments. Datasets, features, and observations are accessible as familiar ‘tibbles’; measures of single-cell expression are presented in the R / Bioconductor ‘SingleCellExperiment’ data representation for easy integration with, for example, ‘Orchestrating Single-Cell Analysis with Bioconductor’ (<a href="https://bioconductor.org/books/OSCA" class="external-link">OSCA</a>).</p>
-<p>Install CxGcensus from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>CxGcensus is not avialable on CRAN or Bioconductor, it can be installed using the <a href="https://cran.r-project.org/package=remotes" class="external-link">remotes</a> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mtmorgan/CxGcensus"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="st">"remotes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span>, repos <span class="op">=</span> <span class="st">"https://cran.r-project.org"</span><span class="op">)</span></span></code></pre></div>
+<p>CxGcensus imports two packages that are not available through CRAN. <a href="https://github.com/single-cell-data/TileDB-SOMA/tree/main/apis/r" class="external-link">tiledbsoma</a>, is not supported on Windows, must be installed from source, and has C++ code so requires a correctly installed compiler (see <a href="https://mac.r-project.org/tools/" class="external-link">instructions</a> for macOS XCode installation).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_git.html" class="external-link">install_git</a></span><span class="op">(</span></span>
+<span>    <span class="st">"https://github.com/single-cell-data/TileDB-SOMA.git"</span>,</span>
+<span>    subdir<span class="op">=</span><span class="st">"apis/r"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Install CxGcensus from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mtmorgan/CxGcensus"</span><span class="op">)</span></span></code></pre></div>
+<p>This should also install [cellxgene.cenus][]</p>
+<p>CxGcensus uses <a href="https://cran.r-project.org/package=arrow" class="external-link">arrow</a> ‘dataset’ capabilities, so it must be the case that</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/arrow_info.html" class="external-link">arrow_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">capabilities</span><span class="op">[[</span><span class="st">"dataset"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p>returns <code>TRUE</code>. This should be the case for linux, and for macOS binary installations from CRAN. I needed to install <a href="https://cran.r-project.org/package=arrow" class="external-link">arrow</a> from source on macOS, and had success by cloning the arrow GitHub repository, checking out the current release tag, and forcing use of autobrew</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/apache/arrow/</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> arrow/R</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout apache-arrow-12.0.0</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="va">FORCE_AUTOBREW</span><span class="op">=</span>true <span class="ex">R</span> CMD INSTALL .</span></code></pre></div>
 <p>Articles available for further exploration include</p>
 <ul>
 <li><a href="articles/a_discovery_and_retrieval.html">A. Data Discovery and Retrieval</a></li>
 <li><a href="articles/b_integration.html">B. Dataset Integeration</a></li>
+<li><a href="articles/c_compare.html">C. Comparison with CuratedAtlasQuery and cellxgene.census</a></li>
 </ul>
 </div>
   </main><aside class="col-md-3"><div class="links">
