@@ -2,6 +2,16 @@
 .onLoad <-
     function(libname, pkgname)
 {
+    arrow_dataset <- arrow::arrow_info()[["capabilities"]][["dataset"]]
+    if (!isTRUE(arrow_dataset)) {
+        stop(wrap(
+            "'", pkgname, "' requires the 'arrow' package to have been ",
+            "installed with 'dataset' capabilities. Check arrow capabilities ",
+            'with `arrow::arrow_info()[["capabilities"]][["dataset"]]`. ',
+            "See the README file for a little more information"
+        ), call. = FALSE)
+    }
+
     ## per-session memoisation
     census <<- memoise(census)
     census_names <<- memoise(census_names)

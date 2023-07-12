@@ -130,26 +130,46 @@ observation_data_download <-
 
     ## set up duckdb
     duckdb_dir <- dirname(cache_directory(census_id))
-    duckdb_file <- tempfile(
-        pattern = "", tmpdir = duckdb_dir, fileext = ".duckdb"
-    )
+    duckdb_file <- tempfile("", duckdb_dir, ".duckdb")
     con <- dbConnect(duckdb::duckdb(), duckdb_file)
-    on.exit(dbDisconnect(con))
+    on.exit(dbDisconnect(con, shutdown = TRUE))
+    table_name <- "obs"
+    view_name <- paste0(table_name, "_view")
 
     ## establish reader
     iter <- census$get("census_data")$get(organism)$get("obs")$read()
+    cmd <- paste0("CREATE TABLE '", table_name, "' as ")
     if (inherits(iter, "ReadIter")) {
         iter_progress <- progress_iterator()
         ## read in chunks and provide feedback
         while (!iter$read_complete()) {
-            tbl <- iter$read_next() |> as.data.frame()
-            dbWriteTable(con, "obs", tbl, append = TRUE)
-            iter_progress$increment(nrow(tbl))
+            ## create a VIEW
+            tbl <-
+                iter$read_next() |>
+                arrow::to_duckdb(con = con, table_name = view_name)
+            ## CREATE or INSERT INTO table
+            sql <- paste0(
+                cmd,
+                "SELECT * FROM '", view_name, "'"
+            )
+            DBI::dbExecute(con, sql)
+            ## update SQL command and iterate progress bar
+            cmd <- paste0("INSERT INTO '", table_name, "' ")
+            iter_progress$increment(tbl |> count() |> pull(n))
         }
         iter_progress$done()
     } else {
-        tbl <- iter |> as.data.frame()
-        dbWriteTable(con, "obs", tbl, append = TRUE)
+        ## craete a VIEW
+        tbl <-
+            iter |>
+            arrow::to_duckdb(con = con, table_name = view_name)
+        ## CREATE a table
+        sql <- paste0(
+            cmd,
+            "SELECT * FROM '", view_name, "'"
+        )
+        DBI::dbExecute(con, sql)
+
     }
 
     duckdb_file
@@ -196,7 +216,16 @@ observation_data <-
     stopifnot(organism %in% census_names(...))
     duckdb_file <- observation_data_download(organism, ...)
     con <- dbConnect(duckdb::duckdb(), duckdb_file, read_only = TRUE)
-    tbl(con, "obs")
+    tbl <- tbl(con, "obs")
+
+    ## arrange for quiet clean up when 'tbl' or references are no
+    ## longer referenced
+    reg.finalizer(environment(), function(...) {
+        dbDisconnect(con, shutdown = TRUE)
+    })
+    tbl$src$.cxgcensus_finalizer_environment <- environment()
+
+    tbl
 }
 
 #' @rdname census_info
