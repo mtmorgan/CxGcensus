@@ -60,8 +60,11 @@ cache_info <-
     files <- dir(cache_directory, full.names = TRUE)
     info <-
         file.info(files) |>
-        as_tibble(rownames = "file") |>
-        mutate(file = basename(file), key = sub("\\..*$", "", file))
+        as_tibble(rownames = "path") |>
+        mutate(
+            file = basename(path),
+            key = sub("\\..*$", "", file)
+        )
     key <- tibble(key = cache$keys())
     cache_info <-
         right_join(info, key, by = "key")
@@ -72,13 +75,13 @@ cache_info <-
     )
     duckdb_info <-
         file.info(duckdb_files) |>
-        as_tibble(rownames = "file") |>
-        mutate(file = basename(file))
+        as_tibble(rownames = "path") |>
+        mutate(file = basename(path))
 
     ## combine cachem- and duckdb files
     bind_rows(cache_info, duckdb_info) |>
         arrange(desc(.data$mtime)) |>
-        select(.data$file, .data$size, .data$mtime)
+        select(.data$file, .data$size, .data$mtime, .data$path)
 }
 
 ## for internal use, at the moment
