@@ -159,7 +159,7 @@ observation_data_download <-
         }
         iter_progress$done()
     } else {
-        ## craete a VIEW
+        ## create a VIEW
         tbl <-
             iter |>
             arrow::to_duckdb(con = con, table_name = view_name)
@@ -171,6 +171,13 @@ observation_data_download <-
         DBI::dbExecute(con, sql)
 
     }
+
+    ## soma_joinid needs to be type INTEGER
+    sql <- paste0(
+        "ALTER TABLE '", table_name, "' ",
+        "ALTER COLUMN soma_joinid TYPE INTEGER"
+    )
+    DBI::dbExecute(con, sql)
 
     duckdb_file
 }
@@ -221,8 +228,8 @@ observation_data <-
     ## arrange for quiet clean up when 'tbl' or references are no
     ## longer referenced
     reg.finalizer(environment(), function(...) {
-        dbDisconnect(con, shutdown = TRUE)
-    })
+        DBI::dbDisconnect(con, shutdown = TRUE)
+    }, onexit = TRUE)
     tbl$src$.cxgcensus_finalizer_environment <- environment()
 
     tbl
@@ -266,7 +273,7 @@ observation_data <-
 #'    head(2) |>
 #'    collect()
 #'
-#' counts <- assay_data(features, observations, organism = "mus_musculus")
+#' assay_data(features, observations, organism = "mus_musculus")
 #'
 #' @importFrom dplyr collect
 #'

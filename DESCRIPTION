@@ -1,6 +1,6 @@
 Package: CxGcensus
 Title: Discover and Retrieve 'CELLxGENE' Census Data Sets 
-Version: 0.0.0.9014
+Version: 0.0.0.9016
 Authors@R: 
     c(person(
         "Martin", "Morgan",
@@ -28,7 +28,8 @@ Depends: dplyr
 Imports:
     cellxgene.census,
     cachem, memoise, arrow, duckdb, dbplyr,
-    tools, Matrix
+    tools, Matrix,
+    jsonlite, rjsoncons
 Suggests: 
     ggplot2, plotly,
     knitr, rmarkdown,

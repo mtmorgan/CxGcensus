@@ -4,6 +4,16 @@ is_scalar_character <-
     is.character(x) && length(x) == 1L && !is.na(x) && nzchar(x)
 }
 
+is_census_version <-
+    function(x)
+{
+    versions <- census_versions()
+    is_scalar_character(x) && (
+        x %in% versions$version ||
+        x %in% versions$status
+    )
+}
+
 wrap <-
     function(...)
 {
@@ -57,4 +67,14 @@ progress_iterator <-
             message("") # trailing new line
     }
     list(increment = increment, done = done)
+}
+
+#' @importFrom rjsoncons jmespath
+#'
+#' @importFrom jsonlite fromJSON
+jmespathr <-
+    function(content, path)
+{
+    jmespath(content, path) |>
+        fromJSON()
 }
