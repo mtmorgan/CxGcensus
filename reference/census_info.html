@@ -40,7 +40,7 @@ data are accessible using SingleCellExperiment::counts()."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9017</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -266,10 +266,10 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-in"><span><span class="va">mus</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:     SQL [9 x 2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/252fe2bb8b1.duckdb]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/25273ae9f274.duckdb]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Ordered by: desc(n)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   assay                                n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 10x 3' v3                      1<span style="text-decoration: underline;">925</span>688</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 10x 3' v2                      1<span style="text-decoration: underline;">622</span>998</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Smart-seq2                      <span style="text-decoration: underline;">221</span>648</span>
@@ -283,11 +283,11 @@ SingleCellExperiment Biocductor package is installed, e.g., via
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">count</span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   SQL [2 x 4]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/252fe2bb8b1.duckdb]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   disease                  sex    tissue                  n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> type 2 diabetes mellitus male   islet of Langerhans <span style="text-decoration: underline;">99</span>747</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> type 1 diabetes mellitus female islet of Langerhans <span style="text-decoration: underline;">39</span>932</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/25273ae9f274.duckdb]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   disease                  sex    tissue                    n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> type 2 diabetes mellitus male   islet of Langerhans   <span style="text-decoration: underline;">99</span>747</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> type 1 diabetes mellitus female islet of Langerhans   <span style="text-decoration: underline;">39</span>932</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">features</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>   <span class="fu">feature_data</span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
