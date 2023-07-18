@@ -132,7 +132,7 @@ observation_data_download <-
     duckdb_dir <- dirname(cache_directory(census_id))
     duckdb_file <- tempfile("", duckdb_dir, ".duckdb")
     con <- dbConnect(duckdb::duckdb(), duckdb_file)
-    on.exit(dbDisconnect(con, shutdown = TRUE))
+    on.exit(dbDisconnect(con))
     table_name <- "obs"
     view_name <- paste0(table_name, "_view")
 
@@ -171,13 +171,6 @@ observation_data_download <-
         DBI::dbExecute(con, sql)
 
     }
-
-    ## soma_joinid needs to be type INTEGER
-    sql <- paste0(
-        "ALTER TABLE '", table_name, "' ",
-        "ALTER COLUMN soma_joinid TYPE INTEGER"
-    )
-    DBI::dbExecute(con, sql)
 
     duckdb_file
 }
@@ -222,7 +215,10 @@ observation_data <-
 {
     stopifnot(organism %in% census_names(...))
     duckdb_file <- observation_data_download(organism, ...)
-    con <- dbConnect(duckdb::duckdb(), duckdb_file, read_only = TRUE)
+    con <- dbConnect(
+        ## soma_joinids are BIGINT
+        duckdb::duckdb(duckdb_file, read_only = TRUE, bigint = "integer64")
+    )
     tbl <- tbl(con, "obs")
 
     ## arrange for quiet clean up when 'tbl' or references are no
