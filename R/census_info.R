@@ -132,7 +132,7 @@ observation_data_download <-
     duckdb_dir <- dirname(cache_directory(census_id))
     duckdb_file <- tempfile("", duckdb_dir, ".duckdb")
     con <- dbConnect(duckdb::duckdb(), duckdb_file)
-    on.exit(dbDisconnect(con))
+    on.exit(dbDisconnect(con, shutdown = TRUE))
     table_name <- "obs"
     view_name <- paste0(table_name, "_view")
 
@@ -275,6 +275,8 @@ observation_data <-
 #'
 #' @importMethodsFrom Matrix t
 #'
+#' @importFrom tiledbsoma SOMAAxisQuery SOMAExperimentAxisQuery
+#'
 #' @export
 assay_data <-
     function(organism, features, observations, ...)
@@ -299,12 +301,12 @@ assay_data <-
     ## ids must be unique, else they are returned twice and collated
     ## into a single row. ids are always returned in sorted order
     feature_ids <- sort(unique(pull(features, "soma_joinid")))
-    feature_query <- tiledbsoma::SOMAAxisQuery$new(coords = feature_ids)
+    feature_query <- SOMAAxisQuery$new(coords = feature_ids)
 
     observation_ids <- sort(unique(pull(observations, "soma_joinid")))
-    observation_query <- tiledbsoma::SOMAAxisQuery$new(coords = observation_ids)
+    observation_query <- SOMAAxisQuery$new(coords = observation_ids)
 
-    experiment_query <- tiledbsoma::SOMAExperimentAxisQuery$new(
+    experiment_query <- SOMAExperimentAxisQuery$new(
         experiment, measurement,
         obs_query = observation_query,
         var_query = feature_query

@@ -1,0 +1,212 @@
+---
+title: "C. Comparison with CuratedAtlasQuery and cellxgene.census"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{C. Comparison with CuratedAtlasQuery and cellxgene.census}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CxGcensus)
+```
+
+# CuratedAtlasQuery
+
+## An example query
+
+The *R* package [CuratedAtlasQueryR][] contains independently curated
+CELLxGENE data sets. Start by installing the package
+
+```{r, eval = FALSE}
+remotes::install_github("stemangiola/CuratedAtlasQueryR")
+```
+
+Load the library
+
+```{r CuratedAtlasQueryR, message = FALSE}
+library(CuratedAtlasQueryR)
+```
+
+Retrieve the (large) metadata file.
+
+```{r, message = FALSE}
+metadata <- get_metadata()
+```
+
+Query for cells from samples with 'African' ancestry, lung parenchyma
+tissue, assayed with 10x technology, and with cell type containing the
+string 'CD4'.
+
+```{r}
+single_cell_counts <-
+    metadata |>
+    dplyr::filter(
+        ethnicity == "African" &
+        stringr::str_like(assay, "%10x%") &
+        tissue == "lung parenchyma" &
+        stringr::str_like(cell_type, "%CD4%")
+    )
+single_cell_counts
+single_cell_counts |>
+    dplyr::count(dataset_id)
+```
+
+Retrieve the cells as a single-cell experiment
+
+```{r, message = FALSE}
+system.time({
+    sce_caqr <-
+        single_cell_counts |>
+        get_single_cell_experiment()
+})
+sce_caqr
+```
+
+The `assay()` data is a `DelayedArray` matrix of counts; the nature of
+the count is described in the `sce_caqr$x_normalization` column, but
+in this case is not informative.
+
+```{r}
+class(SummarizedExperiment::assay(sce_caqr))
+range(as(SummarizedExperiment::assay(sce_caqr), "sparseMatrix"))
+sce_caqr |>
+    SummarizedExperiment::colData() |>
+    as.data.frame() |>
+    dplyr::count(x_normalization)
+```
+
+[CuratedAtlasQueryR]: https://stemangiola.github.io/CuratedAtlasQueryR
+
+## The query with CxGcensus
+
+```{r}
+observations <- CxGcensus::observation_data("homo_sapiens")
+```
+
+```{r}
+obs_query <-
+    observations |>
+    filter(
+        self_reported_ethnicity == "African", # 431882 cells
+        tissue == "lung parenchyma",          # 189662 cells
+        assay %LIKE% "%10x%",                 # 189662 cells
+        cell_type %LIKE% "%CD4%"              # 3371
+    )
+
+obs_query |>
+    count(dataset_id, is_primary_data)
+
+obs_query_exact <-
+    obs_query |>
+    filter(dataset_id == "066943a2-fdac-4b29-b348-40cede398e4e") |>
+    collect()
+```
+
+```{r, eval = FALSE}
+feat_query <-
+    feature_data("homo_sapiens")
+```
+
+```{r, eval = FALSE}
+feat_query_approx <-
+    feature_data("homo_sapiens") |>
+    ## not all features are present -- SYMBOL is a very poor choice
+    ## for identifier
+    filter(feature_name %in% rownames(sce_caqr))
+```
+
+```{r, eval = FALSE}
+system.time({
+    sce_cxg <-
+        single_cell_experiment("homo_sapiens", feat_query, obs_query_exact)
+})
+```
+
+# cellxgene.census
+
+[cellxgene.census][]
+
+
+The following is based on the cellxgene census [R Quick Start][]. Load
+the package.
+
+```{r, message = FALSE, eval = FALSE}
+library(cellxgene.census)
+```
+
+Open a connection to the census as a 'soma' object, and retrieve a
+reference to the 'obs'ervation data.
+
+```{r, message = FALSE, eval = FALSE}
+soma <- open_soma(census_version = "2023-05-15")
+observation_data <- soma$get("census_data")$get("homo_sapiens")$get("obs")
+```
+
+Discover available values for filtering
+
+```{r, eval = FALSE}
+observation_data$colnames()
+```
+
+Formulate a filter using the syntax of *cellxgene.census*
+
+```{r, eval = FALSE}
+value_filter <- paste(
+    "self_reported_ethnicity == 'African'",
+    "tissue == 'lung parenchyma'",
+    "cell_type == 'CD4-positive, alpha-beta T cell'",
+    ## assay? any of "10x 5' v1", "10x 3' v2", "10x 3' v3"
+    sep = " & "
+)
+```
+
+Read the metadata associated with the query
+
+```{r, eval = FALSE}
+system.time({
+    observations <-
+        observation_data$read(value_filter = value_filter)$concat() |>
+        as.data.frame()                             # actually, tibble
+})
+observations
+observations |>
+    dplyr::count(dataset_id)
+```
+
+There are 1800 more cells and a second dataset; this is not because
+the filter did not include an 'assay' component; perhaps `soma`
+includes datasets that were not available when *CuratedAtlasQueryR*
+independently harmonized data, `suspension_type`, or to a
+hard-to-understand (for me!)  classification as primary data
+(*CuratedAtlasQueryR* return only dataset
+`066943a2-fdac-4b29-b348-40cede398e4e`)
+
+```{r, eval = FALSE}
+observations |>
+    count(dataset_id, suspension_type, is_primary_data)
+```
+
+[cellxgene.census][] does not support representaton as
+SingleCellExperiment; retrieve the Seurat object corresponding to the
+observations we are interested in.
+
+```{r, eval = FALSE}
+system.time({
+    seurat <- cellxgene.census::get_seurat(
+        census = soma,
+        organism = "Homo sapiens",
+        obs_value_filter = value_filter
+    )
+})
+```
+
+[cellxgene.census]: https://chanzuckerberg.github.io/cellxgene-census/
+[R Quick Start]:  https://chanzuckerberg.github.io/cellxgene-census/cellxgene_census_docsite_quick_start.html#r-quick-start

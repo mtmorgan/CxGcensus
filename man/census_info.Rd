@@ -149,7 +149,7 @@ observations <-
    head(2) |>
    collect()
 
-counts <- assay_data(features, observations, organism = "mus_musculus")
+assay_data(features, observations, organism = "mus_musculus")
 
 single_cell_experiment("mus_musculus", features, observations)
 
