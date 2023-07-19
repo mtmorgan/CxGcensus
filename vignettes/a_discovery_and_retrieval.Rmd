@@ -128,7 +128,8 @@ tissue_and_assay <-
     mus |>
     filter(tissue %in% common_tissues) |>
     count(tissue, assay, sort = TRUE) |>
-    collect()
+    collect() |>
+    mutate(n = as.integer(n))
 ## visualize
 ggplot(tissue_and_assay) +
     aes(x = factor(tissue, levels = common_tissues), y = n, fill = assay) +

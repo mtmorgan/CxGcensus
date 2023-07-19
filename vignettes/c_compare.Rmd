@@ -87,11 +87,11 @@ sce_caqr |>
 
 ## The query with CxGcensus
 
-```{r}
+```{r, eval = FALSE}
 observations <- CxGcensus::observation_data("homo_sapiens")
 ```
 
-```{r}
+```{r, eval = FALSE}
 obs_query <-
     observations |>
     filter(
