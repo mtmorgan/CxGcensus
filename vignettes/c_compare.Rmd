@@ -87,11 +87,25 @@ sce_caqr |>
 
 ## The query with CxGcensus
 
-```{r, eval = FALSE}
-observations <- CxGcensus::observation_data("homo_sapiens")
+The first time `observation_data()` is run, it creates a local
+database for efficient access. The database is created in 'chunks' to
+moderate memory consumption. The initial code here makes sure that
+memory consumption is modest.
+
+```{r}
+description <- cellxgene.census::get_census_version_description("stable")
+uri <- description$soma.uri
+tiledbsoma_ctx <-
+    cellxgene.census::new_SOMATileDBContext_for_census(description)
+## chunk size, from Dirk Eddelbuettel, via slack
+tiledbsoma_ctx$set("soma.init_buffer_bytes", as.character(1024**3 / 10))
+
+homo <- observation_data(
+    "homo_sapiens", uri = uri, tiledbsoma_ctx = tiledbsoma_ctx
+)
 ```
 
-```{r, eval = FALSE}
+```{r}
 obs_query <-
     observations |>
     filter(

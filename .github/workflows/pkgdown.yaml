@@ -29,18 +29,23 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
+          extra-repositories: https://tiledb-inc.r-universe.dev
+          Ncpus: "2"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           cache: true
-          extra-packages: any::remotes, any::pkgdown, local::.
+          extra-packages: |
+            any::remotes
+            any::pkgdown
+            local::.
           needs: website
 
       # - name: install tiledbsoma
       #   ## Install the latest tiledbsoma package, overwriting any
       #   ## version cached by setup-r-dependencies. See
       #   ## https://github.com/single-cell-data/TileDB-SOMA/issues/1520#issuecomment-1622898360
-      #   run: Rscript -e 'remotes::install_git("https://github.com/single-cell-data/TileDB-SOMA.git", subdir="apis/r")'
+      #   run: Rscript -e 'options(Ncpus = parallel::detectCores()); remotes::install_github("single-cell-data/TileDB-SOMA", subdir="apis/r")'
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE)

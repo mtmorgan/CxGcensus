@@ -111,9 +111,12 @@ feature_data <-
     as.data.frame(tbl)
 }
 
-#' @importFrom duckdb duckdb
+#' @importFrom duckdb duckdb duckdb_register_arrow
+#'     duckdb_unregister_arrow
 #'
-#' @importMethodsFrom duckdb dbConnect dbDisconnect dbWriteTable
+#' @importMethodsFrom duckdb dbConnect dbDisconnect
+#'
+#' @importMethodsFrom DBI dbGetQuery dbExecute
 observation_data_download <-
     function(organism, ...)
 {
@@ -135,6 +138,7 @@ observation_data_download <-
     on.exit(dbDisconnect(con, shutdown = TRUE))
     table_name <- "obs"
     view_name <- paste0(table_name, "_view")
+    sql_view_count <- paste0("SELECT COUNT(*) AS n FROM '", view_name, "'")
 
     ## establish reader
     iter <- census$get("census_data")$get(organism)$get("obs")$read()
@@ -144,32 +148,27 @@ observation_data_download <-
         ## read in chunks and provide feedback
         while (!iter$read_complete()) {
             ## create a VIEW
-            tbl <-
-                iter$read_next() |>
-                arrow::to_duckdb(con = con, table_name = view_name)
-            ## CREATE or INSERT INTO table
-            sql <- paste0(
-                cmd,
-                "SELECT * FROM '", view_name, "'"
-            )
-            DBI::dbExecute(con, sql)
+            duckdb_register_arrow(con, view_name, iter$read_next())
+            nrow <-
+                dbGetQuery(con, sql_view_count)[["n"]] |>
+                as.integer()
+            ## CREATE or INSERT INTO table, unregister view
+            sql <- paste0(cmd, "SELECT * FROM '", view_name, "'")
+            dbExecute(con, sql)
+            duckdb_unregister_arrow(con, view_name)
             ## update SQL command and iterate progress bar
             cmd <- paste0("INSERT INTO '", table_name, "' ")
-            iter_progress$increment(tbl |> count() |> pull(n))
+            gc() # memory management
+            iter_progress$increment(nrow)
         }
         iter_progress$done()
     } else {
         ## create a VIEW
-        tbl <-
-            iter |>
-            arrow::to_duckdb(con = con, table_name = view_name)
-        ## CREATE a table
-        sql <- paste0(
-            cmd,
-            "SELECT * FROM '", view_name, "'"
-        )
-        DBI::dbExecute(con, sql)
-
+        duckdb_register_arrow(con, view_name, iter$read_next())
+        ## CREATE a table, unregister view
+        sql <- paste0(cmd, "SELECT * FROM '", view_name, "'")
+        dbExecute(con, sql)
+        duckdb_unregister_arrow(con, view_name)
     }
 
     duckdb_file
