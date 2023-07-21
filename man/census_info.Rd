@@ -9,22 +9,47 @@
 \alias{single_cell_experiment}
 \title{Discover census datasets, cells, features, and observations}
 \usage{
-datasets(...)
+datasets(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
-summary_cell_counts(...)
+summary_cell_counts(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
-feature_data(organism, ...)
+feature_data(organism, version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
-observation_data(organism, ...)
+observation_data(
+  organism,
+  version = "stable",
+  uri = NULL,
+  tiledbsoma_ctx = NULL
+)
 
-assay_data(organism, features, observations, ...)
+assay_data(
+  organism,
+  features,
+  observations,
+  version = "stable",
+  uri = NULL,
+  tiledbsoma_ctx = NULL
+)
 
-single_cell_experiment(organism, features, observations, ...)
+single_cell_experiment(
+  organism,
+  features,
+  observations,
+  version = "stable",
+  uri = NULL,
+  tiledbsoma_ctx = NULL
+)
 }
 \arguments{
-\item{...}{arguments passed to \code{\link[=census]{census()}}, specifying the census
-release to be used. When missing, the default (current stable)
-census is used.}
+\item{version}{The version (date) of the census to use. \code{version = "stable"} indicates the most recent stable release; \code{version = "latest"} is the most recent release. Additional dates are
+available with \code{census_versions()}.}
+
+\item{uri}{The uri corresponding to census \code{version}; this is
+usually discovered automatically.}
+
+\item{tiledbsoma_ctx}{A 'context' providing mostly low-level flags
+influencing the performance of tiledbsoma. One illustration of
+this functionality is in the body of the \code{census()} function.}
 
 \item{organism}{one of the values returned by \code{census_names()},
 specifically 'homo_sapiens' or 'mus_musculus' at the time of
@@ -110,8 +135,8 @@ and organism. Duplicate rows in \code{features} and \code{observations}
 are allowed.
 
 \code{single_cell_experiment()} requires that the
-SingleCellExperiment Biocductor package is installed, e.g., via
-\code{BiocManager::install("SingleCellExperiment")}.
+SingleCellExperiment Bioconductor package is installed, e.g.,
+via \code{BiocManager::install("SingleCellExperiment")}.
 }
 \examples{
 datasets() |>

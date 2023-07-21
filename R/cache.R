@@ -62,8 +62,8 @@ cache_info <-
         file.info(files) |>
         as_tibble(rownames = "path") |>
         mutate(
-            file = basename(path),
-            key = sub("\\..*$", "", file)
+            file = basename(.data$path),
+            key = sub("\\..*$", "", .data$file)
         )
     key <- tibble(key = cache$keys())
     cache_info <-
@@ -76,7 +76,7 @@ cache_info <-
     duckdb_info <-
         file.info(duckdb_files) |>
         as_tibble(rownames = "path") |>
-        mutate(file = basename(path))
+        mutate(file = basename(.data$path))
 
     ## combine cachem- and duckdb files
     bind_rows(cache_info, duckdb_info) |>
@@ -109,7 +109,7 @@ cache_remove_duplicate_duckdb <-
         cache_info(id) |>
         ## file paths -- plain character vectors
         filter(.data$size < 500) |>
-        mutate(key = sub("\\..*", "", file)) |>
+        mutate(key = sub("\\..*", "", .data$file)) |>
         pull(key)
     cache <- cache(id)
 
@@ -140,8 +140,14 @@ cache <-
     cache_disk(cache_directory(id))
 }
 
-memoise_disk <-
-    function(f, ...)
+memoise_memory <-
+    function(f)
 {
-    memoise(f, ..., cache = cache())
+    memoise(f, omit_args = c("uri", "tiledbsoma_ctx"))
+}
+
+memoise_disk <-
+    function(f)
+{
+    memoise(f, omit_args = c("uri", "tiledbsoma_ctx"), cache = cache())
 }

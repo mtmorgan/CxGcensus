@@ -4,31 +4,32 @@
 \alias{census}
 \alias{census_id}
 \alias{census_names}
+\alias{census_versions}
 \alias{show_package_versions}
 \title{Obtain a reference to a CELLxGENE 'SOMA' collection}
 \usage{
-census(census_version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
+census(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
-census_id(...)
+census_id(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
-census_names(...)
+census_names(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
+
+census_versions()
 }
 \arguments{
-\item{census_version}{see \code{?cellxgene.census::open_soma}}
+\item{version}{The version (date) of the census to use. \code{version = "stable"} indicates the most recent stable release; \code{version = "latest"} is the most recent release. Additional dates are
+available with \code{census_versions()}.}
 
-\item{uri}{see \code{?cellxgene.census::open_soma}}
+\item{uri}{The uri corresponding to census \code{version}; this is
+usually discovered automatically.}
 
-\item{tiledbsoma_ctx}{see \code{?cellxgene.census::open_soma}}
-
-\item{...}{arguments passed to \code{census()}.}
-
-\item{census}{an object returned by \code{census()}; if present, this
-overrides specifications in \code{...}.}
+\item{tiledbsoma_ctx}{A 'context' providing mostly low-level flags
+influencing the performance of tiledbsoma. One illustration of
+this functionality is in the body of the \code{census()} function.}
 }
 \value{
 \code{census()} returns a \code{tiledbsoma::SOMACollection} object. Details
-of the \code{census_version} are available with
-\code{census()$get_metadata()}
+of the census are available with \code{census()$get_metadata()}
 
 \code{census_id()} returns the 7-character git commit sha that
 uniquely identifies the current release of the census.
@@ -36,9 +37,13 @@ uniquely identifies the current release of the census.
 \code{census_names()} returns a character vector of possible
 values. Use these values in calls to, e.g., \code{feature_data()} or
 \code{observation_data()}.
+
+\code{census_versions()} returns a tibble with a column of
+available versions (release dates), and a 'status' column
+indicating the 'stable' and 'latest' versions.
 }
 \description{
-\code{census()} queries CELLxGENE for a particulalr census.
+\code{census()} queries CELLxGENE for a particular census.
 
 \code{census_id()} reports a unique identifier for a
 particular census version.
@@ -46,6 +51,9 @@ particular census version.
 \code{census_names()} queries the census for available
 'experiments'. In CELLxGENE, experiments correspond to
 organisms, e.g., \code{"homo_sapiens"} or \code{"mus_musculus"}.
+
+\code{census_versions()} queries the CELLxGENE server for
+available versions. Versions are denoted by release date.
 }
 \details{
 \code{census()} is 'memoised', requiring high-latency internet access
@@ -58,6 +66,8 @@ census()$get_metadata()
 census_id()
 
 census_names()
+
+census_versions()
 
 tiledbsoma::show_package_versions()
 }

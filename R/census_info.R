@@ -5,9 +5,7 @@
 #' @description `datasets()` queries CELLxGENE for datasets used in
 #'     constructing the census.
 #'
-#' @param ... arguments passed to [census()], specifying the census
-#'     release to be used. When missing, the default (current stable)
-#'     census is used.
+#' @inheritParams census
 #'
 #' @details
 #'
@@ -26,11 +24,11 @@
 #'
 #' @export
 datasets <-
-    function(...)
+    function(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 {
     if (interactive())
         message("retrieving datasets...")
-    census <- census(...)
+    census <- census(version, uri, tiledbsoma_ctx)
     tbl <- census$get("census_info")$get("datasets")$read()
     if (inherits(tbl, "ReadIter"))
         tbl <- tbl$concat()
@@ -71,11 +69,13 @@ datasets <-
 #'
 #' @export
 summary_cell_counts <-
-    function(...)
+    function(
+        version = "stable", uri = NULL, tiledbsoma_ctx = NULL
+    )
 {
     if (interactive())
         message("retrieving summary_cell_counts...")
-    census <- census(...)
+    census <- census(version, uri, tiledbsoma_ctx)
     tbl <- census$get("census_info")$get("summary_cell_counts")$read()
     if (inherits(tbl, "ReadIter"))
         tbl <- tbl$concat()
@@ -99,12 +99,15 @@ summary_cell_counts <-
 #'
 #' @export
 feature_data <-
-    function(organism, ...)
+    function(
+        organism,
+        version = "stable", uri = NULL, tiledbsoma_ctx = NULL
+    )
 {
-    stopifnot(organism %in% census_names(...))
+    stopifnot(organism %in% census_names(version, uri, tiledbsoma_ctx))
     if (interactive())
         message("retrieving feature_data...")
-    census <- census(...)
+    census <- census(version, uri, tiledbsoma_ctx)
     tbl <- census$get("census_data")$get(organism)$ms$get("RNA")$var$read()
     if (inherits(tbl, "ReadIter"))
         tbl <- tbl$concat()
@@ -118,10 +121,13 @@ feature_data <-
 #'
 #' @importMethodsFrom DBI dbGetQuery dbExecute
 observation_data_download <-
-    function(organism, ...)
+    function(
+        organism, 
+        version = "stable", uri = NULL, tiledbsoma_ctx = NULL
+    )
 {
-    census <- census(...)
-    census_id <- census_id(...)
+    census <- census(version, uri, tiledbsoma_ctx)
+    census_id <- census_id(version, uri, tiledbsoma_ctx)
 
     if (interactive()) {
         message(wrap(
@@ -210,10 +216,12 @@ observation_data_download <-
 #'
 #' @export
 observation_data <-
-    function(organism, ...)
+    function(organism, version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 {
-    stopifnot(organism %in% census_names(...))
-    duckdb_file <- observation_data_download(organism, ...)
+    stopifnot(organism %in% census_names(version, uri, tiledbsoma_ctx))
+    duckdb_file <- observation_data_download(
+        organism, version, uri, tiledbsoma_ctx
+    )
     con <- dbConnect(
         ## soma_joinids are BIGINT
         duckdb::duckdb(duckdb_file, read_only = TRUE, bigint = "integer64")
@@ -278,7 +286,10 @@ observation_data <-
 #'
 #' @export
 assay_data <-
-    function(organism, features, observations, ...)
+    function(
+        organism, features, observations,
+        version = "stable", uri = NULL, tiledbsoma_ctx = NULL
+    )
 {
     stopifnot(
         inherits(features, "tbl"),
@@ -287,13 +298,13 @@ assay_data <-
         inherits(observations, "tbl"),
         "soma_joinid" %in% names(observations),
         !anyNA(observations$soma_joinid),
-        organism %in% census_names(...)
+        organism %in% census_names(version, uri, tiledbsoma_ctx)
     )
     measurement <- "RNA"
     collection <- "X"
     layer <- "raw"
 
-    census <- census(...)
+    census <- census(version, uri, tiledbsoma_ctx)
     experiment <- census$get("census_data")$get(organism)
 
     message("creating axis and experiment queries")
@@ -346,19 +357,25 @@ assay_data <-
 #'     data are accessible using `SingleCellExperiment::counts()`.
 #'
 #' @details `single_cell_experiment()` requires that the
-#'     SingleCellExperiment Biocductor package is installed, e.g., via
-#'     `BiocManager::install("SingleCellExperiment")`.
+#'     SingleCellExperiment Bioconductor package is installed, e.g.,
+#'     via `BiocManager::install("SingleCellExperiment")`.
 #'
 #' @examples
 #' single_cell_experiment("mus_musculus", features, observations)
 #'
 #' @export
 single_cell_experiment <-
-    function(organism, features, observations, ...)
+    function(
+        organism, features, observations,
+        version = "stable", uri = NULL, tiledbsoma_ctx = NULL
+    )
 {
-    census <- census(...)
+    census <- census(version, uri, tiledbsoma_ctx)
     sce <- single_cell_experiment_constructor()
-    assay <- assay_data(organism, features, observations, ...)
+    assay <- assay_data(
+        organism, features, observations,
+        version, uri, tiledbsoma_ctx
+    )
 
     dimnames(assay) <- list(NULL, NULL)
     ## 'observations' may not yet have been realized...

@@ -14,13 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(CxGcensus)
-```
-
 # CuratedAtlasQuery
-
-## An example query
 
 The *R* package [CuratedAtlasQueryR][] contains independently curated
 CELLxGENE data sets. Start by installing the package
@@ -85,7 +79,11 @@ sce_caqr |>
 
 [CuratedAtlasQueryR]: https://stemangiola.github.io/CuratedAtlasQueryR
 
-## The query with CxGcensus
+# CxGcensus
+
+```{r setup, message = FALSE}
+library(CxGcensus)
+```
 
 The first time `observation_data()` is run, it creates a local
 database for efficient access. The database is created in 'chunks' to
@@ -98,16 +96,17 @@ uri <- description$soma.uri
 tiledbsoma_ctx <-
     cellxgene.census::new_SOMATileDBContext_for_census(description)
 ## chunk size, from Dirk Eddelbuettel, via slack
-tiledbsoma_ctx$set("soma.init_buffer_bytes", as.character(1024**3 / 10))
+tiledbsoma_ctx$set("soma.init_buffer_bytes", as.character(1024**2))
 
 homo <- observation_data(
     "homo_sapiens", uri = uri, tiledbsoma_ctx = tiledbsoma_ctx
 )
+homo
 ```
 
-```{r}
+```{r, eval = FALSE}
 obs_query <-
-    observations |>
+    homo |>
     filter(
         self_reported_ethnicity == "African", # 431882 cells
         tissue == "lung parenchyma",          # 189662 cells
