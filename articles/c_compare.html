@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9018</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9022</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,38 +79,24 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mtmorgan.github.io/CxGcensus/">CxGcensus</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: dplyr</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="curatedatlasquery">CuratedAtlasQuery<a class="anchor" aria-label="anchor" href="#curatedatlasquery"></a>
 </h2>
-<div class="section level3">
-<h3 id="an-example-query">An example query<a class="anchor" aria-label="anchor" href="#an-example-query"></a>
-</h3>
 <p>The <em>R</em> package <a href="https://stemangiola.github.io/CuratedAtlasQueryR" class="external-link">CuratedAtlasQueryR</a>
 contains independently curated CELLxGENE data sets. Start by installing
 the package</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"stemangiola/CuratedAtlasQueryR"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the library</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/stemangiola/CuratedAtlasQueryR" class="external-link">CuratedAtlasQueryR</a></span><span class="op">)</span></span></code></pre></div>
 <p>Retrieve the (large) metadata file.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/CuratedAtlasQueryR/man/get_metadata.html" class="external-link">get_metadata</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Query for cells from samples with ‘African’ ancestry, lung parenchyma
 tissue, assayed with 10x technology, and with cell type containing the
 string ‘CD4’.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">single_cell_counts</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">metadata</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
@@ -149,14 +135,14 @@ string ‘CD4’.</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 066943a2-fdac-4b29-b348-40cede398e4e  <span style="text-decoration: underline;">1</span>571</span></span></code></pre></div>
 <p>Retrieve the cells as a single-cell experiment</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">sce_caqr</span> <span class="op">&lt;-</span></span>
 <span>        <span class="va">single_cell_counts</span> <span class="op">|&gt;</span></span>
 <span>        <span class="fu"><a href="https://rdrr.io/pkg/CuratedAtlasQueryR/man/get_single_cell_experiment.html" class="external-link">get_single_cell_experiment</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   3.290   0.231  14.946</span></span>
+<span><span class="co">#&gt;   3.993   0.423  14.484</span></span>
 <span><span class="va">sce_caqr</span></span>
 <span><span class="co">#&gt; class: SingleCellExperiment </span></span>
 <span><span class="co">#&gt; dim: 36229 1571 </span></span>
@@ -174,7 +160,7 @@ string ‘CD4’.</p>
 of counts; the nature of the count is described in the
 <code>sce_caqr$x_normalization</code> column, but in this case is not
 informative.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">sce_caqr</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "DelayedMatrix"</span></span>
 <span><span class="co">#&gt; attr(,"package")</span></span>
@@ -188,14 +174,30 @@ informative.</p>
 <span><span class="co">#&gt;   x_normalization    n</span></span>
 <span><span class="co">#&gt; 1          custom 1571</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="the-query-with-cxgcensus">The query with CxGcensus<a class="anchor" aria-label="anchor" href="#the-query-with-cxgcensus"></a>
-</h3>
+<div class="section level2">
+<h2 id="cxgcensus">CxGcensus<a class="anchor" aria-label="anchor" href="#cxgcensus"></a>
+</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mtmorgan.github.io/CxGcensus/">CxGcensus</a></span><span class="op">)</span></span></code></pre></div>
+<p>The first time <code><a href="../reference/census_info.html">observation_data()</a></code> is run, it creates a
+local database for efficient access. The database is created in ‘chunks’
+to moderate memory consumption. The initial code here makes sure that
+memory consumption is modest.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">observations</span> <span class="op">&lt;-</span> <span class="fu">CxGcensus</span><span class="fu">::</span><span class="fu"><a href="../reference/census_info.html">observation_data</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">description</span> <span class="op">&lt;-</span> <span class="fu">cellxgene.census</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/cellxgene.census/man/get_census_version_description.html" class="external-link">get_census_version_description</a></span><span class="op">(</span><span class="st">"stable"</span><span class="op">)</span></span>
+<span><span class="va">uri</span> <span class="op">&lt;-</span> <span class="va">description</span><span class="op">$</span><span class="va">soma.uri</span></span>
+<span><span class="va">tiledbsoma_ctx</span> <span class="op">&lt;-</span></span>
+<span>    <span class="fu">cellxgene.census</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/cellxgene.census/man/new_SOMATileDBContext_for_census.html" class="external-link">new_SOMATileDBContext_for_census</a></span><span class="op">(</span><span class="va">description</span><span class="op">)</span></span>
+<span><span class="co">## chunk size, from Dirk Eddelbuettel, via slack</span></span>
+<span><span class="va">tiledbsoma_ctx</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">"soma.init_buffer_bytes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1024</span><span class="op">**</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">homo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_info.html">observation_data</a></span><span class="op">(</span></span>
+<span>    <span class="st">"homo_sapiens"</span>, uri <span class="op">=</span> <span class="va">uri</span>, tiledbsoma_ctx <span class="op">=</span> <span class="va">tiledbsoma_ctx</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">homo</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs_query</span> <span class="op">&lt;-</span></span>
-<span>    <span class="va">observations</span> <span class="op">|&gt;</span></span>
+<span>    <span class="va">homo</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>        <span class="va">self_reported_ethnicity</span> <span class="op">==</span> <span class="st">"African"</span>, <span class="co"># 431882 cells</span></span>
 <span>        <span class="va">tissue</span> <span class="op">==</span> <span class="st">"lung parenchyma"</span>,          <span class="co"># 189662 cells</span></span>
@@ -224,7 +226,6 @@ informative.</p>
 <span>    <span class="va">sce_cxg</span> <span class="op">&lt;-</span></span>
 <span>        <span class="fu"><a href="../reference/census_info.html">single_cell_experiment</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span>, <span class="va">feat_query</span>, <span class="va">obs_query_exact</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="cellxgene-census">cellxgene.census<a class="anchor" aria-label="anchor" href="#cellxgene-census"></a>
