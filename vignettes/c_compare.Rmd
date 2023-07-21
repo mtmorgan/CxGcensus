@@ -90,7 +90,7 @@ database for efficient access. The database is created in 'chunks' to
 moderate memory consumption. The initial code here makes sure that
 memory consumption is modest.
 
-```{r}
+```{r, eval = FALSE}
 description <- cellxgene.census::get_census_version_description("stable")
 uri <- description$soma.uri
 tiledbsoma_ctx <-
