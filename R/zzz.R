@@ -13,7 +13,7 @@
     }
 
     ## per-session memoisation
-    census <<- memoise_memory(census)
+    census <<- memoise_memory(census, omit_args = NULL)
     census_names <<- memoise_memory(census_names)
     census_versions <<- memoise(census_versions)
 
@@ -23,6 +23,6 @@
         summary_cell_counts <<- memoise_disk(summary_cell_counts)
         feature_data <<- memoise_disk(feature_data)
         observation_data_download <<- memoise_disk(observation_data_download)
-        ## assay_data <<- memoise_disk(assay_data)
+        assay_data <<- memoise_disk(assay_data)
     })
 }

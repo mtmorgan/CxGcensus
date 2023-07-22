@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+rm(list=ls()); gc(); gc()
 ```
 
 # CuratedAtlasQuery
@@ -79,6 +80,9 @@ sce_caqr |>
 
 [CuratedAtlasQueryR]: https://stemangiola.github.io/CuratedAtlasQueryR
 
+```{r, include = FALSE}
+rm(list = c("metadata", "single_cell_counts")); gc(); gc()
+
 # CxGcensus
 
 ```{r setup, message = FALSE}
@@ -90,21 +94,22 @@ database for efficient access. The database is created in 'chunks' to
 moderate memory consumption. The initial code here makes sure that
 memory consumption is modest.
 
-```{r, eval = FALSE}
+```{r}
 description <- cellxgene.census::get_census_version_description("stable")
 uri <- description$soma.uri
 tiledbsoma_ctx <-
     cellxgene.census::new_SOMATileDBContext_for_census(description)
 ## chunk size, from Dirk Eddelbuettel, via slack
-tiledbsoma_ctx$set("soma.init_buffer_bytes", as.character(1024**2))
+tiledbsoma_ctx$set("soma.init_buffer_bytes", as.character(1024**2 * 100))
 
 homo <- observation_data(
     "homo_sapiens", uri = uri, tiledbsoma_ctx = tiledbsoma_ctx
 )
 homo
+cache_info()
 ```
 
-```{r, eval = FALSE}
+```{r}
 obs_query <-
     homo |>
     filter(
@@ -123,12 +128,12 @@ obs_query_exact <-
     collect()
 ```
 
-```{r, eval = FALSE}
+```{r}
 feat_query <-
     feature_data("homo_sapiens")
 ```
 
-```{r, eval = FALSE}
+```{r}
 feat_query_approx <-
     feature_data("homo_sapiens") |>
     ## not all features are present -- SYMBOL is a very poor choice
@@ -136,11 +141,16 @@ feat_query_approx <-
     filter(feature_name %in% rownames(sce_caqr))
 ```
 
-```{r, eval = FALSE}
+```{r}
 system.time({
     sce_cxg <-
         single_cell_experiment("homo_sapiens", feat_query, obs_query_exact)
 })
+sce_cxg
+```
+
+```{r, include = FALSE}
+rm(list = c("homo", "obs_query", "feat_query", "sce_cxg")); gc(); gc()
 ```
 
 # cellxgene.census
@@ -151,27 +161,30 @@ system.time({
 The following is based on the cellxgene census [R Quick Start][]. Load
 the package.
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 library(cellxgene.census)
 ```
 
 Open a connection to the census as a 'soma' object, and retrieve a
 reference to the 'obs'ervation data.
 
-```{r, message = FALSE, eval = FALSE}
-soma <- open_soma(census_version = "2023-05-15")
+```{r, message = FALSE}
+soma <- open_soma(
+    census_version = "2023-05-15", uri = uri, tiledbsoma_ctx = tiledbsoma_ctx
+)
 observation_data <- soma$get("census_data")$get("homo_sapiens")$get("obs")
+observation_data
 ```
 
-Discover available values for filtering
+Discover available facets for filtering
 
-```{r, eval = FALSE}
+```{r}
 observation_data$colnames()
 ```
 
 Formulate a filter using the syntax of *cellxgene.census*
 
-```{r, eval = FALSE}
+```{r}
 value_filter <- paste(
     "self_reported_ethnicity == 'African'",
     "tissue == 'lung parenchyma'",
@@ -183,7 +196,7 @@ value_filter <- paste(
 
 Read the metadata associated with the query
 
-```{r, eval = FALSE}
+```{r}
 system.time({
     observations <-
         observation_data$read(value_filter = value_filter)$concat() |>
@@ -202,7 +215,7 @@ hard-to-understand (for me!)  classification as primary data
 (*CuratedAtlasQueryR* return only dataset
 `066943a2-fdac-4b29-b348-40cede398e4e`)
 
-```{r, eval = FALSE}
+```{r}
 observations |>
     count(dataset_id, suspension_type, is_primary_data)
 ```
@@ -211,7 +224,7 @@ observations |>
 SingleCellExperiment; retrieve the Seurat object corresponding to the
 observations we are interested in.
 
-```{r, eval = FALSE}
+```{r}
 system.time({
     seurat <- cellxgene.census::get_seurat(
         census = soma,
@@ -223,3 +236,12 @@ system.time({
 
 [cellxgene.census]: https://chanzuckerberg.github.io/cellxgene-census/
 [R Quick Start]:  https://chanzuckerberg.github.io/cellxgene-census/cellxgene_census_docsite_quick_start.html#r-quick-start
+
+# Session information
+
+This article was compiled with CxGcensus version
+`r packageVersion("CxGcensus")` and the following packages
+
+```{r session-info}
+sessionInfo()
+```

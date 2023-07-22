@@ -141,9 +141,9 @@ cache <-
 }
 
 memoise_memory <-
-    function(f)
+    function(f, omit_args = c("uri", "tiledbsoma_ctx"))
 {
-    memoise(f, omit_args = c("uri", "tiledbsoma_ctx"))
+    memoise(f, omit_args = omit_args)
 }
 
 memoise_disk <-

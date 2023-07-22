@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+rm(list=ls()); gc(); gc()
 ```
 
 # Introduction
