@@ -142,7 +142,7 @@ string ‘CD4’.</p>
 <span>        <span class="fu"><a href="https://rdrr.io/pkg/CuratedAtlasQueryR/man/get_single_cell_experiment.html" class="external-link">get_single_cell_experiment</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   2.838   0.562  13.318</span></span>
+<span><span class="co">#&gt;   2.452   0.348  21.704</span></span>
 <span><span class="va">sce_caqr</span></span>
 <span><span class="co">#&gt; class: SingleCellExperiment </span></span>
 <span><span class="co">#&gt; dim: 36229 1571 </span></span>
@@ -213,20 +213,22 @@ memory consumption is modest.</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   self_reported_ethnicity_ontology_term_id &lt;chr&gt;, sex &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   sex_ontology_term_id &lt;chr&gt;, suspension_type &lt;chr&gt;, tissue &lt;chr&gt;, …</span></span></span>
 <span><span class="fu"><a href="../reference/cache.html">cache_info</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 4</span></span></span>
 <span><span class="co">#&gt;    file                                      size mtime               path      </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> fd1b8f254a04e22bffb4cebe18894db3.rds       150 2023-07-23 <span style="color: #949494;">01:52:56</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1b1959c977e1.duckdb                  383<span style="text-decoration: underline;">528</span>960 2023-07-23 <span style="color: #949494;">01:52:54</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 8bdc07ecb56efaa16923c41298cc8f11.rds  62<span style="text-decoration: underline;">387</span>006 2023-07-23 <span style="color: #949494;">01:35:57</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> ccebd96da3e645e0e19e0c798c63bde9.rds    <span style="text-decoration: underline;">580</span>350 2023-07-23 <span style="color: #949494;">01:35:14</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 3d6ac4c33357d1131f9698dc2a4d6df3.rds       150 2023-07-23 <span style="color: #949494;">01:35:13</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 8cc56352bcae0d4b167f5034edc8c7ea.rds     <span style="text-decoration: underline;">49</span>973 2023-07-23 <span style="color: #949494;">01:35:13</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> d241a2b48c3d0c82fdc3c44b60d1f364.rds    <span style="text-decoration: underline;">624</span>139 2023-07-23 <span style="color: #949494;">01:34:54</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1049df0a902fb40c35d0b5f34b6f8217.rds     <span style="text-decoration: underline;">25</span>000 2023-07-23 <span style="color: #949494;">01:34:19</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> c85095c3479d8e571660137241069fa2.rds       261 2023-07-23 <span style="color: #949494;">01:34:10</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> d35d065f71053587976b6d3bf08c2592.rds       261 2023-07-23 <span style="color: #949494;">01:34:05</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 17e17a16ed05.duckdb                   25<span style="text-decoration: underline;">964</span>544 2023-07-23 <span style="color: #949494;">01:33:56</span> /home/run…</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> fd1b8f254a04e22bffb4cebe18894db3.rds       150 2023-07-23 <span style="color: #949494;">08:08:11</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 8bdc07ecb56efaa16923c41298cc8f11.rds  62<span style="text-decoration: underline;">387</span>006 2023-07-23 <span style="color: #949494;">08:03:41</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> ccebd96da3e645e0e19e0c798c63bde9.rds    <span style="text-decoration: underline;">580</span>350 2023-07-23 <span style="color: #949494;">08:03:38</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 3d6ac4c33357d1131f9698dc2a4d6df3.rds       150 2023-07-23 <span style="color: #949494;">08:03:37</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 8cc56352bcae0d4b167f5034edc8c7ea.rds     <span style="text-decoration: underline;">49</span>973 2023-07-23 <span style="color: #949494;">08:03:36</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> d241a2b48c3d0c82fdc3c44b60d1f364.rds    <span style="text-decoration: underline;">624</span>139 2023-07-23 <span style="color: #949494;">08:03:21</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1049df0a902fb40c35d0b5f34b6f8217.rds     <span style="text-decoration: underline;">25</span>000 2023-07-23 <span style="color: #949494;">08:03:12</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> c85095c3479d8e571660137241069fa2.rds       261 2023-07-23 <span style="color: #949494;">08:03:03</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> d35d065f71053587976b6d3bf08c2592.rds       261 2023-07-23 <span style="color: #949494;">08:03:03</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> e24e5139c60be57701400cce0d7489ec.rds   3<span style="text-decoration: underline;">822</span>607 2023-07-23 <span style="color: #949494;">01:54:07</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 7a466c52241d4482b73edb2dd91bf29c.rds    <span style="text-decoration: underline;">740</span>139 2023-07-23 <span style="color: #949494;">01:53:02</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 1b1959c977e1.duckdb                  383<span style="text-decoration: underline;">528</span>960 2023-07-23 <span style="color: #949494;">01:52:54</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 17e17a16ed05.duckdb                   25<span style="text-decoration: underline;">964</span>544 2023-07-23 <span style="color: #949494;">01:33:56</span> /home/run…</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs_query</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">homo</span> <span class="op">|&gt;</span></span>
@@ -269,7 +271,7 @@ memory consumption is modest.</p>
 <span><span class="co">#&gt; retrieving assay_data measurement 'RNA' collection 'X' layer 'raw' as a</span></span>
 <span><span class="co">#&gt; sparse matrix with 60664 x 1571 distinct features x observations</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  51.372  21.406  64.260</span></span>
+<span><span class="co">#&gt;  46.755  16.000  90.026</span></span>
 <span><span class="va">sce_cxg</span></span>
 <span><span class="co">#&gt; class: SingleCellExperiment </span></span>
 <span><span class="co">#&gt; dim: 60664 1571 </span></span>
