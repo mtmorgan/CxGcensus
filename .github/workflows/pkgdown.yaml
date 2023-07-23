@@ -47,6 +47,15 @@ jobs:
       #   ## https://github.com/single-cell-data/TileDB-SOMA/issues/1520#issuecomment-1622898360
       #   run: Rscript -e 'options(Ncpus = parallel::detectCores()); remotes::install_github("single-cell-data/TileDB-SOMA", subdir="apis/r")'
 
+      # maybe restore user cache
+      - name: cache user cache with CxGcensus & CuratedAtlasQueryR resources
+        uses: actions/cache@v3
+        with:
+          path: |
+            /home/runner/.cache/R/CxGcensus
+            /home/runner/.cache/R/CuratedAtlasQueryR
+          key: ${{ runner.os }}-user-cache
+
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE)
         shell: Rscript {0}
