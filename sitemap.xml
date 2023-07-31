@@ -28,9 +28,15 @@
     <loc>https://mtmorgan.github.io/CxGcensus/reference/census.html</loc>
   </url>
   <url>
+    <loc>https://mtmorgan.github.io/CxGcensus/reference/census_data.html</loc>
+  </url>
+  <url>
     <loc>https://mtmorgan.github.io/CxGcensus/reference/census_info.html</loc>
   </url>
   <url>
     <loc>https://mtmorgan.github.io/CxGcensus/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mtmorgan.github.io/CxGcensus/reference/single_cell_experiment.html</loc>
   </url>
 </urlset>

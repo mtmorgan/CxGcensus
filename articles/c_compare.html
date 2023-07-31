@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9024</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,7 +142,7 @@ string ‘CD4’.</p>
 <span>        <span class="fu"><a href="https://rdrr.io/pkg/CuratedAtlasQueryR/man/get_single_cell_experiment.html" class="external-link">get_single_cell_experiment</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   4.003   0.325  13.298</span></span>
+<span><span class="co">#&gt;   3.449   0.374  21.683</span></span>
 <span><span class="va">sce_caqr</span></span>
 <span><span class="co">#&gt; class: SingleCellExperiment </span></span>
 <span><span class="co">#&gt; dim: 36229 1571 </span></span>
@@ -175,7 +175,7 @@ informative.</p>
 <span><span class="co">#&gt; 1          custom 1571</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mtmorgan.github.io/CxGcensus/">CxGcensus</a></span><span class="op">)</span></span></code></pre></div>
-<p>The first time <code><a href="../reference/census_info.html">observation_data()</a></code> is run, it creates a
+<p>The first time <code><a href="../reference/census_data.html">observation_data()</a></code> is run, it creates a
 local database for efficient access. The database is created in ‘chunks’
 to moderate memory consumption. The initial code here makes sure that
 memory consumption is modest.</p>
@@ -187,24 +187,24 @@ memory consumption is modest.</p>
 <span><span class="co">## chunk size, from Dirk Eddelbuettel, via slack</span></span>
 <span><span class="va">tiledbsoma_ctx</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">"soma.init_buffer_bytes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1024</span><span class="op">**</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">homo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_info.html">observation_data</a></span><span class="op">(</span></span>
+<span><span class="va">homo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_data.html">observation_data</a></span><span class="op">(</span></span>
 <span>    <span class="st">"homo_sapiens"</span>, uri <span class="op">=</span> <span class="va">uri</span>, tiledbsoma_ctx <span class="op">=</span> <span class="va">tiledbsoma_ctx</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">homo</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;obs&gt; [?? x 21]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/1b23e646545.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/83541c39f0eb.duckdb]</span></span></span>
 <span><span class="co">#&gt;    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            myeloid …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>           1 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            myeloid …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>           2 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>           3 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            myeloid …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>           4 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>           5 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>           6 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>           7 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>           8 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>           9 9d8e5dca-03a3-457d-b7fb-8… 10x … EFO:0009922            fat cell </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            syncytio…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>           1 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            placenta…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>           2 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            syncytio…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>           3 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            syncytio…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>           4 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            extravil…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>           5 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            placenta…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>           6 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            syncytio…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>           7 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            extravil…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>           8 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            placenta…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>           9 f171db61-e57e-4535-a06a-3… 10x … EFO:0009922            syncytio…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 16 more variables: cell_type_ontology_term_id &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   development_stage &lt;chr&gt;, development_stage_ontology_term_id &lt;chr&gt;,</span></span></span>
@@ -216,17 +216,17 @@ memory consumption is modest.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 4</span></span></span>
 <span><span class="co">#&gt;    file                                      size mtime               path      </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> fd1b8f254a04e22bffb4cebe18894db3.rds       149 2023-07-23 <span style="color: #949494;">08:58:12</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1b23e646545.duckdb                   384<span style="text-decoration: underline;">315</span>392 2023-07-23 <span style="color: #949494;">08:58:11</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 8bdc07ecb56efaa16923c41298cc8f11.rds  62<span style="text-decoration: underline;">387</span>006 2023-07-23 <span style="color: #949494;">08:40:46</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> ccebd96da3e645e0e19e0c798c63bde9.rds    <span style="text-decoration: underline;">580</span>350 2023-07-23 <span style="color: #949494;">08:40:05</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 3d6ac4c33357d1131f9698dc2a4d6df3.rds       150 2023-07-23 <span style="color: #949494;">08:40:04</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 8cc56352bcae0d4b167f5034edc8c7ea.rds     <span style="text-decoration: underline;">49</span>973 2023-07-23 <span style="color: #949494;">08:40:03</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> d241a2b48c3d0c82fdc3c44b60d1f364.rds    <span style="text-decoration: underline;">624</span>139 2023-07-23 <span style="color: #949494;">08:39:45</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1049df0a902fb40c35d0b5f34b6f8217.rds     <span style="text-decoration: underline;">25</span>000 2023-07-23 <span style="color: #949494;">08:39:11</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> c85095c3479d8e571660137241069fa2.rds       261 2023-07-23 <span style="color: #949494;">08:39:02</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> d35d065f71053587976b6d3bf08c2592.rds       261 2023-07-23 <span style="color: #949494;">08:38:57</span> /home/run…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 17ea5ae54647.duckdb                   25<span style="text-decoration: underline;">964</span>544 2023-07-23 <span style="color: #949494;">08:38:48</span> /home/run…</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> d409f8b35fd832c1e2cdea811d247582.rds       150 2023-07-31 <span style="color: #949494;">22:37:24</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 83541c39f0eb.duckdb                  395<span style="text-decoration: underline;">849</span>728 2023-07-31 <span style="color: #949494;">22:37:24</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> c4dd78afba7f25d1fe942d07374bd72a.rds  63<span style="text-decoration: underline;">365</span>917 2023-07-31 <span style="color: #949494;">22:22:57</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 26cae4a4f6328986d840fb384046636c.rds    <span style="text-decoration: underline;">620</span>101 2023-07-31 <span style="color: #949494;">22:22:07</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> ac0d321d29f2cbacf781aacbac786b06.rds       149 2023-07-31 <span style="color: #949494;">22:22:06</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 990eaac6de3bab186dc4d2ecc1caf3c5.rds     <span style="text-decoration: underline;">52</span>197 2023-07-31 <span style="color: #949494;">22:22:05</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 487378252967ef48da03145213d604be.rds    <span style="text-decoration: underline;">543</span>852 2023-07-31 <span style="color: #949494;">22:21:50</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> c4756b7a6569bbb0c8f122d6801cc91c.rds     <span style="text-decoration: underline;">25</span>419 2023-07-31 <span style="color: #949494;">22:21:02</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 92fac332dbd9441e88949c30a8ff541f.rds       253 2023-07-31 <span style="color: #949494;">22:20:54</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> a357c91923a250bcb2df9dce38c426f4.rds       253 2023-07-31 <span style="color: #949494;">22:20:23</span> /home/run…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 80af4af4750a.duckdb                   33<span style="text-decoration: underline;">828</span>864 2023-07-31 <span style="color: #949494;">22:20:00</span> /home/run…</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs_query</span> <span class="op">&lt;-</span></span>
 <span>    <span class="va">homo</span> <span class="op">|&gt;</span></span>
@@ -240,7 +240,7 @@ memory consumption is modest.</p>
 <span><span class="va">obs_query</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span>, <span class="va">is_primary_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [3 x 3]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/1b23e646545.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/83541c39f0eb.duckdb]</span></span></span>
 <span><span class="co">#&gt;   dataset_id                           is_primary_data       n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 9f222629-9e39-47d0-b83f-e08d610c7479 FALSE              <span style="text-decoration: underline;">1</span>300</span></span>
@@ -253,23 +253,23 @@ memory consumption is modest.</p>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">feat_query</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="../reference/census_info.html">feature_data</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="../reference/census_data.html">feature_data</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">feat_query_approx</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="../reference/census_info.html">feature_data</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/census_data.html">feature_data</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="co">## not all features are present -- SYMBOL is a very poor choice</span></span>
 <span>    <span class="co">## for identifier</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">feature_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sce_caqr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">sce_cxg</span> <span class="op">&lt;-</span></span>
-<span>        <span class="fu"><a href="../reference/census_info.html">single_cell_experiment</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span>, <span class="va">feat_query</span>, <span class="va">obs_query_exact</span><span class="op">)</span></span>
+<span>        <span class="fu"><a href="../reference/single_cell_experiment.html">single_cell_experiment</a></span><span class="op">(</span><span class="st">"homo_sapiens"</span>, <span class="va">feat_query</span>, <span class="va">obs_query_exact</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; creating axis and experiment queries</span></span>
 <span><span class="co">#&gt; retrieving assay_data measurement 'RNA' collection 'X' layer 'raw' as a</span></span>
 <span><span class="co">#&gt; sparse matrix with 60664 x 1571 distinct features x observations</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  48.512  12.940  57.745</span></span>
+<span><span class="co">#&gt;  44.600  25.182  93.646</span></span>
 <span><span class="va">sce_cxg</span></span>
 <span><span class="co">#&gt; class: SingleCellExperiment </span></span>
 <span><span class="co">#&gt; dim: 60664 1571 </span></span>
@@ -299,10 +299,36 @@ reference to the ’obs’ervation data.</p>
 <span>    census_version <span class="op">=</span> <span class="st">"2023-05-15"</span>, uri <span class="op">=</span> <span class="va">uri</span>, tiledbsoma_ctx <span class="op">=</span> <span class="va">tiledbsoma_ctx</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">observation_data</span> <span class="op">&lt;-</span> <span class="va">soma</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"census_data"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"homo_sapiens"</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"obs"</span><span class="op">)</span></span>
-<span><span class="va">observation_data</span></span></code></pre></div>
+<span><span class="va">observation_data</span></span>
+<span><span class="co">#&gt; &lt;SOMADataFrame&gt;</span></span>
+<span><span class="co">#&gt;   uri: s3://cellxgene-data-public/cell-census/2023-07-25/soma/census_data/homo_sapiens/obs </span></span>
+<span><span class="co">#&gt;   dimensions: soma_joinid </span></span>
+<span><span class="co">#&gt;   attributes: dataset_id, assay, assay_ontology_term_id, cell_type, cell_type_ontology_term...</span></span></code></pre></div>
 <p>Discover available facets for filtering</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">observation_data</span><span class="op">$</span><span class="fu">colnames</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">obs_colnames</span> <span class="op">&lt;-</span> <span class="va">observation_data</span><span class="op">$</span><span class="fu">colnames</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">obs_colnames</span></span>
+<span><span class="co">#&gt;  [1] "soma_joinid"                             </span></span>
+<span><span class="co">#&gt;  [2] "dataset_id"                              </span></span>
+<span><span class="co">#&gt;  [3] "assay"                                   </span></span>
+<span><span class="co">#&gt;  [4] "assay_ontology_term_id"                  </span></span>
+<span><span class="co">#&gt;  [5] "cell_type"                               </span></span>
+<span><span class="co">#&gt;  [6] "cell_type_ontology_term_id"              </span></span>
+<span><span class="co">#&gt;  [7] "development_stage"                       </span></span>
+<span><span class="co">#&gt;  [8] "development_stage_ontology_term_id"      </span></span>
+<span><span class="co">#&gt;  [9] "disease"                                 </span></span>
+<span><span class="co">#&gt; [10] "disease_ontology_term_id"                </span></span>
+<span><span class="co">#&gt; [11] "donor_id"                                </span></span>
+<span><span class="co">#&gt; [12] "is_primary_data"                         </span></span>
+<span><span class="co">#&gt; [13] "self_reported_ethnicity"                 </span></span>
+<span><span class="co">#&gt; [14] "self_reported_ethnicity_ontology_term_id"</span></span>
+<span><span class="co">#&gt; [15] "sex"                                     </span></span>
+<span><span class="co">#&gt; [16] "sex_ontology_term_id"                    </span></span>
+<span><span class="co">#&gt; [17] "suspension_type"                         </span></span>
+<span><span class="co">#&gt; [18] "tissue"                                  </span></span>
+<span><span class="co">#&gt; [19] "tissue_ontology_term_id"                 </span></span>
+<span><span class="co">#&gt; [20] "tissue_general"                          </span></span>
+<span><span class="co">#&gt; [21] "tissue_general_ontology_term_id"</span></span></code></pre></div>
 <p>Formulate a filter using the syntax of <em>cellxgene.census</em></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">value_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
@@ -310,18 +336,22 @@ reference to the ’obs’ervation data.</p>
 <span>    <span class="st">"tissue == 'lung parenchyma'"</span>,</span>
 <span>    <span class="st">"cell_type == 'CD4-positive, alpha-beta T cell'"</span>,</span>
 <span>    <span class="co">## assay? any of "10x 5' v1", "10x 3' v2", "10x 3' v3"</span></span>
-<span>    sep <span class="op">=</span> <span class="st">" &amp; "</span></span>
+<span>    sep <span class="op">=</span> <span class="st">" &amp;&amp; "</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Read the metadata associated with the query</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
-<span>    <span class="va">observations</span> <span class="op">&lt;-</span></span>
-<span>        <span class="va">observation_data</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span>value_filter <span class="op">=</span> <span class="va">value_filter</span><span class="op">)</span><span class="op">$</span><span class="fu">concat</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>                             <span class="co"># actually, tibble</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="va">observations</span></span>
-<span><span class="va">observations</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">dataset_id</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    observations <span class="ot">&lt;-</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        observation_data<span class="sc">$</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">read</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">value_filter =</span> value_filter,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">column_names =</span> <span class="fu">c</span>(<span class="st">"assay"</span>, <span class="st">"cell_type"</span>, <span class="st">"sex"</span>, <span class="st">"tissue"</span>, <span class="st">"tissue_general"</span>, <span class="st">"suspension_type"</span>, <span class="st">"disease"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                         <span class="er">)</span><span class="sc">$</span><span class="fu">concat</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.data.frame</span>()                             <span class="co"># actually, tibble</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>observations</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>observations <span class="sc">|&gt;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">count</span>(dataset_id)</span></code></pre></div>
 <p>There are 1800 more cells and a second dataset; this is not because
 the filter did not include an ‘assay’ component; perhaps
 <code>soma</code> includes datasets that were not available when
@@ -348,7 +378,7 @@ in.</p>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<p>This article was compiled with CxGcensus version 0.0.0.9024 and the
+<p>This article was compiled with CxGcensus version 0.0.0.9025 and the
 following packages</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -373,8 +403,9 @@ following packages</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] CxGcensus_0.0.0.9024      RcppSpdlog_0.0.14        </span></span>
-<span><span class="co">#&gt; [3] dplyr_1.1.2               CuratedAtlasQueryR_0.99.6</span></span>
+<span><span class="co">#&gt; [1] cellxgene.census_0.0.0.9000 CxGcensus_0.0.0.9025       </span></span>
+<span><span class="co">#&gt; [3] RcppSpdlog_0.0.14           dplyr_1.1.2                </span></span>
+<span><span class="co">#&gt; [5] CuratedAtlasQueryR_0.99.6  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] RcppAnnoy_0.0.21            splines_4.3.1              </span></span>
@@ -399,66 +430,65 @@ following packages</p>
 <span><span class="co">#&gt;  [39] GenomeInfoDbData_1.2.10     IRanges_2.34.1             </span></span>
 <span><span class="co">#&gt;  [41] S4Vectors_0.38.1            ggrepel_0.9.3              </span></span>
 <span><span class="co">#&gt;  [43] irlba_2.3.5.1               listenv_0.9.0              </span></span>
-<span><span class="co">#&gt;  [45] spatstat.utils_3.0-3        cellxgene.census_0.0.0.9000</span></span>
-<span><span class="co">#&gt;  [47] goftest_1.2-3               spatstat.random_3.1-5      </span></span>
-<span><span class="co">#&gt;  [49] fitdistrplus_1.1-11         parallelly_1.36.0          </span></span>
-<span><span class="co">#&gt;  [51] pkgdown_2.0.7               leiden_0.4.3               </span></span>
-<span><span class="co">#&gt;  [53] codetools_0.2-19            DelayedArray_0.26.6        </span></span>
-<span><span class="co">#&gt;  [55] xml2_1.3.5                  tidyselect_1.2.0           </span></span>
-<span><span class="co">#&gt;  [57] matrixStats_1.0.0           stats4_4.3.1               </span></span>
-<span><span class="co">#&gt;  [59] base64enc_0.1-3             spatstat.explore_3.2-1     </span></span>
-<span><span class="co">#&gt;  [61] duckdb_0.8.1-1              jsonlite_1.8.7             </span></span>
-<span><span class="co">#&gt;  [63] ellipsis_0.3.2              progressr_0.13.0           </span></span>
-<span><span class="co">#&gt;  [65] ggridges_0.5.4              survival_3.5-5             </span></span>
-<span><span class="co">#&gt;  [67] systemfonts_1.0.4           tools_4.3.1                </span></span>
-<span><span class="co">#&gt;  [69] ragg_1.2.5                  tiledb_0.20.1              </span></span>
-<span><span class="co">#&gt;  [71] rjsoncons_1.0.0             ica_1.0-3                  </span></span>
-<span><span class="co">#&gt;  [73] Rcpp_1.0.11                 glue_1.6.2                 </span></span>
-<span><span class="co">#&gt;  [75] spdl_0.0.5                  gridExtra_2.3              </span></span>
-<span><span class="co">#&gt;  [77] xfun_0.39                   MatrixGenerics_1.12.2      </span></span>
-<span><span class="co">#&gt;  [79] GenomeInfoDb_1.36.1         HDF5Array_1.28.1           </span></span>
-<span><span class="co">#&gt;  [81] withr_2.5.0                 fastmap_1.1.1              </span></span>
-<span><span class="co">#&gt;  [83] rhdf5filters_1.12.1         fansi_1.0.4                </span></span>
-<span><span class="co">#&gt;  [85] digest_0.6.33               R6_2.5.1                   </span></span>
-<span><span class="co">#&gt;  [87] mime_0.12                   textshaping_0.3.6          </span></span>
-<span><span class="co">#&gt;  [89] colorspace_2.1-0            scattermore_1.2            </span></span>
-<span><span class="co">#&gt;  [91] tensor_1.5                  RcppCCTZ_0.2.12            </span></span>
-<span><span class="co">#&gt;  [93] spatstat.data_3.0-1         utf8_1.2.3                 </span></span>
-<span><span class="co">#&gt;  [95] tidyr_1.3.0                 generics_0.1.3             </span></span>
-<span><span class="co">#&gt;  [97] data.table_1.14.8           httr_1.4.6                 </span></span>
-<span><span class="co">#&gt;  [99] htmlwidgets_1.6.2           S4Arrays_1.0.4             </span></span>
-<span><span class="co">#&gt; [101] uwot_0.1.16                 pkgconfig_2.0.3            </span></span>
-<span><span class="co">#&gt; [103] gtable_0.3.3                blob_1.2.4                 </span></span>
-<span><span class="co">#&gt; [105] lmtest_0.9-40               SingleCellExperiment_1.22.0</span></span>
-<span><span class="co">#&gt; [107] XVector_0.40.0              htmltools_0.5.5            </span></span>
-<span><span class="co">#&gt; [109] SeuratObject_4.1.3          scales_1.2.1               </span></span>
-<span><span class="co">#&gt; [111] Biobase_2.60.0              png_0.1-8                  </span></span>
-<span><span class="co">#&gt; [113] knitr_1.43                  reshape2_1.4.4             </span></span>
-<span><span class="co">#&gt; [115] nlme_3.1-162                curl_5.0.1                 </span></span>
-<span><span class="co">#&gt; [117] cachem_1.0.8                zoo_1.8-12                 </span></span>
-<span><span class="co">#&gt; [119] rhdf5_2.44.0                stringr_1.5.0              </span></span>
-<span><span class="co">#&gt; [121] KernSmooth_2.23-21          parallel_4.3.1             </span></span>
-<span><span class="co">#&gt; [123] miniUI_0.1.1.1              arrow_12.0.1.1             </span></span>
-<span><span class="co">#&gt; [125] nanotime_0.3.7              desc_1.4.2                 </span></span>
-<span><span class="co">#&gt; [127] pillar_1.9.0                grid_4.3.1                 </span></span>
-<span><span class="co">#&gt; [129] vctrs_0.6.3                 RANN_2.6.1                 </span></span>
-<span><span class="co">#&gt; [131] promises_1.2.0.1            dbplyr_2.3.3               </span></span>
-<span><span class="co">#&gt; [133] xtable_1.8-4                cluster_2.1.4              </span></span>
-<span><span class="co">#&gt; [135] evaluate_0.21               cli_3.6.1                  </span></span>
-<span><span class="co">#&gt; [137] compiler_4.3.1              rlang_1.1.1                </span></span>
-<span><span class="co">#&gt; [139] crayon_1.5.2                future.apply_1.11.0        </span></span>
-<span><span class="co">#&gt; [141] aws.signature_0.6.0         plyr_1.8.8                 </span></span>
-<span><span class="co">#&gt; [143] fs_1.6.3                    stringi_1.7.12             </span></span>
-<span><span class="co">#&gt; [145] viridisLite_0.4.2           deldir_1.0-9               </span></span>
-<span><span class="co">#&gt; [147] assertthat_0.2.1            munsell_0.5.0              </span></span>
-<span><span class="co">#&gt; [149] lazyeval_0.2.2              spatstat.geom_3.2-4        </span></span>
-<span><span class="co">#&gt; [151] Matrix_1.5-4.1              patchwork_1.1.2            </span></span>
-<span><span class="co">#&gt; [153] bit64_4.0.5                 future_1.33.0              </span></span>
-<span><span class="co">#&gt; [155] ggplot2_3.4.2               Rhdf5lib_1.22.0            </span></span>
-<span><span class="co">#&gt; [157] shiny_1.7.4.1               SummarizedExperiment_1.30.2</span></span>
-<span><span class="co">#&gt; [159] ROCR_1.0-11                 igraph_1.5.0               </span></span>
-<span><span class="co">#&gt; [161] memoise_2.0.1               bslib_0.5.0                </span></span>
-<span><span class="co">#&gt; [163] bit_4.0.5</span></span></code></pre></div>
+<span><span class="co">#&gt;  [45] spatstat.utils_3.0-3        goftest_1.2-3              </span></span>
+<span><span class="co">#&gt;  [47] spatstat.random_3.1-5       fitdistrplus_1.1-11        </span></span>
+<span><span class="co">#&gt;  [49] parallelly_1.36.0           pkgdown_2.0.7              </span></span>
+<span><span class="co">#&gt;  [51] leiden_0.4.3                codetools_0.2-19           </span></span>
+<span><span class="co">#&gt;  [53] DelayedArray_0.26.7         xml2_1.3.5                 </span></span>
+<span><span class="co">#&gt;  [55] tidyselect_1.2.0            matrixStats_1.0.0          </span></span>
+<span><span class="co">#&gt;  [57] stats4_4.3.1                base64enc_0.1-3            </span></span>
+<span><span class="co">#&gt;  [59] spatstat.explore_3.2-1      duckdb_0.8.1-1             </span></span>
+<span><span class="co">#&gt;  [61] jsonlite_1.8.7              ellipsis_0.3.2             </span></span>
+<span><span class="co">#&gt;  [63] progressr_0.13.0            ggridges_0.5.4             </span></span>
+<span><span class="co">#&gt;  [65] survival_3.5-5              systemfonts_1.0.4          </span></span>
+<span><span class="co">#&gt;  [67] tools_4.3.1                 ragg_1.2.5                 </span></span>
+<span><span class="co">#&gt;  [69] tiledb_0.20.1               rjsoncons_1.0.0            </span></span>
+<span><span class="co">#&gt;  [71] ica_1.0-3                   Rcpp_1.0.11                </span></span>
+<span><span class="co">#&gt;  [73] glue_1.6.2                  spdl_0.0.5                 </span></span>
+<span><span class="co">#&gt;  [75] gridExtra_2.3               xfun_0.39                  </span></span>
+<span><span class="co">#&gt;  [77] MatrixGenerics_1.12.3       GenomeInfoDb_1.36.1        </span></span>
+<span><span class="co">#&gt;  [79] HDF5Array_1.28.1            withr_2.5.0                </span></span>
+<span><span class="co">#&gt;  [81] fastmap_1.1.1               rhdf5filters_1.12.1        </span></span>
+<span><span class="co">#&gt;  [83] fansi_1.0.4                 digest_0.6.33              </span></span>
+<span><span class="co">#&gt;  [85] R6_2.5.1                    mime_0.12                  </span></span>
+<span><span class="co">#&gt;  [87] textshaping_0.3.6           colorspace_2.1-0           </span></span>
+<span><span class="co">#&gt;  [89] scattermore_1.2             tensor_1.5                 </span></span>
+<span><span class="co">#&gt;  [91] RcppCCTZ_0.2.12             spatstat.data_3.0-1        </span></span>
+<span><span class="co">#&gt;  [93] utf8_1.2.3                  tidyr_1.3.0                </span></span>
+<span><span class="co">#&gt;  [95] generics_0.1.3              data.table_1.14.8          </span></span>
+<span><span class="co">#&gt;  [97] httr_1.4.6                  htmlwidgets_1.6.2          </span></span>
+<span><span class="co">#&gt;  [99] S4Arrays_1.0.5              uwot_0.1.16                </span></span>
+<span><span class="co">#&gt; [101] pkgconfig_2.0.3             gtable_0.3.3               </span></span>
+<span><span class="co">#&gt; [103] blob_1.2.4                  lmtest_0.9-40              </span></span>
+<span><span class="co">#&gt; [105] SingleCellExperiment_1.22.0 XVector_0.40.0             </span></span>
+<span><span class="co">#&gt; [107] htmltools_0.5.5             SeuratObject_4.1.3         </span></span>
+<span><span class="co">#&gt; [109] scales_1.2.1                Biobase_2.60.0             </span></span>
+<span><span class="co">#&gt; [111] png_0.1-8                   knitr_1.43                 </span></span>
+<span><span class="co">#&gt; [113] reshape2_1.4.4              nlme_3.1-162               </span></span>
+<span><span class="co">#&gt; [115] curl_5.0.1                  cachem_1.0.8               </span></span>
+<span><span class="co">#&gt; [117] zoo_1.8-12                  rhdf5_2.44.0               </span></span>
+<span><span class="co">#&gt; [119] stringr_1.5.0               KernSmooth_2.23-21         </span></span>
+<span><span class="co">#&gt; [121] parallel_4.3.1              miniUI_0.1.1.1             </span></span>
+<span><span class="co">#&gt; [123] arrow_12.0.1.1              nanotime_0.3.7             </span></span>
+<span><span class="co">#&gt; [125] desc_1.4.2                  pillar_1.9.0               </span></span>
+<span><span class="co">#&gt; [127] grid_4.3.1                  vctrs_0.6.3                </span></span>
+<span><span class="co">#&gt; [129] RANN_2.6.1                  promises_1.2.0.1           </span></span>
+<span><span class="co">#&gt; [131] dbplyr_2.3.3                xtable_1.8-4               </span></span>
+<span><span class="co">#&gt; [133] cluster_2.1.4               evaluate_0.21              </span></span>
+<span><span class="co">#&gt; [135] cli_3.6.1                   compiler_4.3.1             </span></span>
+<span><span class="co">#&gt; [137] rlang_1.1.1                 crayon_1.5.2               </span></span>
+<span><span class="co">#&gt; [139] future.apply_1.11.0         aws.signature_0.6.0        </span></span>
+<span><span class="co">#&gt; [141] plyr_1.8.8                  fs_1.6.3                   </span></span>
+<span><span class="co">#&gt; [143] stringi_1.7.12              viridisLite_0.4.2          </span></span>
+<span><span class="co">#&gt; [145] deldir_1.0-9                assertthat_0.2.1           </span></span>
+<span><span class="co">#&gt; [147] munsell_0.5.0               lazyeval_0.2.2             </span></span>
+<span><span class="co">#&gt; [149] spatstat.geom_3.2-4         Matrix_1.5-4.1             </span></span>
+<span><span class="co">#&gt; [151] patchwork_1.1.2             bit64_4.0.5                </span></span>
+<span><span class="co">#&gt; [153] future_1.33.0               ggplot2_3.4.2              </span></span>
+<span><span class="co">#&gt; [155] Rhdf5lib_1.22.0             shiny_1.7.4.1              </span></span>
+<span><span class="co">#&gt; [157] SummarizedExperiment_1.30.2 ROCR_1.0-11                </span></span>
+<span><span class="co">#&gt; [159] igraph_1.5.0.1              memoise_2.0.1              </span></span>
+<span><span class="co">#&gt; [161] bslib_0.5.0                 bit_4.0.5</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
