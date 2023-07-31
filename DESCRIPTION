@@ -1,6 +1,6 @@
 Package: CxGcensus
 Title: Discover and Retrieve 'CELLxGENE' Census Data Sets 
-Version: 0.0.0.9024
+Version: 0.0.0.9025
 Authors@R: 
     c(person(
         "Martin", "Morgan",
@@ -31,10 +31,17 @@ Imports:
     tools, Matrix,
     jsonlite, rjsoncons
 Suggests: 
-    ggplot2, plotly,
-    knitr, rmarkdown,
-    SingleCellExperiment, CuratedAtlasQueryR,
-    scater, scran, BiocSingular, batchelor
+    ggplot2,
+    plotly,
+    knitr,
+    rmarkdown,
+    SingleCellExperiment,
+    CuratedAtlasQueryR,
+    scater,
+    scran,
+    BiocSingular,
+    batchelor,
+    testthat (>= 3.0.0)
 Additional_repositories: https://tiledb-inc.r-universe.dev
 Remotes:
     cellxgene.census=chanzuckerberg/cellxgene-census/api/r/cellxgene.census,
@@ -45,3 +52,4 @@ RoxygenNote: 7.2.3
 URL: https://mtmorgan.github.io/CxGcensus/
 BugReports: https://github.com/mtmorgan/CxGcensus/issues
 VignetteBuilder: knitr
+Config/testthat/edition: 3

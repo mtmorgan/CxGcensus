@@ -2,6 +2,7 @@
 % Please edit documentation in R/census.R
 \name{census}
 \alias{census}
+\alias{census_version}
 \alias{census_id}
 \alias{census_names}
 \alias{census_versions}
@@ -9,6 +10,8 @@
 \title{Obtain a reference to a CELLxGENE 'SOMA' collection}
 \usage{
 census(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
+
+census_version(version = "stable")
 
 census_id(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
@@ -31,6 +34,10 @@ this functionality is in the body of the \code{census()} function.}
 \code{census()} returns a \code{tiledbsoma::SOMACollection} object. Details
 of the census are available with \code{census()$get_metadata()}
 
+\code{census_version()} returns a character(1) version (currently date
+with format \code{"\%Y-\%m-\%d"}), the cannonical representation of the
+census version.
+
 \code{census_id()} returns the 7-character git commit sha that
 uniquely identifies the current release of the census.
 
@@ -44,6 +51,10 @@ indicating the 'stable' and 'latest' versions.
 }
 \description{
 \code{census()} queries CELLxGENE for a particular census.
+
+\code{census_version()} reports the cannonical census
+version; useful when using the aliases \code{"stable"} or
+\code{"latest"}.
 
 \code{census_id()} reports a unique identifier for a
 particular census version.
@@ -63,11 +74,15 @@ only on its first use.
 census()
 census()$get_metadata()
 
+census_version("stable")
+census_version("latest")
+
 census_id()
 
 census_names()
 
 census_versions()
 
+packageVersion("CxGcensus")
 tiledbsoma::show_package_versions()
 }

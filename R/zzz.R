@@ -19,9 +19,10 @@
 
     ## disk-based memoisation
     suppressMessages({
-        datasets <<- memoise_disk(datasets)
-        summary_cell_counts <<- memoise_disk(summary_cell_counts)
-        feature_data <<- memoise_disk(feature_data)
+        datasets_download <<- memoise_disk(datasets_download)
+        summary_cell_counts_download <<-
+            memoise_disk(summary_cell_counts_download)
+        feature_data_download <<- memoise_disk(feature_data_download)
         observation_data_download <<- memoise_disk(observation_data_download)
         assay_data <<- memoise_disk(assay_data)
     })

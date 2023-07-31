@@ -3,42 +3,11 @@
 \name{datasets}
 \alias{datasets}
 \alias{summary_cell_counts}
-\alias{feature_data}
-\alias{observation_data}
-\alias{assay_data}
-\alias{single_cell_experiment}
-\title{Discover census datasets, cells, features, and observations}
+\title{Discover census datasets and cell count summaries}
 \usage{
 datasets(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
 
 summary_cell_counts(version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
-
-feature_data(organism, version = "stable", uri = NULL, tiledbsoma_ctx = NULL)
-
-observation_data(
-  organism,
-  version = "stable",
-  uri = NULL,
-  tiledbsoma_ctx = NULL
-)
-
-assay_data(
-  organism,
-  features,
-  observations,
-  version = "stable",
-  uri = NULL,
-  tiledbsoma_ctx = NULL
-)
-
-single_cell_experiment(
-  organism,
-  features,
-  observations,
-  version = "stable",
-  uri = NULL,
-  tiledbsoma_ctx = NULL
-)
 }
 \arguments{
 \item{version}{The version (date) of the census to use. \code{version = "stable"} indicates the most recent stable release; \code{version = "latest"} is the most recent release. Additional dates are
@@ -50,18 +19,6 @@ usually discovered automatically.}
 \item{tiledbsoma_ctx}{A 'context' providing mostly low-level flags
 influencing the performance of tiledbsoma. One illustration of
 this functionality is in the body of the \code{census()} function.}
-
-\item{organism}{one of the values returned by \code{census_names()},
-specifically 'homo_sapiens' or 'mus_musculus' at the time of
-writing this documentation.}
-
-\item{features}{a \code{tibble}, typically derived from
-\code{feature_data()} via \code{filter()}, \code{select()}, etc., and
-containing the \code{soma_joinid} column.}
-
-\item{observations}{a \code{tibble}, typically derived from
-\code{observation_data()} via \code{filter()}, \code{select()}, etc., and
-containing the \code{soma_joinid} column.}
 }
 \value{
 \code{datasets()} returns a tibble with information about the
@@ -71,21 +28,6 @@ collections and datasets represented in the census.
 organism, facets (\code{category}, e.g., 'sex') and levels (\code{label},
 e.g., 'female') represented in the data, and unique and total
 cell counts in each facet and level.
-
-\code{feature_data()} returns a tibble with columns describing
-each feature (gene) in \code{organism}.
-
-\code{observation_data()} returns a dbplyr-based tibble of cell
-annotations. An aesthetic problem is that the 'connection' to
-the database is not available to the user, and duckdb warns
-that \verb{Database is garbage-collected...}; this message can be
-ignored.
-
-\code{assay_data()} returns a sparse matrix (\code{dgCMatrix})
-summarizing counts found in the census for the \code{soma_joinid}
-columns of the \code{features} and \code{observations} tibble
-arguments. The counts are from the 'raw' layer' of 'X'
-collection of the 'RNA' measurement in the experiment.
 }
 \description{
 \code{datasets()} queries CELLxGENE for datasets used in
@@ -94,21 +36,6 @@ constructing the census.
 \code{summary_cell_counts()} reports the facets (e.g., sex)
 and levels (e.g., male, female) in the census, and the number
 of cells associated with each facet and level.
-
-\code{feature_data()} reports information about features
-(genes) present in the census.
-
-\code{observation_data()} reports information about all
-cells in the census.
-
-\code{assay_data()} queries the census for 'raw' counts for
-the RNA-seq data corresponding to selected features and columns
-in a census.
-
-\code{single_cell_experiment()} queries the census for
-assay data corresponding to features and observations, and
-assembles the result into a SingleCellExperiment. The count
-data are accessible using \code{SingleCellExperiment::counts()}.
 }
 \details{
 \code{datasets()}, \code{summary_cell_counts()}, an \code{feature_data()} are
@@ -116,27 +43,6 @@ data are accessible using \code{SingleCellExperiment::counts()}.
 'tibble' returned by these functions is memoised to disk, so that
 re-using the function is fast even across sessions. See
 \code{?cache_info()} for details on cache management.
-
-\code{observation_data()} is memoised to disk. The data is large (e.g.,
-more than 50 million rows for \emph{Homo sapiens}) so the initial
-download can be time-consuming (10's of minutes). During download
-in an interactive session, the number of 'chunks' and records are
-displayed; for the 2023-05-15 census of \code{homo_sapiens}, there were
-more than 52 million records (cells) downloaded in 124 chunks.
-
-The data are stored in a 'duckdb' database. The return value can be
-used via \code{dbplyr} for very fast and memory efficient filtering,
-selection, and summary.
-
-Currently, for \code{assay_data()} and
-\code{single_cell_experiment()}, the user must ensure that the
-features, observations, and assay data are for the same census
-and organism. Duplicate rows in \code{features} and \code{observations}
-are allowed.
-
-\code{single_cell_experiment()} requires that the
-SingleCellExperiment Bioconductor package is installed, e.g.,
-via \code{BiocManager::install("SingleCellExperiment")}.
 }
 \examples{
 datasets() |>
@@ -153,29 +59,5 @@ summary_cell_counts() |>
         organism, label,
         unique_cell_count, total_cell_count
     )
-
-feature_data("mus_musculus")
-
-mus <- observation_data("mus_musculus")
-mus |>
-    count(assay, sort = TRUE)
-mus |>
-    filter(grepl("diabetes", disease)) |>
-    count(disease, sex, tissue)
-
-features <-
-   feature_data("mus_musculus") |>
-   ## rows 4, 3, 4 of the tibble
-   slice(c(4:3, 4))
-
-observations <-
-   observation_data("mus_musculus") |>
-   ## first two rows of the tibble
-   head(2) |>
-   collect()
-
-assay_data(features, observations, organism = "mus_musculus")
-
-single_cell_experiment("mus_musculus", features, observations)
 
 }

@@ -94,7 +94,7 @@ database for efficient access. The database is created in 'chunks' to
 moderate memory consumption. The initial code here makes sure that
 memory consumption is modest.
 
-```{r}
+```{r CxGcensus-observation_data}
 description <- cellxgene.census::get_census_version_description("stable")
 uri <- description$soma.uri
 tiledbsoma_ctx <-
@@ -109,7 +109,7 @@ homo
 cache_info()
 ```
 
-```{r}
+```{r CxGcensus-obs_query}
 obs_query <-
     homo |>
     filter(
@@ -128,7 +128,7 @@ obs_query_exact <-
     collect()
 ```
 
-```{r}
+```{r CxGcensus-feat_query}
 feat_query <-
     feature_data("homo_sapiens")
 ```
@@ -141,7 +141,7 @@ feat_query_approx <-
     filter(feature_name %in% rownames(sce_caqr))
 ```
 
-```{r}
+```{r, CxGcensus-sce}
 system.time({
     sce_cxg <-
         single_cell_experiment("homo_sapiens", feat_query, obs_query_exact)
@@ -168,7 +168,7 @@ library(cellxgene.census)
 Open a connection to the census as a 'soma' object, and retrieve a
 reference to the 'obs'ervation data.
 
-```{r, message = FALSE}
+```{r cellxgene.census_obs, message = FALSE}
 soma <- open_soma(
     census_version = "2023-05-15", uri = uri, tiledbsoma_ctx = tiledbsoma_ctx
 )
@@ -179,7 +179,8 @@ observation_data
 Discover available facets for filtering
 
 ```{r}
-observation_data$colnames()
+obs_colnames <- observation_data$colnames()
+obs_colnames
 ```
 
 Formulate a filter using the syntax of *cellxgene.census*
@@ -190,16 +191,21 @@ value_filter <- paste(
     "tissue == 'lung parenchyma'",
     "cell_type == 'CD4-positive, alpha-beta T cell'",
     ## assay? any of "10x 5' v1", "10x 3' v2", "10x 3' v3"
-    sep = " & "
+    sep = " && "
 )
 ```
 
 Read the metadata associated with the query
 
-```{r}
+```{r cellxgene.cellxgene-read, eval = FALSE}
 system.time({
     observations <-
-        observation_data$read(value_filter = value_filter)$concat() |>
+        observation_data$
+        read(
+            value_filter = value_filter,
+            column_names = c("assay", "cell_type", "sex", "tissue", "tissue_general", "suspension_type", "disease")
+        )
+                         )$concat() |>
         as.data.frame()                             # actually, tibble
 })
 observations
@@ -215,7 +221,7 @@ hard-to-understand (for me!)  classification as primary data
 (*CuratedAtlasQueryR* return only dataset
 `066943a2-fdac-4b29-b348-40cede398e4e`)
 
-```{r}
+```{r, eval = FALSE}
 observations |>
     count(dataset_id, suspension_type, is_primary_data)
 ```
@@ -224,7 +230,7 @@ observations |>
 SingleCellExperiment; retrieve the Seurat object corresponding to the
 observations we are interested in.
 
-```{r}
+```{r cellxgene.census_get_seurat, eval = FALSE}
 system.time({
     seurat <- cellxgene.census::get_seurat(
         census = soma,
