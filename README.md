@@ -56,15 +56,18 @@ arrow::arrow_info()$capabilities[["dataset"]]
 
 returns `TRUE`. This should be the case for linux, and for macOS
 binary installations from CRAN. I needed to install [arrow][] from
-source on macOS, and had success by cloning the arrow GitHub
-repository, checking out the current release tag, and forcing use of
-autobrew
+source on macOS, and had success by (a) using `brew install
+apache-arrow` and (b) cloning the arrow GitHub repository, changing to
+the `apache/R` directory, checking out the release tag with the same
+version as installed by brew, and building
 
 ``` sh
+brew install apache-arrow # installs, e.g., 13.0.0
 git clone https://github.com/apache/arrow/
 cd arrow/R
-git checkout apache-arrow-12.0.0
-FORCE_AUTOBREW=true R CMD INSTALL .
+git tag | grep 13.0.0
+git checkout -b apache-arrow-13.0.0 apache-arrow-13.0.0
+R CMD INSTALL .
 ```
 
 [remotes]: https://cran.r-project.org/package=remotes

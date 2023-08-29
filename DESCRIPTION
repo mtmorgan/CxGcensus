@@ -1,6 +1,6 @@
 Package: CxGcensus
 Title: Discover and Retrieve 'CELLxGENE' Census Data Sets 
-Version: 0.0.0.9025
+Version: 0.0.0.9026
 Authors@R: 
     c(person(
         "Martin", "Morgan",
