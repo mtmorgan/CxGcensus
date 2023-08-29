@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">CxGcensus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9026</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,14 +109,14 @@ with:</p>
 <span><span class="co">#&gt;  $ soma_encoding_version: chr "1"</span></span>
 <span><span class="co">#&gt;  $ soma_object_type     : chr "SOMACollection"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"CxGcensus"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] '0.0.0.9025'</span></span>
+<span><span class="co">#&gt; [1] '0.0.0.9026'</span></span>
 <span><span class="fu">tiledbsoma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tiledbsoma/man/show_package_versions.html" class="external-link">show_package_versions</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; tiledbsoma:    0.99.1</span></span>
-<span><span class="co">#&gt; tiledb-r:      0.20.1</span></span>
-<span><span class="co">#&gt; tiledb core:   2.16.0</span></span>
-<span><span class="co">#&gt; libtiledbsoma: libtiledb=2.16.0</span></span>
+<span><span class="co">#&gt; tiledbsoma:    1.4.3</span></span>
+<span><span class="co">#&gt; tiledb-r:      0.20.3</span></span>
+<span><span class="co">#&gt; tiledb core:   2.16.2</span></span>
+<span><span class="co">#&gt; libtiledbsoma: libtiledb=2.16.2</span></span>
 <span><span class="co">#&gt; R:             R version 4.3.1 (2023-06-16)</span></span>
-<span><span class="co">#&gt; OS:            Ubuntu 22.04.2 LTS</span></span></code></pre></div>
+<span><span class="co">#&gt; OS:            Ubuntu 22.04.3 LTS</span></span></code></pre></div>
 <p>Discover datasets used to construct the census</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/census_info.html">datasets</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -190,7 +190,7 @@ subsequent calls are more-or-less instantaneous.</p>
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/census_data.html">observation_data</a></span><span class="op">(</span><span class="st">"mus_musculus"</span><span class="op">)</span></span>
 <span><span class="va">mus</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;obs&gt; [?? x 21]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/80af4af4750a.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/7c4d6b6a4986.duckdb]</span></span></span>
 <span><span class="co">#&gt;    soma_joinid dataset_id                 assay assay_ontology_term_id cell_type</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>           0 d7291f04-fbbb-4d65-990a-f… 10x … EFO:0009899            L5/6 nea…</span></span>
@@ -242,7 +242,7 @@ diabetes.</p>
 <code class="sourceCode R"><span><span class="va">mus</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">assay</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:     SQL [9 x 2]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/80af4af4750a.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database:   DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/7c4d6b6a4986.duckdb]</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Ordered by: desc(n)</span></span></span>
 <span><span class="co">#&gt;   assay                                n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span></span></span>
@@ -259,7 +259,7 @@ diabetes.</p>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"diabetes"</span>, <span class="va">disease</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">disease</span>, <span class="va">sex</span>, <span class="va">tissue</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [2 x 4]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/80af4af4750a.duckdb]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: DuckDB 0.8.1 [unknown@Linux 5.15.0-1041-azure:R 4.3.1//home/runner/.cache/R/CxGcensus/7c4d6b6a4986.duckdb]</span></span></span>
 <span><span class="co">#&gt;   disease                  sex    tissue                    n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int64&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> type 2 diabetes mellitus male   islet of Langerhans   <span style="text-decoration: underline;">99</span>747</span></span>
@@ -341,6 +341,9 @@ old or latter.</p>
 <p>Use these to create a <code>SingleCellExperiment</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/single_cell_experiment.html">single_cell_experiment</a></span><span class="op">(</span><span class="st">"mus_musculus"</span>, <span class="va">random_features</span>, <span class="va">brain_20mo</span><span class="op">)</span></span>
+<span><span class="co">#&gt; creating axis and experiment queries</span></span>
+<span><span class="co">#&gt; retrieving assay_data measurement 'RNA' collection 'X' layer 'raw' as a</span></span>
+<span><span class="co">#&gt; sparse matrix with 100 x 52132 distinct features x observations</span></span>
 <span><span class="va">sce</span></span>
 <span><span class="co">#&gt; class: SingleCellExperiment </span></span>
 <span><span class="co">#&gt; dim: 100 52132 </span></span>
@@ -393,13 +396,13 @@ counts were observed…</p>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<p>This article was compiled with CxGcensus version 0.0.0.9025. Full
+<p>This article was compiled with CxGcensus version 0.0.0.9026. Full
 session info is:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.1 (2023-06-16)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 22.04.2 LTS</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.3 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
 <span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -421,56 +424,42 @@ session info is:</p>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] SingleCellExperiment_1.22.0 SummarizedExperiment_1.30.2</span></span>
 <span><span class="co">#&gt;  [3] Biobase_2.60.0              GenomicRanges_1.52.0       </span></span>
-<span><span class="co">#&gt;  [5] GenomeInfoDb_1.36.1         IRanges_2.34.1             </span></span>
+<span><span class="co">#&gt;  [5] GenomeInfoDb_1.36.2         IRanges_2.34.1             </span></span>
 <span><span class="co">#&gt;  [7] S4Vectors_0.38.1            BiocGenerics_0.46.0        </span></span>
 <span><span class="co">#&gt;  [9] MatrixGenerics_1.12.3       matrixStats_1.0.0          </span></span>
-<span><span class="co">#&gt; [11] ggplot2_3.4.2               CxGcensus_0.0.0.9025       </span></span>
+<span><span class="co">#&gt; [11] ggplot2_3.4.3               CxGcensus_0.0.0.9026       </span></span>
 <span><span class="co">#&gt; [13] RcppSpdlog_0.0.14           dplyr_1.1.2                </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] tidyselect_1.2.0            farver_2.1.1               </span></span>
-<span><span class="co">#&gt;  [3] blob_1.2.4                  bitops_1.0-7               </span></span>
-<span><span class="co">#&gt;  [5] urltools_1.7.3              arrow_12.0.1.1             </span></span>
-<span><span class="co">#&gt;  [7] RCurl_1.98-1.12             fastmap_1.1.1              </span></span>
-<span><span class="co">#&gt;  [9] duckdb_0.8.1-1              digest_0.6.33              </span></span>
-<span><span class="co">#&gt; [11] lifecycle_1.0.3             magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt; [13] compiler_4.3.1              rlang_1.1.1                </span></span>
-<span><span class="co">#&gt; [15] sass_0.4.7                  tools_4.3.1                </span></span>
-<span><span class="co">#&gt; [17] utf8_1.2.3                  yaml_2.3.7                 </span></span>
-<span><span class="co">#&gt; [19] data.table_1.14.8           knitr_1.43                 </span></span>
-<span><span class="co">#&gt; [21] S4Arrays_1.0.5              labeling_0.4.2             </span></span>
-<span><span class="co">#&gt; [23] bit_4.0.5                   spdl_0.0.5                 </span></span>
-<span><span class="co">#&gt; [25] curl_5.0.1                  DelayedArray_0.26.7        </span></span>
-<span><span class="co">#&gt; [27] aws.signature_0.6.0         xml2_1.3.5                 </span></span>
-<span><span class="co">#&gt; [29] abind_1.4-5                 withr_2.5.0                </span></span>
-<span><span class="co">#&gt; [31] purrr_1.0.1                 desc_1.4.2                 </span></span>
-<span><span class="co">#&gt; [33] triebeard_0.4.1             grid_4.3.1                 </span></span>
-<span><span class="co">#&gt; [35] fansi_1.0.4                 colorspace_2.1-0           </span></span>
-<span><span class="co">#&gt; [37] scales_1.2.1                cli_3.6.1                  </span></span>
-<span><span class="co">#&gt; [39] crayon_1.5.2                rmarkdown_2.23             </span></span>
-<span><span class="co">#&gt; [41] ragg_1.2.5                  generics_0.1.3             </span></span>
-<span><span class="co">#&gt; [43] tiledbsoma_0.99.1           httr_1.4.6                 </span></span>
-<span><span class="co">#&gt; [45] DBI_1.1.3                   cachem_1.0.8               </span></span>
-<span><span class="co">#&gt; [47] stringr_1.5.0               zlibbioc_1.46.0            </span></span>
-<span><span class="co">#&gt; [49] assertthat_0.2.1            XVector_0.40.0             </span></span>
-<span><span class="co">#&gt; [51] base64enc_0.1-3             vctrs_0.6.3                </span></span>
-<span><span class="co">#&gt; [53] Matrix_1.5-4.1              jsonlite_1.8.7             </span></span>
-<span><span class="co">#&gt; [55] bit64_4.0.5                 systemfonts_1.0.4          </span></span>
-<span><span class="co">#&gt; [57] jquerylib_0.1.4             glue_1.6.2                 </span></span>
-<span><span class="co">#&gt; [59] pkgdown_2.0.7               stringi_1.7.12             </span></span>
-<span><span class="co">#&gt; [61] gtable_0.3.3                aws.s3_0.3.21              </span></span>
-<span><span class="co">#&gt; [63] munsell_0.5.0               nanotime_0.3.7             </span></span>
-<span><span class="co">#&gt; [65] tibble_3.2.1                pillar_1.9.0               </span></span>
-<span><span class="co">#&gt; [67] htmltools_0.5.5             GenomeInfoDbData_1.2.10    </span></span>
-<span><span class="co">#&gt; [69] R6_2.5.1                    dbplyr_2.3.3               </span></span>
-<span><span class="co">#&gt; [71] textshaping_0.3.6           rprojroot_2.0.3            </span></span>
-<span><span class="co">#&gt; [73] evaluate_0.21               lattice_0.21-8             </span></span>
-<span><span class="co">#&gt; [75] RcppCCTZ_0.2.12             highr_0.10                 </span></span>
-<span><span class="co">#&gt; [77] cellxgene.census_0.0.0.9000 memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [79] tiledb_0.20.1               bslib_0.5.0                </span></span>
-<span><span class="co">#&gt; [81] rjsoncons_1.0.0             Rcpp_1.0.11                </span></span>
-<span><span class="co">#&gt; [83] xfun_0.39                   fs_1.6.3                   </span></span>
-<span><span class="co">#&gt; [85] zoo_1.8-12                  pkgconfig_2.0.3</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] tidyselect_1.2.0        farver_2.1.1            blob_1.2.4             </span></span>
+<span><span class="co">#&gt;  [4] bitops_1.0-7            urltools_1.7.3          arrow_12.0.1.1         </span></span>
+<span><span class="co">#&gt;  [7] RCurl_1.98-1.12         fastmap_1.1.1           duckdb_0.8.1-2         </span></span>
+<span><span class="co">#&gt; [10] digest_0.6.33           lifecycle_1.0.3         magrittr_2.0.3         </span></span>
+<span><span class="co">#&gt; [13] compiler_4.3.1          rlang_1.1.1             sass_0.4.7             </span></span>
+<span><span class="co">#&gt; [16] tools_4.3.1             utf8_1.2.3              yaml_2.3.7             </span></span>
+<span><span class="co">#&gt; [19] data.table_1.14.8       knitr_1.43              S4Arrays_1.0.5         </span></span>
+<span><span class="co">#&gt; [22] labeling_0.4.2          bit_4.0.5               spdl_0.0.5             </span></span>
+<span><span class="co">#&gt; [25] curl_5.0.2              DelayedArray_0.26.7     aws.signature_0.6.0    </span></span>
+<span><span class="co">#&gt; [28] xml2_1.3.5              abind_1.4-5             withr_2.5.0            </span></span>
+<span><span class="co">#&gt; [31] purrr_1.0.2             desc_1.4.2              triebeard_0.4.1        </span></span>
+<span><span class="co">#&gt; [34] grid_4.3.1              fansi_1.0.4             colorspace_2.1-0       </span></span>
+<span><span class="co">#&gt; [37] scales_1.2.1            cli_3.6.1               crayon_1.5.2           </span></span>
+<span><span class="co">#&gt; [40] rmarkdown_2.24          ragg_1.2.5              generics_0.1.3         </span></span>
+<span><span class="co">#&gt; [43] tiledbsoma_1.4.3        httr_1.4.7              DBI_1.1.3              </span></span>
+<span><span class="co">#&gt; [46] cachem_1.0.8            stringr_1.5.0           zlibbioc_1.46.0        </span></span>
+<span><span class="co">#&gt; [49] assertthat_0.2.1        XVector_0.40.0          base64enc_0.1-3        </span></span>
+<span><span class="co">#&gt; [52] vctrs_0.6.3             Matrix_1.5-4.1          jsonlite_1.8.7         </span></span>
+<span><span class="co">#&gt; [55] bit64_4.0.5             systemfonts_1.0.4       jquerylib_0.1.4        </span></span>
+<span><span class="co">#&gt; [58] glue_1.6.2              pkgdown_2.0.7           stringi_1.7.12         </span></span>
+<span><span class="co">#&gt; [61] gtable_0.3.4            aws.s3_0.3.21           munsell_0.5.0          </span></span>
+<span><span class="co">#&gt; [64] nanotime_0.3.7          tibble_3.2.1            pillar_1.9.0           </span></span>
+<span><span class="co">#&gt; [67] htmltools_0.5.6         GenomeInfoDbData_1.2.10 R6_2.5.1               </span></span>
+<span><span class="co">#&gt; [70] dbplyr_2.3.3            textshaping_0.3.6       rprojroot_2.0.3        </span></span>
+<span><span class="co">#&gt; [73] evaluate_0.21           lattice_0.21-8          RcppCCTZ_0.2.12        </span></span>
+<span><span class="co">#&gt; [76] highr_0.10              cellxgene.census_1.5.1  memoise_2.0.1          </span></span>
+<span><span class="co">#&gt; [79] tiledb_0.20.3           bslib_0.5.1             rjsoncons_1.0.0        </span></span>
+<span><span class="co">#&gt; [82] Rcpp_1.0.11             xfun_0.40               fs_1.6.3               </span></span>
+<span><span class="co">#&gt; [85] zoo_1.8-12              pkgconfig_2.0.3</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
